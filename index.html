@@ -29,6 +29,8 @@
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --text-tertiary: #71717a;
+            /* Soft off-white - solid, no opacity */
+            --soft-white: #EADEDE;
         }
 
         body {
@@ -52,7 +54,7 @@
             z-index: 0;
         }
 
-        /* ===== FLOATING BUBBLES (HERO ONLY) ===== */
+        /* Hero Bubbles - Solid soft white inner circle */
         .hero-bubbles {
             position: absolute;
             top: 0;
@@ -65,34 +67,69 @@
         }
         .bubble {
             position: absolute;
-            background: rgba(22, 22, 28, 0.5);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(168, 85, 247, 0.2);
+            background: rgba(234, 222, 222, 0.15);
+            backdrop-filter: blur(6px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             animation: floatBubble linear infinite;
-            pointer-events: none;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.2s ease;
+            overflow: hidden;
         }
-        .bubble i, .bubble .fab, .bubble .fas {
-            font-size: 1.4rem;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
+        .bubble:hover {
+            transform: scale(1.05);
+        }
+        /* Solid inner circle - 100% opacity #EADEDE */
+        .bubble::before {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            background: var(--soft-white);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .bubble img {
+            width: 45%;
+            height: 45%;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+        }
+        /* Pop animation - scales and fades at the exact click position */
+        .bubble.pop {
+            animation: popAtPosition 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            pointer-events: none;
+            transform-origin: center center;
+        }
+        @keyframes popAtPosition {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            30% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
         }
         @keyframes floatBubble {
             0% {
                 transform: translateY(100vh) translateX(0) rotate(0deg);
                 opacity: 0;
             }
-            10% {
-                opacity: 0.6;
+            15% {
+                opacity: 0.9;
             }
-            90% {
-                opacity: 0.6;
+            85% {
+                opacity: 0.9;
             }
             100% {
                 transform: translateY(-20vh) translateX(30px) rotate(360deg);
@@ -139,17 +176,11 @@
             font-weight: 700;
             font-size: 1.25rem;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff, var(--neon-purple));
+            background: linear-gradient(135deg, var(--soft-white), var(--neon-purple));
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             font-family: 'JetBrains Mono', monospace;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
         }
         .nav-links a {
             text-decoration: none;
@@ -159,12 +190,12 @@
             transition: color 0.2s;
         }
         .nav-links a:hover {
-            color: var(--text-primary);
+            color: var(--soft-white);
         }
         .btn-small {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(234, 222, 222, 0.12);
             border: 1px solid var(--border-active);
-            color: var(--text-primary);
+            color: var(--soft-white);
             padding: 0.4rem 1.25rem;
             border-radius: 100px;
             text-decoration: none;
@@ -173,8 +204,8 @@
             transition: all 0.2s;
         }
         .btn-small:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(234, 222, 222, 0.25);
+            border-color: var(--neon-purple);
         }
 
         .hero {
@@ -210,7 +241,7 @@
             font-weight: 700;
             letter-spacing: -0.03em;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff, var(--neon-purple), var(--neon-cyan));
+            background: linear-gradient(135deg, var(--soft-white), var(--neon-purple), var(--neon-cyan));
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -268,6 +299,7 @@
             font-size: 2rem;
             font-weight: 600;
             letter-spacing: -0.02em;
+            color: var(--soft-white);
         }
         .section-header p {
             color: var(--text-secondary);
@@ -300,6 +332,7 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: var(--soft-white);
         }
         .feature-card p {
             font-size: 0.85rem;
@@ -315,9 +348,9 @@
         .tech-tag {
             font-size: 0.65rem;
             padding: 0.2rem 0.6rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(234, 222, 222, 0.12);
             border-radius: 100px;
-            color: var(--text-tertiary);
+            color: var(--soft-white);
         }
 
         .diagram-container {
@@ -339,20 +372,6 @@
             color: var(--text-tertiary);
             margin-bottom: 1rem;
             font-family: 'JetBrains Mono', monospace;
-        }
-        .diagram-canvas-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            min-width: 100%;
-        }
-        .animated-diagram canvas {
-            display: block;
-            border-radius: 12px;
-            margin: 0 auto;
-            max-width: 100%;
-            height: auto;
         }
 
         .stats-row {
@@ -377,37 +396,43 @@
             margin-top: 0.25rem;
         }
 
+        /* Tech Stack - Solid soft white background (no opacity) */
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 1rem;
+            margin: 2rem 0;
         }
         .tool-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
+            background: var(--soft-white);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 0.75rem;
             text-align: center;
             transition: all 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .tool-item:hover {
-            border-color: rgba(168, 85, 247, 0.3);
             transform: translateY(-2px);
+            background: #f5e8e8;
+            border-color: var(--neon-purple);
+            box-shadow: 0 4px 12px rgba(168,85,247,0.2);
         }
         .tool-logo {
             width: 48px;
             height: 48px;
             object-fit: contain;
-            margin: 0 auto 0.5rem;
-            display: block;
+            margin-bottom: 0.5rem;
         }
         .tool-name {
             font-size: 0.7rem;
-            color: var(--text-secondary);
+            color: #1a1a2e;
+            text-align: center;
+            font-weight: 500;
         }
 
         .journey-flow {
@@ -441,6 +466,7 @@
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
+            color: var(--soft-white);
         }
         .card-sub {
             font-size: 0.7rem;
@@ -452,12 +478,6 @@
             color: var(--text-secondary);
             margin-top: 0.5rem;
             list-style: none;
-        }
-        .card-steps li {
-            margin-bottom: 0.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
         }
         .card-steps li i {
             font-size: 0.5rem;
@@ -529,6 +549,7 @@
             font-weight: 600;
             margin-bottom: 0.75rem;
             letter-spacing: -0.01em;
+            color: var(--soft-white);
         }
         .model-card p {
             font-size: 0.85rem;
@@ -575,6 +596,9 @@
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(6, 182, 212, 0.03));
             border-radius: 24px;
             border: 1px solid var(--border-subtle);
+        }
+        .cta h2 {
+            color: var(--soft-white);
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
@@ -623,7 +647,6 @@
             .section-header h2 { font-size: 1.4rem; }
             .stats-row { grid-template-columns: repeat(2, 1fr); }
             .models-grid { gap: 1rem; }
-            
             .journey-flow {
                 flex-direction: column;
                 gap: 1rem;
@@ -666,7 +689,6 @@
 </nav>
 
 <main>
-    <!-- Hero Section with Floating Bubbles -->
     <div class="container hero">
         <div class="hero-bubbles" id="heroBubbles"></div>
         <div class="hero-content">
@@ -774,102 +796,71 @@
             <h2>From start to success</h2>
             <p>Your transparent, milestone-driven engagement process</p>
         </div>
-
         <div class="journey-flow reveal-item">
-            <div class="journey-card">
-                <div class="card-number">PHASE 01</div>
-                <div class="card-title">Discovery & Scoping</div>
-                <div class="card-sub">Brief, proposal, discovery call</div>
-                <ul class="card-steps">
-                    <li><i class="fas fa-circle"></i> Brief & Requirements</li>
-                    <li><i class="fas fa-circle"></i> Custom Proposal</li>
-                    <li><i class="fas fa-circle"></i> Discovery Call</li>
-                </ul>
-                <div class="card-duration"><i class="far fa-clock"></i> Days 1-5</div>
-            </div>
+            <div class="journey-card"><div class="card-number">PHASE 01</div><div class="card-title">Discovery & Scoping</div><div class="card-sub">Brief, proposal, discovery call</div><ul class="card-steps"><li><i class="fas fa-circle"></i> Brief & Requirements</li><li><i class="fas fa-circle"></i> Custom Proposal</li><li><i class="fas fa-circle"></i> Discovery Call</li></ul><div class="card-duration"><i class="far fa-clock"></i> Days 1-5</div></div>
             <div class="journey-arrow"><i class="fas fa-arrow-right"></i></div>
-            <div class="journey-card">
-                <div class="card-number">PHASE 02</div>
-                <div class="card-title">Agreement & Kickoff</div>
-                <div class="card-sub">Sign, deposit, kickoff meeting</div>
-                <ul class="card-steps">
-                    <li><i class="fas fa-circle"></i> Sign Agreement</li>
-                    <li><i class="fas fa-circle"></i> Deposit (30-50%)</li>
-                    <li><i class="fas fa-circle"></i> Kickoff Meeting</li>
-                </ul>
-                <div class="card-duration"><i class="far fa-clock"></i> Week 1</div>
-            </div>
+            <div class="journey-card"><div class="card-number">PHASE 02</div><div class="card-title">Agreement & Kickoff</div><div class="card-sub">Sign, deposit, kickoff meeting</div><ul class="card-steps"><li><i class="fas fa-circle"></i> Sign Agreement</li><li><i class="fas fa-circle"></i> Deposit (30-50%)</li><li><i class="fas fa-circle"></i> Kickoff Meeting</li></ul><div class="card-duration"><i class="far fa-clock"></i> Week 1</div></div>
             <div class="journey-arrow"><i class="fas fa-arrow-right"></i></div>
-            <div class="journey-card">
-                <div class="card-number">PHASE 03</div>
-                <div class="card-title">Agile Development</div>
-                <div class="card-sub">Sprints & milestone reviews</div>
-                <ul class="card-steps">
-                    <li><i class="fas fa-circle"></i> Sprints 1-2 (Foundation)</li>
-                    <li><i class="fas fa-circle"></i> Milestone Review 1</li>
-                    <li><i class="fas fa-circle"></i> Sprints 3-4 (Core)</li>
-                    <li><i class="fas fa-circle"></i> Milestone Review 2</li>
-                </ul>
-                <div class="card-duration"><i class="far fa-clock"></i> Weeks 2-6</div>
-            </div>
+            <div class="journey-card"><div class="card-number">PHASE 03</div><div class="card-title">Agile Development</div><div class="card-sub">Sprints & milestone reviews</div><ul class="card-steps"><li><i class="fas fa-circle"></i> Sprints 1-2 (Foundation)</li><li><i class="fas fa-circle"></i> Milestone Review 1</li><li><i class="fas fa-circle"></i> Sprints 3-4 (Core)</li><li><i class="fas fa-circle"></i> Milestone Review 2</li></ul><div class="card-duration"><i class="far fa-clock"></i> Weeks 2-6</div></div>
             <div class="journey-arrow"><i class="fas fa-arrow-right"></i></div>
-            <div class="journey-card">
-                <div class="card-number">PHASE 04</div>
-                <div class="card-title">Delivery & UAT</div>
-                <div class="card-sub">Testing, training, documentation</div>
-                <ul class="card-steps">
-                    <li><i class="fas fa-circle"></i> UAT Testing</li>
-                    <li><i class="fas fa-circle"></i> Training Session</li>
-                    <li><i class="fas fa-circle"></i> Documentation</li>
-                    <li><i class="fas fa-circle"></i> Production Go-Live</li>
-                </ul>
-                <div class="card-duration"><i class="far fa-clock"></i> Weeks 7-8</div>
-            </div>
+            <div class="journey-card"><div class="card-number">PHASE 04</div><div class="card-title">Delivery & UAT</div><div class="card-sub">Testing, training, documentation</div><ul class="card-steps"><li><i class="fas fa-circle"></i> UAT Testing</li><li><i class="fas fa-circle"></i> Training Session</li><li><i class="fas fa-circle"></i> Documentation</li><li><i class="fas fa-circle"></i> Production Go-Live</li></ul><div class="card-duration"><i class="far fa-clock"></i> Weeks 7-8</div></div>
             <div class="journey-arrow"><i class="fas fa-arrow-right"></i></div>
-            <div class="journey-card">
-                <div class="card-number">PHASE 05</div>
-                <div class="card-title">Ongoing Support</div>
-                <div class="card-sub">Monthly retainer & optimization</div>
-                <ul class="card-steps">
-                    <li><i class="fas fa-circle"></i> Maintenance & Monitoring</li>
-                    <li><i class="fas fa-circle"></i> Quarterly Optimization</li>
-                    <li><i class="fas fa-circle"></i> Strategic Review</li>
-                </ul>
-                <div class="card-duration"><i class="far fa-clock"></i> Monthly ongoing</div>
-            </div>
+            <div class="journey-card"><div class="card-number">PHASE 05</div><div class="card-title">Ongoing Support</div><div class="card-sub">Monthly retainer & optimization</div><ul class="card-steps"><li><i class="fas fa-circle"></i> Maintenance & Monitoring</li><li><i class="fas fa-circle"></i> Quarterly Optimization</li><li><i class="fas fa-circle"></i> Strategic Review</li></ul><div class="card-duration"><i class="far fa-clock"></i> Monthly ongoing</div></div>
         </div>
     </div>
 
-    <!-- Tech Stack Section (untouched) -->
+    <!-- Tech Stack Section - Solid #EADEDE background -->
     <div class="container section" id="stack">
         <div class="section-header">
             <div class="section-tag">TECHNOLOGY</div>
             <h2>Integrated stack</h2>
             <p>Tools & platforms I work with</p>
         </div>
-        <div class="tools-grid reveal-item">
-            <div class="tool-item"><i class="fab fa-python tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Python</div></div>
-            <div class="tool-item"><i class="fab fa-js tool-logo" style="font-size: 2.5rem; color: var(--neon-yellow);"></i><div class="tool-name">JavaScript</div></div>
-            <div class="tool-item"><i class="fas fa-code-branch tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">n8n</div></div>
-            <div class="tool-item"><i class="fab fa-whatsapp tool-logo" style="font-size: 2.5rem; color: var(--neon-green);"></i><div class="tool-name">WhatsApp</div></div>
-            <div class="tool-item"><i class="fab fa-telegram tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Telegram</div></div>
-            <div class="tool-item"><i class="fab fa-google tool-logo" style="font-size: 2.5rem; color: var(--neon-orange);"></i><div class="tool-name">Google Cloud</div></div>
-            <div class="tool-item"><i class="fab fa-microsoft tool-logo" style="font-size: 2.5rem; color: var(--neon-purple);"></i><div class="tool-name">Azure</div></div>
-            <div class="tool-item"><i class="fab fa-docker tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Docker</div></div>
-            <div class="tool-item"><i class="fas fa-database tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Supabase</div></div>
-            <div class="tool-item"><i class="fas fa-brain tool-logo" style="font-size: 2.5rem; color: var(--neon-pink);"></i><div class="tool-name">OpenAI</div></div>
-            <div class="tool-item"><i class="fas fa-robot tool-logo" style="font-size: 2.5rem; color: var(--neon-orange);"></i><div class="tool-name">Claude</div></div>
-            <div class="tool-item"><i class="fas fa-chart-line tool-logo" style="font-size: 2.5rem; color: var(--neon-purple);"></i><div class="tool-name">Deepseek</div></div>
-            <div class="tool-item"><i class="fab fa-facebook tool-logo" style="font-size: 2.5rem;"></i><div class="tool-name">Meta APIs</div></div>
-            <div class="tool-item"><i class="fas fa-chart-simple tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Zoho CRM</div></div>
-            <div class="tool-item"><i class="fas fa-tasks tool-logo" style="font-size: 2.5rem; color: var(--neon-pink);"></i><div class="tool-name">OpenProject</div></div>
-            <div class="tool-item"><i class="fab fa-microsoft tool-logo" style="font-size: 2.5rem; color: var(--neon-green);"></i><div class="tool-name">Monday.com</div></div>
-            <div class="tool-item"><i class="fas fa-table tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Google Sheets</div></div>
-            <div class="tool-item"><i class="fas fa-chart-line tool-logo" style="font-size: 2.5rem; color: var(--neon-purple);"></i><div class="tool-name">GoHighLevel</div></div>
-            <div class="tool-item"><i class="fas fa-calendar-alt tool-logo" style="font-size: 2.5rem; color: var(--neon-cyan);"></i><div class="tool-name">Calendly</div></div>
-            <div class="tool-item"><i class="fas fa-address-card tool-logo" style="font-size: 2.5rem; color: var(--neon-green);"></i><div class="tool-name">ContactOut</div></div>
-            <div class="tool-item"><i class="fas fa-file-alt tool-logo" style="font-size: 2.5rem; color: var(--neon-purple);"></i><div class="tool-name">Tesseract OCR</div></div>
-            <div class="tool-item"><i class="fas fa-cloud-upload-alt tool-logo" style="font-size: 2.5rem; color: var(--neon-purple);"></i><div class="tool-name">Render</div></div>
+        <div class="reveal-item">
+            <div class="tools-grid">
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/6VjifQA.png" alt="n8n"><div class="tool-name">n8n</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/azHFwXv.png" alt="Python"><div class="tool-name">Python</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/vi5luwZ.png" alt="JavaScript"><div class="tool-name">JavaScript</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/BBQUr2n.png" alt="OpenAI"><div class="tool-name">OpenAI</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/MjtQWvP.png" alt="Claude"><div class="tool-name">Claude</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/pBbLqBK.png" alt="Supabase"><div class="tool-name">Supabase</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/WU4Dxp8.png" alt="Docker"><div class="tool-name">Docker</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/aYkJ7sr.png" alt="Azure"><div class="tool-name">Azure</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/HLCvjkG.png" alt="Telegram"><div class="tool-name">Telegram</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/6zOLilT.png" alt="Facebook"><div class="tool-name">Facebook</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/avLqFcP.png" alt="Zoho"><div class="tool-name">Zoho CRM</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/aemrhmj.png" alt="Calendly"><div class="tool-name">Calendly</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/ogS17C9.png" alt="Tesseract"><div class="tool-name">Tesseract OCR</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/zPVgXkP.png" alt="GHL"><div class="tool-name">GoHighLevel</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/tEcD6CK.png" alt="Monday"><div class="tool-name">Monday.com</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/QPEyTXV.png" alt="ContactOut"><div class="tool-name">ContactOut</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/KxvLl2r.png" alt="Indeed"><div class="tool-name">Indeed</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/dAXTxdl.png" alt="Deepseek"><div class="tool-name">Deepseek</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/y0LwowW.png" alt="Gemini"><div class="tool-name">Gemini</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/rIlLk9v.png" alt="Copilot"><div class="tool-name">Copilot</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/eIC5f8O.png" alt="Cursor"><div class="tool-name">Cursor</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/TvhK8Ol.png" alt="OpenProject"><div class="tool-name">OpenProject</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/qpmJkYt.png" alt="Trello"><div class="tool-name">Trello</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/PPRLGEu.png" alt="Notion"><div class="tool-name">Notion</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/loVBnTm.png" alt="Messenger"><div class="tool-name">Messenger</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/QkzVW7J.png" alt="Instagram"><div class="tool-name">Instagram</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/juD3o2j.png" alt="Meta"><div class="tool-name">Meta APIs</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/sEEHa4J.png" alt="Google Cloud"><div class="tool-name">Google Cloud</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/xklNvsa.png" alt="Google Sheets"><div class="tool-name">Google Sheets</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/5T3d9nS.png" alt="App Script"><div class="tool-name">App Script</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/9uPTSrq.png" alt="Canva"><div class="tool-name">Canva</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/YcwFMcA.png" alt="Figma"><div class="tool-name">Figma</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/odOb8ta.png" alt="Zapier"><div class="tool-name">Zapier</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/SwtIdcU.png" alt="JSON"><div class="tool-name">JSON</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/GLJ5Wiu.png" alt="YAML"><div class="tool-name">YAML</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/IhJ6166.png" alt="HTML5"><div class="tool-name">HTML5</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/jRcOeDk.png" alt="CSS3"><div class="tool-name">CSS3</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/3sBtQOm.png" alt="Bootstrap"><div class="tool-name">Bootstrap 5</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/0z6ti8R.png" alt="React Native"><div class="tool-name">React Native</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/60T0ydo.png" alt="VS Code"><div class="tool-name">VS Code</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/aPVuCDV.png" alt="Visual Basic"><div class="tool-name">Visual Basic</div></div>
+                <div class="tool-item"><img class="tool-logo" src="https://imgur.com/GnGs7ez.png" alt="C#"><div class="tool-name">C#</div></div>
+            </div>
         </div>
     </div>
 
@@ -881,9 +872,9 @@
             <p>Choose how we work together</p>
         </div>
         <div class="models-grid reveal-item">
-            <div class="model-card"><div class="model-icon"><i class="fas fa-database"></i></div><h3>Project buyout</h3><p>Complete infrastructure ownership transfer with full technical documentation. You own everything.</p><div class="model-price">One-time payment</div></div>
-            <div class="model-card"><div class="model-icon"><i class="fas fa-headset"></i></div><h3>Engineering retainer</h3><p>Ongoing support, monitoring, and maintenance with SLA. Your infrastructure, our expertise.</p><div class="model-price">Monthly retainer</div></div>
-            <div class="model-card"><div class="model-icon"><i class="fas fa-cloud-upload-alt"></i></div><h3>Fully managed</h3><p>Zero internal overhead — hosting, backups, operations, and 24/7 monitoring included.</p><div class="model-price">All-inclusive</div></div>
+            <div class="model-card"><div class="model-icon"><i class="fas fa-database"></i></div><h3>Project buyout</h3><p>Complete infrastructure ownership transfer with full technical documentation.</p><div class="model-price">One-time payment</div></div>
+            <div class="model-card"><div class="model-icon"><i class="fas fa-headset"></i></div><h3>Engineering retainer</h3><p>Ongoing support, monitoring, and maintenance with SLA.</p><div class="model-price">Monthly retainer</div></div>
+            <div class="model-card"><div class="model-icon"><i class="fas fa-cloud-upload-alt"></i></div><h3>Fully managed</h3><p>Zero internal overhead — hosting, backups, operations included.</p><div class="model-price">All-inclusive</div></div>
         </div>
     </div>
 
@@ -913,7 +904,7 @@
 
 <footer>
     <p>Danica Marie Boton — Automation Systems Engineer, Workflow Architect & AI Integration Specialist</p>
-    <p style="margin-top: 0.5rem;">n8n · Python · JavaScript · OpenAI · Claude · Supabase · Zoho · Monday · GHL · GSheets</p>
+    <p style="margin-top: 0.5rem;">n8n · Python · JavaScript · OpenAI · Claude · Supabase · Zoho · Monday · GHL · GSheets · Indeed</p>
 </footer>
 
 <script>
@@ -948,54 +939,50 @@
             });
         });
 
-        // Floating Bubbles Generator
         function createBubbles() {
             const container = document.getElementById('heroBubbles');
             if (!container) return;
-            
-            const icons = [
-                'fab fa-python', 'fas fa-code-branch', 'fab fa-js', 'fab fa-whatsapp', 'fab fa-telegram',
-                'fas fa-brain', 'fas fa-robot', 'fab fa-docker', 'fab fa-microsoft', 'fas fa-database',
-                'fas fa-chart-line', 'fas fa-calendar-alt', 'fas fa-file-alt', 'fas fa-cloud-upload-alt',
-                'fas fa-tasks', 'fas fa-table', 'fas fa-address-card', 'fas fa-chart-simple'
-            ];
-            
-            const bubbleCount = window.innerWidth < 768 ? 12 : 24;
-            
-            for (let i = 0; i < bubbleCount; i++) {
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                
-                const size = 45 + Math.random() * 25;
-                bubble.style.width = size + 'px';
-                bubble.style.height = size + 'px';
-                bubble.style.left = Math.random() * 100 + '%';
-                
-                const duration = 12 + Math.random() * 15;
-                bubble.style.animationDuration = duration + 's';
-                
-                const delay = Math.random() * 20;
-                bubble.style.animationDelay = delay + 's';
-                
-                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-                const iconElement = document.createElement('i');
-                iconElement.className = randomIcon;
-                bubble.appendChild(iconElement);
-                
-                container.appendChild(bubble);
+            const logos = ['https://imgur.com/6VjifQA.png', 'https://imgur.com/azHFwXv.png', 'https://imgur.com/vi5luwZ.png', 'https://imgur.com/BBQUr2n.png', 'https://imgur.com/MjtQWvP.png', 'https://imgur.com/pBbLqBK.png', 'https://imgur.com/WU4Dxp8.png', 'https://imgur.com/aYkJ7sr.png', 'https://imgur.com/HLCvjkG.png', 'https://imgur.com/6zOLilT.png', 'https://imgur.com/avLqFcP.png', 'https://imgur.com/aemrhmj.png', 'https://imgur.com/ogS17C9.png', 'https://imgur.com/zPVgXkP.png', 'https://imgur.com/tEcD6CK.png', 'https://imgur.com/QPEyTXV.png', 'https://imgur.com/KxvLl2r.png'];
+            const count = window.innerWidth < 768 ? 12 : 24;
+            for (let i = 0; i < count; i++) {
+                const b = document.createElement('div');
+                b.className = 'bubble';
+                const s = 50 + Math.random() * 35;
+                b.style.width = s + 'px';
+                b.style.height = s + 'px';
+                b.style.left = Math.random() * 100 + '%';
+                b.style.animationDuration = (14 + Math.random() * 20) + 's';
+                b.style.animationDelay = (Math.random() * 20) + 's';
+                const img = document.createElement('img');
+                img.src = logos[Math.floor(Math.random() * logos.length)];
+                b.appendChild(img);
+                b.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    b.classList.add('pop');
+                    try {
+                        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.value = 800;
+                        gain.gain.value = 0.1;
+                        osc.start();
+                        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3);
+                        osc.stop(audioCtx.currentTime + 0.3);
+                    } catch(e) {}
+                    setTimeout(() => b.remove(), 250);
+                });
+                container.appendChild(b);
             }
         }
-        
         createBubbles();
-        
-        // Diagrams
+
         function createDiagram(canvasId, nodes, connections, colors, nodeColors) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
             let width, height, ctx, particles = [], animationId;
-            
             function getPos(node) { return { x: node.x * width, y: node.y * height }; }
-            
             function resize() {
                 const container = canvas.parentElement;
                 if (!container) return;
@@ -1014,7 +1001,6 @@
                     particles.push({ connection: conn, progress: Math.random(), speed: 0.002 + Math.random() * 0.004, size: 3 });
                 }
             }
-            
             function drawNode(ctx, node, pos, color) {
                 ctx.shadowBlur = 6;
                 ctx.shadowColor = color;
@@ -1035,7 +1021,6 @@
                 ctx.fillStyle = '#a1a1aa';
                 ctx.fillText(node.sub || '', pos.x - 30, pos.y + 8);
             }
-            
             function drawConnection(ctx, fromPos, toPos, color, progress = null) {
                 ctx.beginPath();
                 ctx.moveTo(fromPos.x, fromPos.y);
@@ -1069,7 +1054,6 @@
                     ctx.fill();
                 }
             }
-            
             if (!CanvasRenderingContext2D.prototype.roundRect) {
                 CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
                     if (w < 2 * r) r = w / 2;
@@ -1086,7 +1070,6 @@
                     return this;
                 };
             }
-            
             function animate() {
                 if (!ctx) return;
                 ctx.clearRect(0, 0, width, height);
@@ -1103,13 +1086,11 @@
                 nodes.forEach((node, i) => drawNode(ctx, node, getPos(node), nodeColors[i % nodeColors.length]));
                 animationId = requestAnimationFrame(animate);
             }
-            
             window.addEventListener('resize', () => { resize(); });
             resize();
             animate();
             return () => cancelAnimationFrame(animationId);
         }
-        
         const aristaNodes = [
             { name: 'Job Posting', sub: 'FB/IG/LI/Indeed', x: 0.08, y: 0.5 },
             { name: 'Verification', sub: 'Sapphire Check', x: 0.27, y: 0.5 },
@@ -1123,7 +1104,6 @@
         ];
         const aristaColors = ['#a855f7', '#06b6d4', '#ec4899', '#10b981', '#f97316'];
         createDiagram('aristacareCanvas', aristaNodes, aristaConns, aristaColors, aristaColors);
-        
         const ocrNodes = [
             { name: 'Image', sub: 'Upload', x: 0.1, y: 0.5 },
             { name: 'Tesseract', sub: 'OCR Engine', x: 0.3, y: 0.5 },
