@@ -29,7 +29,6 @@
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --text-tertiary: #71717a;
-            /* Soft off-white - solid, no opacity */
             --soft-white: #EADEDE;
         }
 
@@ -54,10 +53,10 @@
             z-index: 0;
         }
 
-        /* Hero Bubbles - Solid soft white inner circle */
+        /* Hero Bubbles - Smaller and responsive */
         .hero-bubbles {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
             height: 100%;
@@ -67,13 +66,14 @@
         }
         .bubble {
             position: absolute;
+            bottom: -60px;
             background: rgba(234, 222, 222, 0.15);
             backdrop-filter: blur(6px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             animation: floatBubble linear infinite;
             cursor: pointer;
             pointer-events: auto;
@@ -83,7 +83,6 @@
         .bubble:hover {
             transform: scale(1.05);
         }
-        /* Solid inner circle - 100% opacity #EADEDE */
         .bubble::before {
             content: '';
             position: absolute;
@@ -94,45 +93,30 @@
             z-index: 0;
         }
         .bubble img {
-            width: 45%;
-            height: 45%;
+            width: 40%;
+            height: 40%;
             object-fit: contain;
             position: relative;
             z-index: 1;
         }
-        /* Pop animation - scales and fades at the exact click position */
         .bubble.pop {
-            animation: popAtPosition 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            animation: popInPlace 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
             pointer-events: none;
-            transform-origin: center center;
         }
-        @keyframes popAtPosition {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            30% {
-                transform: scale(1.2);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(0);
-                opacity: 0;
-            }
+        @keyframes popInPlace {
+            0% { transform: scale(1); opacity: 1; }
+            30% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
         }
         @keyframes floatBubble {
             0% {
-                transform: translateY(100vh) translateX(0) rotate(0deg);
+                transform: translateY(0) translateX(0) rotate(0deg);
                 opacity: 0;
             }
-            15% {
-                opacity: 0.9;
-            }
-            85% {
-                opacity: 0.9;
-            }
+            10% { opacity: 0.85; }
+            90% { opacity: 0.85; }
             100% {
-                transform: translateY(-20vh) translateX(30px) rotate(360deg);
+                transform: translateY(-110vh) translateX(20px) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -170,7 +154,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 1rem;
         }
         .logo {
             font-weight: 700;
@@ -181,6 +165,12 @@
             -webkit-background-clip: text;
             color: transparent;
             font-family: 'JetBrains Mono', monospace;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .nav-links a {
             text-decoration: none;
@@ -196,7 +186,7 @@
             background: rgba(234, 222, 222, 0.12);
             border: 1px solid var(--border-active);
             color: var(--soft-white);
-            padding: 0.4rem 1.25rem;
+            padding: 0.35rem 1.2rem;
             border-radius: 100px;
             text-decoration: none;
             font-weight: 500;
@@ -373,6 +363,20 @@
             margin-bottom: 1rem;
             font-family: 'JetBrains Mono', monospace;
         }
+        .diagram-canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-width: 100%;
+        }
+        .animated-diagram canvas {
+            display: block;
+            border-radius: 12px;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
 
         .stats-row {
             display: grid;
@@ -396,7 +400,6 @@
             margin-top: 0.25rem;
         }
 
-        /* Tech Stack - Solid soft white background (no opacity) */
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -636,6 +639,7 @@
             transform: translateY(0);
         }
 
+        /* Responsive adjustments - including bubble sizes */
         @media (max-width: 768px) {
             .container { padding: 0 1rem; }
             .hero { padding: 3rem 0 2rem; min-height: auto; }
@@ -667,6 +671,29 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.75rem;
             }
+            .nav-container {
+                gap: 0.75rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .btn-small {
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+            }
+            .diagram-canvas-wrapper {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+            /* Smaller bubbles on mobile */
+            .bubble {
+                bottom: -40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .tools-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -677,7 +704,7 @@
 
 <nav class="navbar">
     <div class="container nav-container">
-        <div class="logo">dboton.auto</div>
+        <div class="logo">db.auto</div>
         <div class="nav-links">
             <a href="#work">Work</a>
             <a href="#journey">Journey</a>
@@ -809,7 +836,7 @@
         </div>
     </div>
 
-    <!-- Tech Stack Section - Solid #EADEDE background -->
+    <!-- Tech Stack Section -->
     <div class="container section" id="stack">
         <div class="section-header">
             <div class="section-tag">TECHNOLOGY</div>
@@ -943,16 +970,22 @@
             const container = document.getElementById('heroBubbles');
             if (!container) return;
             const logos = ['https://imgur.com/6VjifQA.png', 'https://imgur.com/azHFwXv.png', 'https://imgur.com/vi5luwZ.png', 'https://imgur.com/BBQUr2n.png', 'https://imgur.com/MjtQWvP.png', 'https://imgur.com/pBbLqBK.png', 'https://imgur.com/WU4Dxp8.png', 'https://imgur.com/aYkJ7sr.png', 'https://imgur.com/HLCvjkG.png', 'https://imgur.com/6zOLilT.png', 'https://imgur.com/avLqFcP.png', 'https://imgur.com/aemrhmj.png', 'https://imgur.com/ogS17C9.png', 'https://imgur.com/zPVgXkP.png', 'https://imgur.com/tEcD6CK.png', 'https://imgur.com/QPEyTXV.png', 'https://imgur.com/KxvLl2r.png'];
-            const count = window.innerWidth < 768 ? 12 : 24;
-            for (let i = 0; i < count; i++) {
+            const isMobile = window.innerWidth < 768;
+            const bubbleCount = isMobile ? 8 : 18;
+            const baseSize = isMobile ? 35 : 48;
+            const sizeRange = isMobile ? 20 : 30;
+            
+            for (let i = 0; i < bubbleCount; i++) {
                 const b = document.createElement('div');
                 b.className = 'bubble';
-                const s = 50 + Math.random() * 35;
-                b.style.width = s + 'px';
-                b.style.height = s + 'px';
-                b.style.left = Math.random() * 100 + '%';
-                b.style.animationDuration = (14 + Math.random() * 20) + 's';
-                b.style.animationDelay = (Math.random() * 20) + 's';
+                const size = baseSize + Math.random() * sizeRange;
+                b.style.width = size + 'px';
+                b.style.height = size + 'px';
+                b.style.left = Math.random() * 80 + 10 + '%';
+                const duration = 12 + Math.random() * 18;
+                b.style.animationDuration = duration + 's';
+                const delay = Math.random() * 12;
+                b.style.animationDelay = delay + 's';
                 const img = document.createElement('img');
                 img.src = logos[Math.floor(Math.random() * logos.length)];
                 b.appendChild(img);
@@ -976,20 +1009,55 @@
                 container.appendChild(b);
             }
         }
+        
+        // Initial bubble creation and recreate on resize to adapt sizes
         createBubbles();
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                const container = document.getElementById('heroBubbles');
+                if (container) {
+                    container.innerHTML = '';
+                    createBubbles();
+                }
+            }, 250);
+        });
 
+        // Responsive diagram: adjusts layout based on screen width (vertical flow if needed)
         function createDiagram(canvasId, nodes, connections, colors, nodeColors) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
             let width, height, ctx, particles = [], animationId;
-            function getPos(node) { return { x: node.x * width, y: node.y * height }; }
+            let isMobileLayout = false;
+
+            function getPos(node) {
+                if (isMobileLayout && node.mobileY !== undefined) {
+                    // Vertical flow on mobile: nodes arranged in a column
+                    return { x: width / 2, y: node.mobileY * height };
+                }
+                return { x: node.x * width, y: node.y * height };
+            }
+
+            function updateLayout() {
+                const isMobile = window.innerWidth < 768;
+                isMobileLayout = isMobile;
+                if (isMobile && nodes[0].mobileY === undefined) {
+                    // Assign vertical positions for mobile (0 to 1 range)
+                    nodes.forEach((node, idx) => {
+                        node.mobileY = 0.1 + (idx / (nodes.length - 1)) * 0.8;
+                    });
+                }
+            }
+
             function resize() {
                 const container = canvas.parentElement;
                 if (!container) return;
+                updateLayout();
                 let targetWidth = Math.min(container.clientWidth, 800);
                 if (targetWidth < 300) targetWidth = 300;
                 width = targetWidth;
-                height = 180;
+                height = isMobileLayout ? Math.max(220, nodes.length * 55) : 180;
                 canvas.width = width;
                 canvas.height = height;
                 canvas.style.width = width + 'px';
@@ -1001,6 +1069,7 @@
                     particles.push({ connection: conn, progress: Math.random(), speed: 0.002 + Math.random() * 0.004, size: 3 });
                 }
             }
+
             function drawNode(ctx, node, pos, color) {
                 ctx.shadowBlur = 6;
                 ctx.shadowColor = color;
@@ -1008,12 +1077,12 @@
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                const w = 80, h = 34;
+                const w = 85, h = 34;
                 ctx.roundRect(pos.x - w/2, pos.y - h/2, w, h, 8);
                 ctx.fill();
                 ctx.stroke();
                 ctx.shadowBlur = 0;
-                let fontSize = Math.max(8, Math.min(10, width / 80));
+                let fontSize = Math.max(8, Math.min(10, width / 85));
                 ctx.font = `bold ${fontSize}px "Inter"`;
                 ctx.fillStyle = '#fff';
                 ctx.fillText(node.name, pos.x - 30, pos.y - 3);
@@ -1021,13 +1090,22 @@
                 ctx.fillStyle = '#a1a1aa';
                 ctx.fillText(node.sub || '', pos.x - 30, pos.y + 8);
             }
+
             function drawConnection(ctx, fromPos, toPos, color, progress = null) {
                 ctx.beginPath();
                 ctx.moveTo(fromPos.x, fromPos.y);
-                const cp1x = fromPos.x + (toPos.x - fromPos.x) * 0.3;
-                const cp1y = fromPos.y - 10;
-                const cp2x = toPos.x - (toPos.x - fromPos.x) * 0.3;
-                const cp2y = toPos.y + 10;
+                let cp1x, cp1y, cp2x, cp2y;
+                if (isMobileLayout) {
+                    cp1x = fromPos.x;
+                    cp1y = fromPos.y + (toPos.y - fromPos.y) * 0.3;
+                    cp2x = toPos.x;
+                    cp2y = toPos.y - (toPos.y - fromPos.y) * 0.3;
+                } else {
+                    cp1x = fromPos.x + (toPos.x - fromPos.x) * 0.3;
+                    cp1y = fromPos.y - 10;
+                    cp2x = toPos.x - (toPos.x - fromPos.x) * 0.3;
+                    cp2y = toPos.y + 10;
+                }
                 ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, toPos.x, toPos.y);
                 ctx.strokeStyle = color + '60';
                 ctx.lineWidth = 1.5;
@@ -1054,6 +1132,7 @@
                     ctx.fill();
                 }
             }
+
             if (!CanvasRenderingContext2D.prototype.roundRect) {
                 CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
                     if (w < 2 * r) r = w / 2;
@@ -1070,6 +1149,7 @@
                     return this;
                 };
             }
+
             function animate() {
                 if (!ctx) return;
                 ctx.clearRect(0, 0, width, height);
@@ -1086,17 +1166,20 @@
                 nodes.forEach((node, i) => drawNode(ctx, node, getPos(node), nodeColors[i % nodeColors.length]));
                 animationId = requestAnimationFrame(animate);
             }
+
             window.addEventListener('resize', () => { resize(); });
             resize();
             animate();
             return () => cancelAnimationFrame(animationId);
         }
+
+        // Arista nodes - horizontal layout x positions
         const aristaNodes = [
-            { name: 'Job Posting', sub: 'FB/IG/LI/Indeed', x: 0.08, y: 0.5 },
+            { name: 'Job Posting', sub: 'FB/IG/Indeed', x: 0.08, y: 0.5 },
             { name: 'Verification', sub: 'Sapphire Check', x: 0.27, y: 0.5 },
             { name: 'AI Screening', sub: 'GPT/Claude', x: 0.46, y: 0.5 },
             { name: 'Central DB', sub: 'Supabase/Zoho', x: 0.65, y: 0.5 },
-            { name: 'Interview', sub: 'Calendly/Zoho', x: 0.84, y: 0.5 }
+            { name: 'Interview', sub: 'Calendly', x: 0.84, y: 0.5 }
         ];
         const aristaConns = [
             { from: 0, to: 1, colorIdx: 0 }, { from: 1, to: 2, colorIdx: 1 },
@@ -1104,6 +1187,8 @@
         ];
         const aristaColors = ['#a855f7', '#06b6d4', '#ec4899', '#10b981', '#f97316'];
         createDiagram('aristacareCanvas', aristaNodes, aristaConns, aristaColors, aristaColors);
+
+        // OCR nodes
         const ocrNodes = [
             { name: 'Image', sub: 'Upload', x: 0.1, y: 0.5 },
             { name: 'Tesseract', sub: 'OCR Engine', x: 0.3, y: 0.5 },
