@@ -6,910 +6,230 @@
 <title>Danica Marie Boton · Automation Systems Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:opsz,wght@14..32,300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
---bg:#09090e;
---bg-1:#0f0f16;
---bg-2:#14141d;
---bg-3:#1a1a25;
---border:rgba(255,255,255,0.055);
---border-hi:rgba(255,255,255,0.10);
---border-pu:rgba(140,100,255,0.25);
---pu:#9b7ff4;
---pu-dim:#7c5fd4;
---cy:#4fc4d8;
---cy-dim:#3aa8bb;
---white:#ffffff;
---f1:#e8e8ee;
---f2:#9999aa;
---f3:#55556a;
---glow-pu:rgba(140,100,255,0.12);
---glow-cy:rgba(79,196,216,0.08);
+  --bg:#0A0B10;--bg-1:#11131A;--bg-2:#171A23;--bg-3:#1E2130;
+  --border:rgba(255,255,255,0.055);--border-hi:rgba(255,255,255,0.10);--border-pu:rgba(139,92,246,0.28);
+  --pu:#8B5CF6;--pu-dim:#7C3AED;--pu-bright:#A78BFA;
+  --mg:#C084FC;--cy:#4FD1C5;--cy-dim:#38B2AC;--or:#f97316;--pk:#ec4899;--gn:#10b981;
+  --white:#ffffff;--f1:#E8E8EE;--f2:#9999AA;--f3:#55556A;
+  --glow-pu:rgba(139,92,246,0.18);--glow-cy:rgba(79,209,197,0.10);
 }
 html{scroll-behavior:smooth}
 body{
-font-family:'Inter',sans-serif;
-background:var(--bg);
-color:var(--f1);
-line-height:1.6;
-overflow-x:hidden;
--webkit-font-smoothing:antialiased;
+  font-family:'Inter',sans-serif;background:var(--bg);color:var(--f1);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:auto;
 }
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(140,100,255,0.3);border-radius:2px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(139,92,246,0.35);border-radius:2px}
+button,a{font:inherit}button{border:0}
 
-#progress{
-position:fixed;top:0;left:0;right:0;height:1px;
-background:linear-gradient(90deg,var(--pu),var(--cy));
-transform-origin:0%;transform:scaleX(0);
-z-index:9999;transition:transform 0.1s linear;
-}
+/* Cursor */
+#cursor{position:fixed;left:0;top:0;width:10px;height:10px;background:var(--pu);border-radius:50%;pointer-events:none;z-index:99999;transform:translate3d(-50%,-50%,0);opacity:0;will-change:left,top,width,height;transition:width .25s,height .25s,background .25s,opacity .18s}
+#cursor-ring{position:fixed;left:0;top:0;width:36px;height:36px;border:1px solid rgba(139,92,246,.45);border-radius:50%;pointer-events:none;z-index:99998;transform:translate3d(-50%,-50%,0);opacity:0;will-change:left,top,width,height;transition:width .3s,height .3s,border-color .3s,opacity .18s}
+body.cursor-ready #cursor,body.cursor-ready #cursor-ring{opacity:1}
+body.cursor-hover #cursor{width:18px;height:18px;background:var(--mg)}
+body.cursor-hover #cursor-ring{width:52px;height:52px;border-color:rgba(192,132,252,.4)}
+@media (pointer:fine){body{cursor:none}}
 
-nav{
-position:sticky;top:0;z-index:1000;
-padding:0;
-background:rgba(9,9,14,0.82);
-backdrop-filter:blur(24px);
--webkit-backdrop-filter:blur(24px);
-border-bottom:1px solid var(--border);
-transition:background 0.3s;
-}
-.nav-inner{
-max-width:1320px;margin:0 auto;
-display:flex;align-items:center;justify-content:space-between;
-padding:0 2rem;height:60px;
-}
-.logo{
-font-family:'JetBrains Mono',monospace;
-font-size:0.82rem;font-weight:400;
-color:var(--f2);letter-spacing:0.01em;
-text-decoration:none;
-transition:color 0.2s;
-}
-.logo span{color:var(--pu)}
-.logo:hover{color:var(--f1)}
-.nav-links{display:flex;align-items:center;gap:0.25rem}
-.nav-links a{
-font-size:0.78rem;font-weight:500;color:var(--f3);
-text-decoration:none;padding:0.4rem 0.85rem;border-radius:6px;
-transition:all 0.2s;letter-spacing:0.01em;
-}
-.nav-links a:hover{color:var(--f1);background:rgba(255,255,255,0.04)}
-.nav-links .nav-cta{
-background:rgba(155,127,244,0.12);
-border:1px solid rgba(155,127,244,0.22);
-color:var(--pu);border-radius:6px;
-font-size:0.75rem;padding:0.38rem 1rem;
-transition:all 0.25s;
-}
-.nav-links .nav-cta:hover{
-background:rgba(155,127,244,0.22);
-border-color:rgba(155,127,244,0.4);
-color:var(--white);
-}
-.dd{position:relative}
-.dd-btn{cursor:default !important}
-.dd-menu{
-display:none;position:absolute;top:calc(100% + 10px);left:0;
-min-width:260px;background:var(--bg-2);
-border:1px solid var(--border-hi);border-radius:8px;
-box-shadow:0 16px 48px rgba(0,0,0,0.5);
-overflow:hidden;z-index:2000;
-}
-.dd:hover .dd-menu{display:block}
-.dd::after{content:'';position:absolute;top:100%;left:0;width:100%;height:14px;background:transparent}
-.dd-menu a{
-display:block;padding:0.75rem 1.1rem;
-font-size:0.78rem;color:var(--f2);
-text-decoration:none;border-bottom:1px solid var(--border);
-transition:all 0.2s;letter-spacing:0;cursor:pointer;
-}
-.dd-menu a:last-child{border-bottom:none}
-.dd-menu a:hover{background:rgba(155,127,244,0.1);color:var(--f1)}
+/* Progress */
+#progress{position:fixed;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--pu),var(--mg),var(--cy));transform-origin:0%;transform:scaleX(0);z-index:9999;transition:transform .08s linear}
 
-.c{max-width:1320px;margin:0 auto;padding:0 2rem}
+/* Nav */
+nav{position:sticky;top:0;z-index:1000;background:rgba(10,11,16,.75);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid var(--border);transition:background .4s}
+nav.scrolled{background:rgba(10,11,16,.92)}
+.nav-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
+.logo{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:400;color:var(--f2);letter-spacing:.01em;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:.4rem}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--pu);display:inline-block;animation:pulse-dot 2.4s ease infinite}
+.logo span{color:var(--pu)}.logo:hover{color:var(--f1)}
+.nav-links{display:flex;align-items:center;gap:.2rem}
+.nav-links a{font-size:.78rem;font-weight:500;color:var(--f3);text-decoration:none;padding:.4rem .85rem;border-radius:6px;transition:all .2s;letter-spacing:.01em}
+.nav-links a:hover{color:var(--f1);background:rgba(255,255,255,.04)}
+.nav-links .nav-cta{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.22);color:var(--pu);border-radius:6px;font-size:.75rem;padding:.38rem 1rem;transition:all .25s}
+.nav-links .nav-cta:hover{background:rgba(139,92,246,.22);border-color:rgba(139,92,246,.4);color:var(--white)}
+.dd{position:relative}.dd-btn{cursor:default!important}
+.dd-menu{display:none;position:absolute;top:calc(100% + 10px);left:0;min-width:280px;background:var(--bg-2);border:1px solid var(--border-hi);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(139,92,246,.08);overflow:hidden;z-index:2000}
+.dd:hover .dd-menu{display:block}.dd::after{content:'';position:absolute;top:100%;left:0;width:100%;height:14px;background:transparent}
+.dd-menu a{display:block;padding:.75rem 1.1rem;font-size:.78rem;color:var(--f2);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s}
+.dd-menu a:last-child{border-bottom:none}.dd-menu a:hover{background:rgba(139,92,246,.08);color:var(--f1);padding-left:1.4rem}
 
-/* HERO */
-.hero{
-position:relative;min-height:92vh;
-display:flex;align-items:center;justify-content:center;
-overflow:hidden;
-}
-.hero-grid{
-position:absolute;inset:0;
-background-image:
-linear-gradient(rgba(255,255,255,0.028) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,0.028) 1px,transparent 1px);
-background-size:60px 60px;
--webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 30%,transparent 80%);
-mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 30%,transparent 80%);
-pointer-events:none;
-}
-.hero-glow-a{
-position:absolute;top:-10%;left:10%;
-width:700px;height:700px;border-radius:50%;
-background:radial-gradient(circle,rgba(120,80,255,0.07) 0%,transparent 70%);
-pointer-events:none;animation:breathe 8s ease-in-out infinite;
-}
-.hero-glow-b{
-position:absolute;bottom:-10%;right:5%;
-width:600px;height:600px;border-radius:50%;
-background:radial-gradient(circle,rgba(79,196,216,0.05) 0%,transparent 70%);
-pointer-events:none;animation:breathe 10s ease-in-out infinite 2s;
-}
-@keyframes breathe{0%,100%{transform:scale(1);opacity:0.7}50%{transform:scale(1.08);opacity:1}}
-.hero-orch{
-position:absolute;inset:0;pointer-events:none;
-opacity:0;animation:fadeIn 2s ease 0.5s forwards;
-}
+/* Hero */
+.hero{position:relative;min-height:94vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;opacity:.4}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(139,92,246,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,.04) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 75%);mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 75%);pointer-events:none;animation:gridDrift 20s ease-in-out infinite}
+@keyframes gridDrift{0%,100%{background-position:0 0,0 0}50%{background-position:36px 36px,36px 36px}}
+.hero-glow-a,.hero-glow-b,.hero-glow-c{position:absolute;border-radius:50%;pointer-events:none;animation:breathe 10s ease-in-out infinite}
+.hero-glow-a{top:-15%;left:-5%;width:800px;height:800px;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,rgba(139,92,246,.02) 40%,transparent 70%)}
+.hero-glow-b{bottom:-15%;right:-5%;width:700px;height:700px;background:radial-gradient(circle,rgba(79,209,197,.05) 0%,transparent 70%);animation-delay:3s}
+.hero-glow-c{top:20%;right:15%;width:400px;height:400px;background:radial-gradient(circle,rgba(192,132,252,.04) 0%,transparent 70%);animation-delay:1.5s}
+@keyframes breathe{0%,100%{transform:scale(1) translateZ(0);opacity:.6}50%{transform:scale(1.12) translateZ(0);opacity:1}}
+#orch-canvas{position:absolute;inset:0;pointer-events:none;opacity:0;animation:fadeIn 2.5s ease .8s forwards}
 @keyframes fadeIn{to{opacity:1}}
-.hero-content{
-position:relative;z-index:2;
-text-align:center;max-width:800px;padding:2rem 1rem;
-}
-.hero-status{
-display:inline-flex;align-items:center;gap:0.5rem;
-background:rgba(155,127,244,0.08);
-border:1px solid rgba(155,127,244,0.18);
-padding:0.35rem 1rem 0.35rem 0.75rem;
-border-radius:100px;
-font-family:'JetBrains Mono',monospace;
-font-size:0.68rem;font-weight:400;
-color:rgba(155,127,244,0.9);
-margin-bottom:2.5rem;letter-spacing:0.04em;
-opacity:0;animation:slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
-}
-.hero-status-dot{
-width:6px;height:6px;border-radius:50%;
-background:var(--pu);
-animation:pulse-dot 2s ease infinite;
-}
-@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(155,127,244,0.4)}50%{box-shadow:0 0 0 5px rgba(155,127,244,0)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{
-font-family:'Syne',sans-serif;
-font-size:clamp(3rem,6vw,5.2rem);
-font-weight:800;line-height:1.0;
-letter-spacing:-0.04em;
-color:var(--white);
-margin-bottom:1.5rem;
-opacity:0;animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
-}
-.hero-sub{
-font-size:1.05rem;font-weight:400;
-color:var(--f2);max-width:560px;margin:0 auto;line-height:1.7;
-opacity:0;animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.7s forwards;
-}
-.hero-meta{
-margin-top:3rem;
-display:flex;align-items:center;justify-content:center;
-gap:2.5rem;flex-wrap:wrap;
-opacity:0;animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.9s forwards;
-}
-.hero-stat-num{
-font-family:'Syne',sans-serif;
-font-size:2rem;font-weight:700;
-color:var(--white);letter-spacing:-0.03em;
-}
-.hero-stat-label{font-size:0.72rem;color:var(--f3);margin-top:0.2rem;letter-spacing:0.02em}
-.hero-divider{width:1px;height:36px;background:var(--border-hi)}
-.hero-actions{
-margin-top:2.5rem;
-display:flex;align-items:center;justify-content:center;gap:1rem;
-opacity:0;animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 1.05s forwards;
-}
-.btn-pri{
-display:inline-flex;align-items:center;gap:0.6rem;
-background:rgba(155,127,244,0.15);
-border:1px solid rgba(155,127,244,0.3);
-color:var(--white);font-size:0.82rem;font-weight:500;
-padding:0.7rem 1.5rem;border-radius:8px;
-text-decoration:none;letter-spacing:0.01em;
-transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
-}
-.btn-pri:hover{
-background:rgba(155,127,244,0.25);
-border-color:rgba(155,127,244,0.5);
-transform:translateY(-1px);
-box-shadow:0 8px 24px rgba(140,100,255,0.2);
-}
-.btn-ghost{
-display:inline-flex;align-items:center;gap:0.5rem;
-color:var(--f3);font-size:0.82rem;font-weight:500;
-text-decoration:none;padding:0.7rem 1.2rem;border-radius:8px;
-transition:all 0.2s;letter-spacing:0.01em;
-}
-.btn-ghost:hover{color:var(--f1);background:rgba(255,255,255,0.04)}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:860px;padding:2rem 1.5rem}
+.hero-status{display:inline-flex;align-items:center;gap:.6rem;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);padding:.38rem 1.1rem .38rem .8rem;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.67rem;font-weight:400;color:rgba(167,139,250,.9);margin-bottom:2.5rem;letter-spacing:.05em;opacity:0;animation:slideUp .8s cubic-bezier(.16,1,.3,1) .3s forwards}
+.hero-status-dot{width:7px;height:7px;border-radius:50%;background:var(--pu);animation:pulse-dot 2s ease infinite;flex-shrink:0}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.5)}50%{box-shadow:0 0 0 6px rgba(139,92,246,0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(3.2rem,6.5vw,5.8rem);font-weight:800;line-height:.95;letter-spacing:-.045em;color:var(--white);margin-bottom:1.6rem;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) .5s forwards}
+.gradient-name{background:linear-gradient(135deg,var(--white) 0%,var(--pu-bright) 50%,var(--mg) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.08rem;font-weight:400;color:var(--f2);max-width:580px;margin:0 auto;line-height:1.75;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) .7s forwards}
+.hero-meta{margin-top:3.2rem;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) .9s forwards}
+.hero-stat{text-align:center}.hero-stat-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:700;color:var(--white);letter-spacing:-.04em;background:linear-gradient(135deg,var(--white),var(--pu-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat-label{font-size:.7rem;color:var(--f3);margin-top:.15rem;letter-spacing:.04em;text-transform:uppercase}
+.hero-divider{width:1px;height:40px;background:linear-gradient(to bottom,transparent,var(--border-hi),transparent)}
+.hero-actions{margin-top:2.8rem;display:flex;align-items:center;justify-content:center;gap:1rem;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) 1.05s forwards}
+.btn-pri,.btn-ghost{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;font-size:.82rem;font-weight:500;letter-spacing:.01em;cursor:none}
+.btn-pri{gap:.6rem;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.32);color:var(--white);padding:.75rem 1.6rem;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.16,1,.3,1)}
+.btn-pri::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(192,132,252,.1));opacity:0;transition:opacity .3s}
+.btn-pri:hover::before{opacity:1}.btn-pri:hover{border-color:rgba(139,92,246,.55);transform:translateY(-2px);box-shadow:0 12px 32px rgba(139,92,246,.22)}
+.btn-ghost{gap:.5rem;color:var(--f3);padding:.75rem 1.3rem;transition:all .25s}.btn-ghost:hover{color:var(--f1);background:rgba(255,255,255,.04)}
+.scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:slideUp 1s ease 1.8s forwards}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,rgba(139,92,246,.6),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.8)}50%{opacity:1;transform:scaleY(1)}}
 
-/* SECTIONS */
-.section{
-padding:6rem 0;
-border-top:1px solid var(--border);
-position:relative;
-}
-.section-inner{
-max-width:1320px;margin:0 auto;padding:0 2rem;
-}
-.section-eyebrow{
-display:inline-flex;align-items:center;gap:0.6rem;
-font-family:'JetBrains Mono',monospace;
-font-size:0.65rem;font-weight:500;letter-spacing:0.12em;
-text-transform:uppercase;color:var(--pu);
-margin-bottom:1rem;
-}
-.section-eyebrow::before{
-content:'';width:18px;height:1px;background:var(--pu);opacity:0.6;
-}
-.section-heading{
-font-family:'Syne',sans-serif;
-font-size:clamp(1.6rem,3.5vw,2.4rem);
-font-weight:700;letter-spacing:-0.03em;
-color:var(--white);line-height:1.1;
-}
-.section-sub{
-font-size:0.9rem;color:var(--f2);
-margin-top:0.85rem;max-width:520px;line-height:1.7;
-}
+/* Sections */
+.section{padding:7rem 0;border-top:1px solid var(--border);position:relative}
+.section-inner{max-width:1320px;margin:0 auto;padding:0 2rem}
+.section-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:'JetBrains Mono',monospace;font-size:.64rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--pu);margin-bottom:1rem}
+.section-eyebrow::before{content:'';width:20px;height:1px;background:var(--pu);opacity:.7}
+.section-heading{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-.035em;color:var(--white);line-height:1.05}
+.section-sub{font-size:.9rem;color:var(--f2);margin-top:.9rem;max-width:540px;line-height:1.75}
 
-/* PROJECTS GRID */
-.projects-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:1.5px;margin-top:3rem;
-border:1.5px solid var(--border);border-radius:10px;
-overflow:hidden;
-}
-.pcard{
-background:var(--bg-1);
-padding:2.2rem;cursor:pointer;
-transition:background 0.25s;
-position:relative;overflow:hidden;
-}
-.pcard:hover{background:var(--bg-2)}
-.pcard::before{
-content:'';position:absolute;
-inset:0;opacity:0;
-background:radial-gradient(ellipse 60% 40% at var(--mx,50%) var(--my,40%),rgba(140,100,255,0.06) 0%,transparent 70%);
-transition:opacity 0.4s;pointer-events:none;
-}
-.pcard:hover::before{opacity:1}
-.pcard:not(:nth-child(3n+1)){border-left:1.5px solid var(--border)}
-.pcard:nth-child(n+4){border-top:1.5px solid var(--border)}
-.pcard-icon{
-width:44px;height:44px;border-radius:8px;
-background:rgba(255,255,255,0.04);
-border:1px solid var(--border-hi);
-display:flex;align-items:center;justify-content:center;
-margin-bottom:1.6rem;
-transition:border-color 0.3s;
-font-size:1.3rem;
-}
-.pcard:hover .pcard-icon{border-color:var(--border-pu)}
-.pcard-tag{
-font-family:'JetBrains Mono',monospace;
-font-size:0.62rem;color:var(--f3);letter-spacing:0.1em;
-text-transform:uppercase;margin-bottom:0.6rem;
-}
-.pcard h3{
-font-family:'Syne',sans-serif;
-font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;
-color:var(--white);margin-bottom:0.75rem;line-height:1.3;
-}
-.pcard p{
-font-size:0.83rem;color:var(--f2);line-height:1.65;margin-bottom:1.2rem;
-}
-.pcard-tech{
-display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;
-margin-bottom:1.2rem;
-}
-/* FIXED: logo container with white bg for visibility */
-.pcard-tech .logo-wrap{
-width:22px;height:22px;
-background:rgba(255,255,255,0.92);
-border-radius:4px;
-display:flex;align-items:center;justify-content:center;
-padding:2px;
-}
-.pcard-tech .logo-wrap img{
-width:100%;height:100%;object-fit:contain;
-}
-.pcard-tech-more{
-font-family:'JetBrains Mono',monospace;
-font-size:0.6rem;color:var(--f3);letter-spacing:0.04em;
-}
-.pcard-metric{
-font-family:'JetBrains Mono',monospace;
-font-size:0.68rem;color:var(--cy);letter-spacing:0.02em;
-}
-.pcard-arrow{
-position:absolute;bottom:1.8rem;right:1.8rem;
-font-size:0.75rem;color:var(--f3);
-transition:all 0.3s;opacity:0;
-}
-.pcard:hover .pcard-arrow{opacity:1;transform:translateX(2px)}
+/* Project cards */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;margin-top:3.5rem;border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.pcard{background:var(--bg-1);padding:2.4rem;cursor:none;position:relative;overflow:hidden;transform-style:preserve-3d;transform:perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);transition:transform .4s cubic-bezier(.16,1,.3,1),background .4s cubic-bezier(.16,1,.3,1),box-shadow .4s cubic-bezier(.16,1,.3,1);will-change:transform}
+.pcard::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at var(--gx,50%) var(--gy,40%),rgba(139,92,246,.10) 0%,transparent 65%);opacity:0;transition:opacity .5s ease;pointer-events:none;z-index:0}
+.pcard-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.3}
+.pcard-border,.pcard-shimmer,.pcard-corner-tl,.pcard-corner-br,.pcard-pulse{position:absolute;pointer-events:none}
+.pcard-border{inset:0;z-index:1;opacity:0;transition:opacity .45s ease;background:linear-gradient(var(--bg-1),var(--bg-1)) padding-box,linear-gradient(135deg,rgba(139,92,246,0) 0%,rgba(139,92,246,.5) 30%,rgba(192,132,252,.4) 60%,rgba(79,209,197,.3) 100%) border-box}
+.pcard-shimmer{inset:0;background:linear-gradient(105deg,transparent 0%,transparent 35%,rgba(255,255,255,.025) 45%,rgba(255,255,255,.055) 50%,rgba(255,255,255,.025) 55%,transparent 65%,transparent 100%);transform:translateX(-100%);z-index:2}
+.pcard-corner-tl,.pcard-corner-br{width:80px;height:80px;z-index:1;opacity:0;transition:opacity .4s ease}.pcard-corner-tl{top:0;left:0;background:radial-gradient(circle at 0% 0%,rgba(139,92,246,.28) 0%,transparent 70%)}.pcard-corner-br{bottom:0;right:0;background:radial-gradient(circle at 100% 100%,rgba(79,209,197,.18) 0%,transparent 70%)}
+.pcard-pulse{top:50%;left:50%;width:100%;height:100%;border:1px solid rgba(139,92,246,0);transform:translate(-50%,-50%) scale(.95);z-index:0;opacity:0}
+.pcard-content{position:relative;z-index:3}
+.pcard:hover{background:var(--bg-2);box-shadow:0 24px 64px rgba(0,0,0,.55),0 8px 24px rgba(139,92,246,.14),0 0 0 1px rgba(139,92,246,.18),inset 0 1px 0 rgba(255,255,255,.06)}
+.pcard:hover::before,.pcard:hover .pcard-border,.pcard:hover .pcard-corner-tl,.pcard:hover .pcard-corner-br{opacity:1}
+.pcard:hover .pcard-shimmer{animation:shimmerSlide .9s cubic-bezier(.4,0,.2,1) forwards}.pcard:hover .pcard-pulse{animation:cardPulse 2s ease-in-out infinite}
+@keyframes shimmerSlide{0%{transform:translateX(-100%);opacity:0}10%,90%{opacity:1}100%{transform:translateX(120%);opacity:0}}
+@keyframes cardPulse{0%{opacity:0;transform:translate(-50%,-50%) scale(.95);border-color:rgba(139,92,246,.15)}50%{opacity:1;transform:translate(-50%,-50%) scale(1);border-color:rgba(139,92,246,.06)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.02);border-color:rgba(139,92,246,0)}}
+.pcard:not(:nth-child(3n+1)){border-left:1.5px solid var(--border)}.pcard:nth-child(n+4){border-top:1.5px solid var(--border)}
+.pcard-icon{width:46px;height:46px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;margin-bottom:1.7rem;font-size:1.3rem;transition:border-color .35s,transform .45s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.pcard:hover .pcard-icon{border-color:rgba(139,92,246,.45);transform:translateY(-3px) scale(1.06);box-shadow:0 8px 24px rgba(139,92,246,.2)}
+.pcard-tag{font-family:'JetBrains Mono',monospace;font-size:.61rem;color:var(--f3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.65rem;transition:color .3s}
+.pcard:hover .pcard-tag{color:rgba(139,92,246,.7)}
+.pcard h3{font-family:'Syne',sans-serif;font-size:1.12rem;font-weight:700;letter-spacing:-.025em;color:var(--white);margin-bottom:.8rem;line-height:1.3;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.pcard:hover h3{transform:translateY(-2px)}
+.pcard p{font-size:.83rem;color:var(--f2);line-height:1.7;margin-bottom:1.3rem;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.pcard:hover p{transform:translateY(-1px)}
+.pcard-tech{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-bottom:1.3rem;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.pcard:hover .pcard-tech{transform:translateY(-1px)}
+.pcard-tech-icon{width:22px;height:22px;border-radius:4px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;padding:2px;flex-shrink:0;transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.pcard:hover .pcard-tech-icon{transform:translateY(-2px)}.pcard-tech-icon img{width:100%;height:100%;object-fit:contain}
+.pcard-tech-more{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.05em;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.15rem .45rem;border-radius:3px;transition:background .3s,color .3s,border-color .3s}
+.pcard:hover .pcard-tech-more{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.2);color:var(--pu-bright)}
+.pcard-metric{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--cy);letter-spacing:.02em;transition:transform .55s cubic-bezier(.16,1,.3,1),text-shadow .3s}
+.pcard:hover .pcard-metric{transform:translateY(-1px);text-shadow:0 0 12px rgba(79,209,197,.4)}
+.pcard-arrow{position:absolute;bottom:2rem;right:2rem;width:28px;height:28px;border-radius:6px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--pu-bright);opacity:0;transform:translateX(-8px) translateZ(0);transition:all .4s cubic-bezier(.16,1,.3,1);z-index:3}
+.pcard:hover .pcard-arrow{opacity:1;transform:translateX(0) translateZ(0);box-shadow:0 4px 16px rgba(139,92,246,.3)}
 
-/* MORE SOLUTIONS */
-.sol-grid{
-display:grid;grid-template-columns:repeat(2,1fr);
-gap:1px;margin-top:3rem;
-border:1px solid var(--border);border-radius:8px;overflow:hidden;
-}
-.sol-card{
-background:var(--bg-1);padding:2rem;
-transition:background 0.2s;
-}
-.sol-card:last-child{border-left:1px solid var(--border)}
-.sol-card:hover{background:var(--bg-2)}
-.sol-icon{
-width:36px;height:36px;border-radius:6px;
-background:rgba(255,255,255,0.04);border:1px solid var(--border);
-display:flex;align-items:center;justify-content:center;
-font-size:1rem;margin-bottom:1.2rem;
-}
-.sol-card h3{
-font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;
-color:var(--white);margin-bottom:0.5rem;letter-spacing:-0.01em;
-}
-.sol-card p{font-size:0.82rem;color:var(--f2);line-height:1.6;margin-bottom:0.8rem}
-.sol-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
-.sol-tag{
-font-family:'JetBrains Mono',monospace;
-font-size:0.6rem;letter-spacing:0.06em;
-background:rgba(255,255,255,0.04);
-border:1px solid var(--border);
-color:var(--f3);padding:0.25rem 0.6rem;border-radius:4px;
-}
+/* Shared content grids */
+.sol-grid,.models-grid,.testi-grid{display:grid;gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sol-grid{grid-template-columns:repeat(2,1fr)}.models-grid,.testi-grid{grid-template-columns:repeat(3,1fr)}
+.sol-card,.mcard,.tcard{background:var(--bg-1);transition:background .25s;position:relative}.sol-card{padding:2.2rem;overflow:hidden}.mcard{padding:2.5rem 2.2rem}.tcard{padding:2.2rem}
+.sol-card:hover,.mcard:hover,.tcard:hover{background:var(--bg-2)}.sol-card:last-child,.mcard:not(:first-child),.tcard:not(:first-child){border-left:1px solid var(--border)}
+.sol-icon{width:38px;height:38px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:1.2rem}
+.sol-icon img{width:22px;height:22px;object-fit:contain}
+.sol-card h3,.mcard h3{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);letter-spacing:-.015em}.sol-card h3{font-size:.98rem;margin-bottom:.5rem}.mcard h3{font-size:1.08rem;margin-bottom:.65rem;letter-spacing:-.02em}
+.sol-card p,.mcard p,.tcard p{font-size:.83rem;color:var(--f2);line-height:1.7}.sol-card p{margin-bottom:.85rem}.mcard p{margin-bottom:1.4rem}.tcard p{font-size:.85rem;font-style:italic;margin-bottom:1.2rem;line-height:1.72}
+.sol-tags{display:flex;flex-wrap:wrap;gap:.4rem}.sol-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.07em;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--f3);padding:.25rem .6rem;border-radius:4px}
+.mcard-icon{font-size:1.5rem;margin-bottom:1.5rem;display:block;letter-spacing:-.05em}.mcard-price{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--cy);letter-spacing:.05em;padding-top:1.2rem;border-top:1px solid var(--border)}
+.tcard-quote{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--pu);opacity:.45;margin-bottom:1rem;letter-spacing:.03em}.tcard-author{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--f3);letter-spacing:.06em}
 
-/* JOURNEY */
-.journey{
-margin-top:3.5rem;
-position:relative;
-}
-.journey-track{
-display:flex;gap:0;
-border:1px solid var(--border);
-border-radius:10px;overflow:hidden;
-}
-.jphase{
-flex:1;padding:2rem 1.6rem;
-background:var(--bg-1);
-border-right:1px solid var(--border);
-transition:background 0.3s;
-position:relative;
-cursor:default;
-}
-.jphase:last-child{border-right:none}
-.jphase:hover{background:var(--bg-2)}
-.jphase-num{
-font-family:'JetBrains Mono',monospace;
-font-size:0.6rem;letter-spacing:0.12em;
-color:var(--f3);text-transform:uppercase;
-margin-bottom:0.9rem;
-}
-.jphase-title{
-font-family:'Syne',sans-serif;
-font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;
-color:var(--white);margin-bottom:0.5rem;line-height:1.3;
-}
-.jphase-sub{
-font-size:0.72rem;color:var(--f3);
-margin-bottom:1rem;line-height:1.5;
-}
-.jphase-items{
-list-style:none;
-display:flex;flex-direction:column;gap:0.4rem;
-}
-.jphase-items li{
-font-size:0.72rem;color:var(--f2);
-display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4;
-}
-.jphase-items li::before{
-content:'';width:4px;height:4px;border-radius:50%;
-background:var(--pu);opacity:0.5;
-margin-top:0.45rem;flex-shrink:0;
-}
-.jphase-time{
-margin-top:1.2rem;padding-top:1rem;
-border-top:1px solid var(--border);
-font-family:'JetBrains Mono',monospace;
-font-size:0.62rem;color:var(--cy);letter-spacing:0.04em;
-}
+/* Journey */
+.journey{margin-top:3.5rem;position:relative}.journey-track{display:flex;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.jphase{flex:1;padding:2rem 1.6rem;background:var(--bg-1);border-right:1px solid var(--border);transition:background .3s;position:relative;cursor:default}.jphase:last-child{border-right:none}.jphase:hover{background:var(--bg-2)}
+.jphase-num{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.13em;color:var(--f3);text-transform:uppercase;margin-bottom:.9rem}
+.jphase-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:-.01em;color:var(--white);margin-bottom:.5rem;line-height:1.3}.jphase-sub{font-size:.71rem;color:var(--f3);margin-bottom:1rem;line-height:1.5}
+.jphase-items{list-style:none;display:flex;flex-direction:column;gap:.4rem}.jphase-items li{font-size:.71rem;color:var(--f2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.45}.jphase-items li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--pu);opacity:.55;margin-top:.42rem;flex-shrink:0}
+.jphase-time{margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.61rem;color:var(--cy);letter-spacing:.05em}
 
-/* TECH STACK — FIXED logo visibility */
-.stack-grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(86px,1fr));
-gap:1px;margin-top:3rem;
-border:1px solid var(--border);border-radius:8px;overflow:hidden;
-}
-.stack-item{
-background:var(--bg-1);
-padding:1.4rem 0.8rem;
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-gap:0.65rem;
-border-right:1px solid var(--border);
-border-bottom:1px solid var(--border);
-transition:background 0.2s;cursor:default;
-}
-.stack-item:hover{background:var(--bg-2)}
-/* White pill container for logos — solves dark/invisible logos */
-.stack-logo-wrap{
-width:36px;height:36px;
-background:rgba(255,255,255,0.9);
-border-radius:7px;
-display:flex;align-items:center;justify-content:center;
-padding:4px;
-transition:background 0.2s;
-}
-.stack-item:hover .stack-logo-wrap{background:rgba(255,255,255,1)}
-.stack-logo-wrap img{
-width:100%;height:100%;object-fit:contain;
-}
-.stack-item-name{
-font-family:'JetBrains Mono',monospace;
-font-size:0.58rem;color:var(--f3);
-text-align:center;letter-spacing:0.04em;
-line-height:1.3;
-}
-
-/* MODELS */
-.models-grid{
-display:grid;grid-template-columns:repeat(3,1fr);
-gap:1px;margin-top:3rem;
-border:1px solid var(--border);border-radius:10px;overflow:hidden;
-}
-.mcard{
-background:var(--bg-1);padding:2.4rem 2rem;
-transition:background 0.25s;
-position:relative;
-}
-.mcard:not(:first-child){border-left:1px solid var(--border)}
-.mcard:hover{background:var(--bg-2)}
-.mcard-icon{
-font-size:1.5rem;margin-bottom:1.4rem;
-display:block;
-}
-.mcard h3{
-font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;
-color:var(--white);margin-bottom:0.6rem;letter-spacing:-0.02em;
-}
-.mcard p{font-size:0.82rem;color:var(--f2);line-height:1.65;margin-bottom:1.2rem}
-.mcard-price{
-font-family:'JetBrains Mono',monospace;
-font-size:0.68rem;color:var(--cy);letter-spacing:0.04em;
-padding-top:1.2rem;border-top:1px solid var(--border);
-}
-
-/* TESTIMONIALS */
-.testi-grid{
-display:grid;grid-template-columns:repeat(3,1fr);
-gap:1px;margin-top:3rem;
-border:1px solid var(--border);border-radius:10px;overflow:hidden;
-}
-.tcard{
-background:var(--bg-1);padding:2rem;
-}
-.tcard:not(:first-child){border-left:1px solid var(--border)}
-.tcard-quote{
-font-family:'JetBrains Mono',monospace;
-font-size:0.65rem;color:var(--pu);opacity:0.5;
-margin-bottom:1rem;letter-spacing:0.02em;
-}
-.tcard p{
-font-size:0.85rem;color:var(--f2);line-height:1.7;
-font-style:italic;margin-bottom:1.2rem;
-}
-.tcard-author{
-font-family:'JetBrains Mono',monospace;
-font-size:0.65rem;color:var(--f3);letter-spacing:0.06em;
-}
+/* Stack */
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.stack-item{background:var(--bg-1);padding:1.4rem .8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .2s;cursor:default}
+.stack-item:hover{background:var(--bg-2)}.stack-logo-wrap{width:36px;height:36px;border-radius:6px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;padding:4px;transition:transform .25s cubic-bezier(.16,1,.3,1)}.stack-item:hover .stack-logo-wrap{transform:scale(1.08) translateY(-2px)}
+.stack-logo-wrap img{width:100%;height:100%;object-fit:contain}.stack-item-name{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--f3);text-align:center;letter-spacing:.04em;line-height:1.3}
 
 /* CTA */
-.cta-wrap{
-padding:3.5rem;
-background:var(--bg-1);
-border:1px solid var(--border);border-radius:10px;
-position:relative;overflow:hidden;
-}
-.cta-wrap::before{
-content:'';position:absolute;
-top:-80px;right:-80px;
-width:320px;height:320px;border-radius:50%;
-background:radial-gradient(circle,rgba(140,100,255,0.06) 0%,transparent 70%);
-pointer-events:none;
-}
-.cta-wrap h2{
-font-family:'Syne',sans-serif;
-font-size:clamp(1.4rem,3vw,2.2rem);
-font-weight:700;letter-spacing:-0.03em;
-color:var(--white);margin-bottom:0.75rem;
-}
-.cta-wrap p{
-font-size:0.88rem;color:var(--f2);margin-bottom:2rem;max-width:480px;
-}
-.cta-contact{
-display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;
-}
-.cta-link{
-font-family:'JetBrains Mono',monospace;
-font-size:0.8rem;color:var(--pu);
-text-decoration:none;letter-spacing:0.02em;
-transition:color 0.2s;
-}
-.cta-link:hover{color:var(--white)}
-.cta-sep{color:var(--border-hi)}
+.cta-wrap{padding:3.8rem;background:var(--bg-1);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden}
+.cta-wrap::before{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.07) 0%,transparent 70%);pointer-events:none}
+.cta-wrap::after{content:'';position:absolute;bottom:-80px;left:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(79,209,197,.05) 0%,transparent 70%);pointer-events:none}
+.cta-wrap h2{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2.4rem);font-weight:700;letter-spacing:-.035em;color:var(--white);margin-bottom:.8rem}.cta-wrap p{font-size:.9rem;color:var(--f2);margin-bottom:2.2rem;max-width:500px;line-height:1.7}
+.cta-contact{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap}.cta-link{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--pu);text-decoration:none;letter-spacing:.02em;transition:color .2s}.cta-link:hover{color:var(--white)}.cta-sep{color:var(--border-hi)}
+footer{border-top:1px solid var(--border);padding:2.2rem;text-align:center}footer p{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--f3);letter-spacing:.04em;line-height:1.9}
+#back-top{position:fixed;bottom:2rem;right:2rem;width:40px;height:40px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;cursor:none;z-index:1000;opacity:0;visibility:hidden;transition:all .35s cubic-bezier(.16,1,.3,1);color:var(--f3);font-size:.8rem}
+#back-top.show{opacity:1;visibility:visible}#back-top:hover{background:var(--bg-3);border-color:var(--border-pu);color:var(--pu);transform:translateY(-3px)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}.reveal.in{opacity:1;transform:translateY(0)}.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
 
-footer{
-border-top:1px solid var(--border);
-padding:2rem;text-align:center;
-}
-footer p{
-font-family:'JetBrains Mono',monospace;
-font-size:0.65rem;color:var(--f3);letter-spacing:0.04em;
-line-height:1.8;
-}
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;z-index:10000;display:flex;align-items:flex-start;justify-content:center;background:rgba(5,5,10,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease;overflow-y:auto;padding:2.5rem 1.5rem}
+.modal-backdrop.open{opacity:1;visibility:visible}
+.modal-panel{width:100%;max-width:960px;background:var(--bg-1);border:1px solid var(--border-hi);border-radius:14px;position:relative;transform:scale(.95) translateY(20px);transition:transform .4s cubic-bezier(.16,1,.3,1);margin:auto;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px rgba(139,92,246,.08)}
+.modal-backdrop.open .modal-panel{transform:scale(1) translateY(0)}
+.modal-header{position:sticky;top:0;z-index:10;background:rgba(17,19,26,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:1.3rem 2.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.modal-header-left{display:flex;align-items:center;gap:1rem;min-width:0}.modal-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.61rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pu)}.modal-title{font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:700;color:var(--white);letter-spacing:-.02em;line-height:1.2}
+.modal-close{width:36px;height:36px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--f3);cursor:none;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .2s;flex-shrink:0}
+.modal-close:hover{background:rgba(255,255,255,.08);color:var(--f1);border-color:var(--border-hi)}
+.modal-scroll-bar{position:sticky;top:63px;z-index:9;height:2px;background:var(--border)}.modal-scroll-fill{height:100%;background:linear-gradient(90deg,var(--pu),var(--mg),var(--cy));width:0%;transition:width .1s linear}
+.modal-body{padding:2.8rem 2.4rem}
+.modal-hero{margin-bottom:2.8rem;padding-bottom:2.8rem;border-bottom:1px solid var(--border)}
+.modal-hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);padding:.32rem .9rem;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.61rem;color:var(--pu);margin-bottom:1.2rem;letter-spacing:.05em}
+.modal-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.045em;color:var(--white);margin-bottom:1rem;line-height:1.05}.modal-hero p{font-size:.9rem;color:var(--f2);max-width:700px;line-height:1.75}
+.modal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.8rem 0}.mstat{background:var(--bg-2);padding:1.3rem 1rem;text-align:center}.mstat-val{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:700;color:var(--white);letter-spacing:-.035em;display:block}.mstat-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.07em;text-transform:uppercase;display:block;margin-top:.3rem}
+.msec{margin-bottom:2.8rem;padding-bottom:2.8rem;border-bottom:1px solid var(--border)}.msec:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}.msec-tag{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.13em;text-transform:uppercase;color:var(--pu);margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem}.msec-tag::before{content:'';width:13px;height:1px;background:var(--pu);opacity:.7}
+.msec h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.025em;margin-bottom:1.1rem;line-height:1.3}.msec p{font-size:.85rem;color:var(--f2);line-height:1.75;margin-bottom:.85rem}
+.m2col,.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.2rem 0}.mpanel,.ba-panel{background:var(--bg-2);padding:1.5rem}.mpanel h3{font-size:.83rem;font-weight:600;color:var(--f1);margin-bottom:.8rem;letter-spacing:-.01em}.mpanel ul,.ba-panel ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}.mpanel ul li,.ba-panel ul li{font-size:.8rem;color:var(--f2);display:flex;align-items:flex-start;gap:.55rem;line-height:1.5}.mpanel ul li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--pu);opacity:.65;margin-top:.5rem;flex-shrink:0}
+.flow-block{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin:1.2rem 0;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--f2);line-height:2}.flow-block .fl{display:flex;align-items:flex-start;gap:.85rem;padding:.38rem 0}.flow-block .fl-num{color:var(--pu);min-width:22px;font-size:.64rem;margin-top:.12rem}.flow-block .fl-text{color:var(--f2)}.flow-block .fl-note{color:var(--cy);font-size:.64rem}
+.m-code{background:rgba(0,0,0,.35);border:1px solid var(--border);border-left:2px solid var(--pu);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--f2);line-height:1.9;white-space:pre-wrap;margin:1rem 0}
+.m-step{display:flex;gap:1rem;margin-bottom:.85rem;padding:1rem 1.1rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px}.m-step-num{width:28px;height:28px;border-radius:50%;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--pu);flex-shrink:0}.m-step-body strong{font-size:.84rem;color:var(--white);display:block;margin-bottom:.2rem}.m-step-body p{font-size:.78rem;color:var(--f2);line-height:1.5;margin:0}
+.architecture-flow{background:var(--bg-2);border-radius:12px;border:1px solid var(--border);padding:1.2rem;margin:1.2rem 0;overflow:hidden}.flow-title{text-align:center;font-size:.68rem;color:var(--f3);margin-bottom:1rem;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}.flow-canvas{display:block;margin:0 auto;max-width:100%;height:auto;border-radius:10px}
+.m-stack{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.m-stack-group{margin-bottom:1.1rem}.m-stack-group-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:.55rem}.m-tech-pill{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;padding:.32rem .7rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--f2);letter-spacing:.02em}.m-tech-pill-icon{width:14px;height:14px;border-radius:2px;background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;padding:1px;flex-shrink:0}.m-tech-pill-icon img{width:100%;height:100%;object-fit:contain}
+.ba-panel-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.8rem}.ba-panel.before .ba-panel-label{color:#e06060}.ba-panel.after .ba-panel-label{color:var(--cy)}.ba-panel.before ul li::before{content:'x';color:#e06060;font-size:.64rem;margin-top:.1rem;flex-shrink:0}.ba-panel.after ul li::before{content:'✓';color:var(--cy);font-size:.64rem;margin-top:.1rem;flex-shrink:0}
+.m-highlights{display:flex;flex-direction:column;gap:.55rem;margin:1.2rem 0}.m-highlight{display:flex;align-items:flex-start;gap:.8rem;padding:.9rem 1.1rem;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.11);border-radius:7px;transition:background .25s,border-color .25s}.m-highlight:hover{background:rgba(139,92,246,.07);border-color:rgba(139,92,246,.18)}.m-highlight-dot{width:6px;height:6px;border-radius:50%;background:var(--pu);margin-top:.36rem;flex-shrink:0}.m-highlight p{font-size:.83rem;color:var(--f2);line-height:1.55;margin:0}.m-highlight p strong{color:var(--f1)}
+.mini-flow{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin:1rem 0}.mini-flow-node{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:.75rem 1.2rem;text-align:center;width:100%;max-width:330px;font-size:.8rem;color:var(--f2)}.mini-flow-arrow{color:var(--cy);font-family:'JetBrains Mono',monospace}
 
-#back-top{
-position:fixed;bottom:2rem;right:2rem;
-width:38px;height:38px;border-radius:8px;
-background:var(--bg-2);
-border:1px solid var(--border-hi);
-display:flex;align-items:center;justify-content:center;
-cursor:pointer;z-index:1000;
-opacity:0;visibility:hidden;
-transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
-color:var(--f3);font-size:0.8rem;
-}
-#back-top.show{opacity:1;visibility:visible}
-#back-top:hover{
-background:var(--bg-3);border-color:var(--border-pu);
-color:var(--pu);transform:translateY(-2px);
-}
-
-.reveal{
-opacity:0;transform:translateY(24px);
-transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),
-transform 0.7s cubic-bezier(0.16,1,0.3,1);
-}
-.reveal.in{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:0.1s}
-.reveal-d2{transition-delay:0.18s}
-.reveal-d3{transition-delay:0.26s}
-
-/* ══════════════════════════════════════
-   MODAL SYSTEM
-══════════════════════════════════════ */
-.modal-backdrop{
-position:fixed;inset:0;z-index:9000;
-background:rgba(5,5,10,0.88);
-backdrop-filter:blur(12px);
--webkit-backdrop-filter:blur(12px);
-display:flex;align-items:flex-start;justify-content:center;
-padding:2rem 1rem;
-opacity:0;visibility:hidden;
-transition:opacity 0.3s ease,visibility 0.3s ease;
-overflow-y:auto;
-}
-.modal-backdrop.open{
-opacity:1;visibility:visible;
-}
-.modal-shell{
-position:relative;
-width:100%;max-width:960px;
-background:var(--bg-1);
-border:1px solid var(--border-hi);
-border-radius:14px;
-overflow:hidden;
-transform:scale(0.96) translateY(20px);
-transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);
-margin:auto;
-min-height:400px;
-}
-.modal-backdrop.open .modal-shell{
-transform:scale(1) translateY(0);
-}
-/* Sticky modal header */
-.modal-header{
-position:sticky;top:0;z-index:10;
-background:rgba(15,15,22,0.95);
-backdrop-filter:blur(16px);
--webkit-backdrop-filter:blur(16px);
-border-bottom:1px solid var(--border);
-padding:1.1rem 1.8rem;
-display:flex;align-items:center;justify-content:space-between;
-gap:1rem;
-}
-.modal-header-left{
-display:flex;align-items:center;gap:1rem;min-width:0;
-}
-.modal-badge{
-font-family:'JetBrains Mono',monospace;
-font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
-color:var(--pu);
-background:rgba(155,127,244,0.1);
-border:1px solid rgba(155,127,244,0.2);
-padding:0.22rem 0.75rem;border-radius:100px;
-white-space:nowrap;
-}
-.modal-title{
-font-family:'Syne',sans-serif;
-font-size:1rem;font-weight:700;
-color:var(--white);letter-spacing:-0.02em;
-white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.modal-close{
-width:34px;height:34px;border-radius:7px;
-background:rgba(255,255,255,0.05);
-border:1px solid var(--border-hi);
-color:var(--f3);font-size:1rem;
-cursor:pointer;display:flex;align-items:center;justify-content:center;
-flex-shrink:0;
-transition:all 0.2s;
-}
-.modal-close:hover{
-background:rgba(255,255,255,0.1);
-color:var(--f1);
-border-color:var(--border-pu);
-}
-/* Scroll progress bar inside modal */
-.modal-progress{
-height:1px;
-background:linear-gradient(90deg,var(--pu),var(--cy));
-transform-origin:0%;transform:scaleX(0);
-transition:transform 0.1s linear;
-}
-/* Modal content area */
-.modal-body{
-padding:2.5rem 2.2rem;
-}
-/* Hero section inside modal */
-.m-hero{
-padding:2rem 0 2.5rem;
-border-bottom:1px solid var(--border);
-margin-bottom:2.5rem;
-}
-.m-hero h1{
-font-family:'Syne',sans-serif;
-font-size:clamp(1.6rem,3vw,2.4rem);
-font-weight:800;letter-spacing:-0.035em;
-color:var(--white);margin-bottom:0.75rem;line-height:1.1;
-}
-.m-hero-sub{
-font-size:0.9rem;color:var(--f2);max-width:600px;line-height:1.7;
-}
-/* Stat row */
-.m-stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-gap:1px;
-border:1px solid var(--border);border-radius:8px;
-overflow:hidden;
-margin:2rem 0;
-}
-.m-stat{
-background:var(--bg-2);
-padding:1.2rem;
-text-align:center;
-}
-.m-stat-num{
-font-family:'Syne',sans-serif;
-font-size:1.6rem;font-weight:700;
-color:var(--white);letter-spacing:-0.03em;
-}
-.m-stat-label{
-font-size:0.7rem;color:var(--f3);margin-top:0.25rem;
-letter-spacing:0.02em;
-}
-/* Section inside modal */
-.m-section{
-margin-bottom:2.5rem;
-}
-.m-section-eyebrow{
-font-family:'JetBrains Mono',monospace;
-font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;
-color:var(--pu);margin-bottom:0.6rem;
-display:flex;align-items:center;gap:0.5rem;
-}
-.m-section-eyebrow::before{
-content:'';width:14px;height:1px;background:var(--pu);opacity:0.5;
-}
-.m-section h2{
-font-family:'Syne',sans-serif;
-font-size:1.25rem;font-weight:700;letter-spacing:-0.025em;
-color:var(--white);margin-bottom:1rem;line-height:1.2;
-}
-.m-section p{
-font-size:0.87rem;color:var(--f2);line-height:1.7;margin-bottom:0.75rem;
-}
-/* Flow block */
-.m-flow{
-font-family:'JetBrains Mono',monospace;
-font-size:0.72rem;color:var(--cy);
-background:var(--bg-2);
-border:1px solid var(--border);border-left:2px solid var(--cy-dim);
-padding:1.1rem 1.3rem;border-radius:8px;
-line-height:2;
-margin:1rem 0;
-}
-/* Two columns */
-.m-cols{
-display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;
-}
-.m-panel{
-background:var(--bg-2);
-border:1px solid var(--border);border-radius:8px;
-padding:1.2rem;
-}
-.m-panel h3{
-font-family:'Syne',sans-serif;
-font-size:0.88rem;font-weight:700;letter-spacing:-0.01em;
-color:var(--white);margin-bottom:0.65rem;
-}
-.m-panel ul{
-list-style:none;
-display:flex;flex-direction:column;gap:0.35rem;
-}
-.m-panel ul li{
-font-size:0.78rem;color:var(--f2);
-display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4;
-}
-.m-panel ul li::before{
-content:'';width:3px;height:3px;border-radius:50%;
-background:var(--pu);opacity:0.6;
-margin-top:0.52rem;flex-shrink:0;
-}
-/* Workflow steps */
-.m-step{
-display:flex;gap:1rem;margin-bottom:0.85rem;
-padding:1rem 1.1rem;
-background:rgba(255,255,255,0.02);
-border:1px solid var(--border);border-radius:8px;
-}
-.m-step-num{
-width:28px;height:28px;border-radius:50%;
-background:rgba(155,127,244,0.15);
-border:1px solid rgba(155,127,244,0.3);
-display:flex;align-items:center;justify-content:center;
-font-family:'JetBrains Mono',monospace;
-font-size:0.7rem;color:var(--pu);
-flex-shrink:0;
-}
-.m-step-body strong{
-font-size:0.84rem;color:var(--white);display:block;margin-bottom:0.2rem;
-}
-.m-step-body p{
-font-size:0.78rem;color:var(--f2);line-height:1.5;margin:0;
-}
-/* Tech stack inside modal */
-.m-stack{
-display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.8rem 0;
-}
-.m-tag{
-font-family:'JetBrains Mono',monospace;
-font-size:0.62rem;letter-spacing:0.05em;
-background:rgba(255,255,255,0.04);
-border:1px solid var(--border);
-color:var(--f2);padding:0.25rem 0.65rem;border-radius:4px;
-}
-/* Highlights */
-.m-highlights{
-list-style:none;
-display:flex;flex-direction:column;gap:0.6rem;
-margin:1rem 0;
-}
-.m-highlights li{
-font-size:0.84rem;color:var(--f1);
-display:flex;align-items:flex-start;gap:0.75rem;line-height:1.5;
-}
-.m-highlights li::before{
-content:'◈';color:var(--pu);
-font-size:0.7rem;margin-top:0.22rem;flex-shrink:0;
-}
-/* Code block */
-.m-code{
-background:rgba(0,0,0,0.4);
-border:1px solid var(--border);border-left:2px solid var(--pu);
-padding:1rem 1.2rem;border-radius:8px;
-font-family:'JetBrains Mono',monospace;
-font-size:0.68rem;color:var(--f2);
-line-height:1.9;
-margin:1rem 0;white-space:pre-wrap;
-}
-/* Section divider */
-.m-divider{
-border:none;
-border-top:1px solid var(--border);
-margin:2rem 0;
-}
-/* Before/after */
-.m-ba{
-display:grid;grid-template-columns:1fr 1fr;gap:1px;
-border:1px solid var(--border);border-radius:8px;overflow:hidden;
-margin:1rem 0;
-}
-.m-ba-col{
-background:var(--bg-2);
-padding:1.2rem;
-}
-.m-ba-col:last-child{border-left:1px solid var(--border)}
-.m-ba-label{
-font-family:'JetBrains Mono',monospace;
-font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;
-margin-bottom:0.75rem;
-}
-.m-ba-label.before{color:#e05a5a}
-.m-ba-label.after{color:var(--cy)}
-.m-ba-col ul{
-list-style:none;
-display:flex;flex-direction:column;gap:0.35rem;
-}
-.m-ba-col ul li{
-font-size:0.78rem;color:var(--f2);
-display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4;
-}
-.m-ba-col ul li::before{
-content:'';width:3px;height:3px;border-radius:50%;
-background:var(--f3);opacity:0.7;
-margin-top:0.52rem;flex-shrink:0;
-}
-
-/* MOBILE */
 @media(max-width:1024px){
-.projects-grid{grid-template-columns:repeat(2,1fr)}
-.pcard:nth-child(2n){border-left:1.5px solid var(--border)}
-.pcard:nth-child(2n+1){border-left:none}
-.pcard:nth-child(n+3){border-top:1.5px solid var(--border)}
-.models-grid{grid-template-columns:repeat(2,1fr)}
-.mcard:nth-child(3){border-left:none;border-top:1px solid var(--border)}
-.testi-grid{grid-template-columns:1fr}
-.tcard:not(:first-child){border-left:none;border-top:1px solid var(--border)}
-.journey-track{flex-direction:column}
-.jphase{border-right:none;border-bottom:1px solid var(--border)}
-.jphase:last-child{border-bottom:none}
+  .projects-grid{grid-template-columns:repeat(2,1fr)}.pcard:nth-child(2n){border-left:1.5px solid var(--border)}.pcard:nth-child(2n+1){border-left:none}.pcard:nth-child(n+3){border-top:1.5px solid var(--border)}
+  .models-grid{grid-template-columns:repeat(2,1fr)}.mcard:nth-child(3){border-left:none;border-top:1px solid var(--border)}
+  .testi-grid{grid-template-columns:1fr}.tcard:not(:first-child){border-left:none;border-top:1px solid var(--border)}
+  .journey-track{flex-direction:column}.jphase{border-right:none;border-bottom:1px solid var(--border)}.jphase:last-child{border-bottom:none}
+  .modal-stats{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
-.c{padding:0 1.25rem}
-.section{padding:4rem 0}
-.section-inner{padding:0 1.25rem}
-.nav-inner{padding:0 1.25rem}
-.hero-meta{gap:1.5rem}
-.hero-divider{display:none}
-.projects-grid{grid-template-columns:1fr}
-.pcard:not(:first-child){border-left:none;border-top:1.5px solid var(--border)}
-.sol-grid{grid-template-columns:1fr}
-.sol-card:last-child{border-left:none;border-top:1px solid var(--border)}
-.models-grid{grid-template-columns:1fr}
-.mcard:not(:first-child){border-left:none;border-top:1px solid var(--border)}
-.stack-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
-.nav-links .nav-link-hide{display:none}
-.cta-wrap{padding:2rem}
-.modal-body{padding:1.5rem 1.2rem}
-.m-cols{grid-template-columns:1fr}
-.m-ba{grid-template-columns:1fr}
-.m-ba-col:last-child{border-left:none;border-top:1px solid var(--border)}
-.modal-backdrop{padding:0.5rem 0.5rem}
-.modal-header{padding:1rem 1.2rem}
-.modal-title{font-size:0.88rem}
+  body{cursor:auto}#cursor,#cursor-ring{display:none}.section{padding:4.5rem 0}.section-inner,.nav-inner{padding:0 1.25rem}
+  .hero-meta{gap:1.8rem}.hero-divider{display:none}.hero h1{font-size:clamp(2.8rem,10vw,4rem)}
+  .projects-grid,.sol-grid,.models-grid{grid-template-columns:1fr}.pcard:not(:first-child),.sol-card:last-child,.mcard:not(:first-child){border-left:none;border-top:1.5px solid var(--border)}.pcard{transform:none!important}
+  .stack-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}.nav-links .nav-link-hide{display:none}.cta-wrap{padding:2.2rem}
+  .modal-backdrop{padding:.8rem}.modal-body{padding:1.5rem 1.2rem}.modal-header{padding:1rem 1.2rem}.m2col,.ba-grid{grid-template-columns:1fr}.modal-title{font-size:.9rem}.scroll-indicator{display:none}#orch-canvas{opacity:.5}
 }
+@media(max-width:480px){.modal-stats{grid-template-columns:1fr 1fr}.hero-stat-num{font-size:1.7rem}.hero-actions{flex-direction:column}}
 </style>
 </head>
 <body>
-
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 <div id="progress"></div>
 
-<nav>
+<nav id="main-nav">
 <div class="nav-inner">
-  <a class="logo" href="#">dboton<span>.</span>auto</a>
+  <a class="logo" href="#"><span class="logo-dot"></span>dboton<span>.</span>auto</a>
   <div class="nav-links">
     <div class="dd">
       <a class="dd-btn" href="#work">Work</a>
       <div class="dd-menu">
-        <a onclick="openModal('healthcare');return false;">Smart Recruitment Management</a>
-        <a onclick="openModal('monday');return false;">Enterprise Operations Workspace</a>
-        <a onclick="openModal('spx');return false;">Logistics Operations Automation</a>
+        <a href="#" onclick="openModal('healthcare');return false">Smart Recruitment Management</a>
+        <a href="#" onclick="openModal('monday');return false">Enterprise Operations Workspace</a>
+        <a href="#" onclick="openModal('spx');return false">Logistics Operations Automation</a>
       </div>
     </div>
     <a href="#journey" class="nav-link-hide">Journey</a>
@@ -920,258 +240,97 @@ margin-top:0.52rem;flex-shrink:0;
 </div>
 </nav>
 
-<!-- ══ HERO ══ -->
-<section class="hero">
+<section class="hero" id="hero">
+  <div class="hero-bg-noise"></div>
   <div class="hero-grid"></div>
   <div class="hero-glow-a"></div>
   <div class="hero-glow-b"></div>
-  <svg class="hero-orch" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <filter id="glow-f">
-        <feGaussianBlur stdDeviation="3" result="b"/>
-        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-    </defs>
-    <g opacity="0.18" stroke="rgba(155,127,244,0.6)" fill="none" stroke-width="0.8">
-      <line x1="200" y1="150" x2="700" y2="350"/>
-      <line x1="1200" y1="150" x2="700" y2="350"/>
-      <line x1="200" y1="550" x2="700" y2="350"/>
-      <line x1="1200" y1="550" x2="700" y2="350"/>
-      <line x1="100" y1="350" x2="700" y2="350"/>
-      <line x1="1300" y1="350" x2="700" y2="350"/>
-      <line x1="400" y1="100" x2="700" y2="350"/>
-      <line x1="1000" y1="100" x2="700" y2="350"/>
-      <line x1="400" y1="600" x2="700" y2="350"/>
-      <line x1="1000" y1="600" x2="700" y2="350"/>
-    </g>
-    <g opacity="0.1" stroke="rgba(79,196,216,0.8)" fill="none" stroke-width="0.6" stroke-dasharray="4 8">
-      <line x1="300" y1="250" x2="700" y2="350"/>
-      <line x1="1100" y1="250" x2="700" y2="350"/>
-      <line x1="300" y1="450" x2="700" y2="350"/>
-      <line x1="1100" y1="450" x2="700" y2="350"/>
-    </g>
-    <g opacity="0.22">
-      <circle cx="200" cy="150" r="5" fill="rgba(155,127,244,1)" filter="url(#glow-f)"/>
-      <circle cx="1200" cy="150" r="5" fill="rgba(155,127,244,1)" filter="url(#glow-f)"/>
-      <circle cx="200" cy="550" r="5" fill="rgba(79,196,216,1)" filter="url(#glow-f)"/>
-      <circle cx="1200" cy="550" r="5" fill="rgba(79,196,216,1)" filter="url(#glow-f)"/>
-      <circle cx="100" cy="350" r="4" fill="rgba(155,127,244,0.8)"/>
-      <circle cx="1300" cy="350" r="4" fill="rgba(155,127,244,0.8)"/>
-      <circle cx="400" cy="100" r="4" fill="rgba(79,196,216,0.8)"/>
-      <circle cx="1000" cy="100" r="4" fill="rgba(79,196,216,0.8)"/>
-      <circle cx="400" cy="600" r="4" fill="rgba(79,196,216,0.8)"/>
-      <circle cx="1000" cy="600" r="4" fill="rgba(79,196,216,0.8)"/>
-    </g>
-    <circle cx="700" cy="350" r="48" fill="none" stroke="rgba(155,127,244,0.12)" stroke-width="1"/>
-    <circle cx="700" cy="350" r="32" fill="none" stroke="rgba(155,127,244,0.08)" stroke-width="1"/>
-    <circle cx="700" cy="350" r="6" fill="rgba(155,127,244,0.3)"/>
-  </svg>
+  <div class="hero-glow-c"></div>
+  <canvas id="orch-canvas"></canvas>
   <div class="hero-content">
-    <div class="hero-status">
-      <span class="hero-status-dot"></span>
-      Automation Systems Engineer
-    </div>
-    <h1>Danica Marie Boton</h1>
+    <div class="hero-status"><span class="hero-status-dot"></span>Automation Systems Engineer · Available for projects</div>
+    <h1><span class="gradient-name">Danica Marie Boton</span></h1>
     <p class="hero-sub">From hardware engineering to intelligent workflow architecture — designing resilient automation pipelines that unify CRMs, AI agents, and operational data.</p>
     <div class="hero-meta">
-      <div>
-        <div class="hero-stat-num">30+</div>
-        <div class="hero-stat-label">Workflows deployed</div>
-      </div>
+      <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Workflows deployed</div></div>
       <div class="hero-divider"></div>
-      <div>
-        <div class="hero-stat-num">8+</div>
-        <div class="hero-stat-label">Enterprise integrations</div>
-      </div>
+      <div class="hero-stat"><div class="hero-stat-num">8+</div><div class="hero-stat-label">Enterprise integrations</div></div>
       <div class="hero-divider"></div>
-      <div>
-        <div class="hero-stat-num">99.5%</div>
-        <div class="hero-stat-label">Orchestration reliability</div>
-      </div>
+      <div class="hero-stat"><div class="hero-stat-num">99.5%</div><div class="hero-stat-label">Orchestration reliability</div></div>
     </div>
     <div class="hero-actions">
-      <a href="#work" class="btn-pri">View case studies ↓</a>
-      <a href="#contact" class="btn-ghost">Get in touch</a>
+      <button class="btn-pri" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">View case studies <span style="opacity:.7">↓</span></button>
+      <a href="#contact" class="btn-ghost">Get in touch →</a>
     </div>
   </div>
+  <div class="scroll-indicator"><div class="scroll-line"></div></div>
 </section>
 
-<!-- ══ FLAGSHIP WORK ══ -->
 <section class="section" id="work">
 <div class="section-inner">
   <div class="reveal">
     <div class="section-eyebrow">Flagship Engagements</div>
     <h2 class="section-heading">Enterprise automation systems</h2>
-    <p class="section-sub">Three production systems — each a fully engineered operational backbone. Click any to explore the full case study.</p>
+    <p class="section-sub">Three production systems — each a fully engineered operational backbone. Click any to open the full case study.</p>
   </div>
-
   <div class="projects-grid reveal reveal-d1" id="proj-grid">
-
-    <div class="pcard" onclick="openModal('healthcare')" data-card="1">
-      <div class="pcard-icon">🏥</div>
-      <div class="pcard-tag">Healthcare · AI + CRM Sync</div>
-      <h3>Smart Recruitment Management</h3>
-      <p>End-to-end recruitment pipeline: social sourcing, verification, AI screening, centralized database, interview scheduling — zero manual handoffs.</p>
-      <div class="pcard-tech">
-        <div class="logo-wrap"><img src="https://imgur.com/6VjifQA.png" alt="n8n" title="n8n"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/odOb8ta.png" alt="Zapier" title="Zapier"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/BBQUr2n.png" alt="OpenAI" title="OpenAI"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/avLqFcP.png" alt="Zoho CRM" title="Zoho CRM"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/aemrhmj.png" alt="Calendly" title="Calendly"></div>
-        <span class="pcard-tech-more">+3</span>
-      </div>
-      <div class="pcard-metric">↓ 75% manual reduction · 8+ integrations</div>
-      <span class="pcard-arrow">→</span>
+    <div class="pcard" onclick="openModal('healthcare')">
+      <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
+      <div class="pcard-content">
+        <div class="pcard-icon">🏥</div><div class="pcard-tag">Healthcare · AI + CRM Sync</div><h3>Smart Recruitment Management</h3>
+        <p>End-to-end recruitment pipeline: social sourcing, verification, AI screening, centralized database, interview scheduling — zero manual handoffs.</p>
+        <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="pcard-tech-icon"><img src="https://imgur.com/odOb8ta.png" alt="Zapier"></div><div class="pcard-tech-icon"><img src="https://imgur.com/BBQUr2n.png" alt="OpenAI"></div><div class="pcard-tech-icon"><img src="https://imgur.com/avLqFcP.png" alt="Zoho CRM"></div><div class="pcard-tech-icon"><img src="https://imgur.com/aemrhmj.png" alt="Calendly"></div><span class="pcard-tech-more">+3</span></div>
+        <div class="pcard-metric">↓ 75% manual reduction · 8+ integrations</div>
+      </div><span class="pcard-arrow">→</span>
     </div>
-
-    <div class="pcard" onclick="openModal('monday')" data-card="2">
-      <div class="pcard-icon">🏢</div>
-      <div class="pcard-tag">PMO · SSOT · n8n Orchestration</div>
-      <h3>Enterprise Operations Workspace</h3>
-      <p>Centralized operational governance on monday.com: master projects, tasks, escalations, n8n orchestration — single source of truth, zero duplication.</p>
-      <div class="pcard-tech">
-        <div class="logo-wrap"><img src="https://imgur.com/tEcD6CK.png" alt="Monday" title="Monday.com"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/6VjifQA.png" alt="n8n" title="n8n"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/PPRLGEu.png" alt="SharePoint" title="SharePoint"></div>
-        <span class="pcard-tech-more">+2</span>
-      </div>
-      <div class="pcard-metric">Single Source of Truth · 0 automation credits</div>
-      <span class="pcard-arrow">→</span>
+    <div class="pcard" onclick="openModal('monday')">
+      <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
+      <div class="pcard-content">
+        <div class="pcard-icon">🏢</div><div class="pcard-tag">PMO · SSOT · n8n Orchestration</div><h3>Enterprise Operations Workspace</h3>
+        <p>Centralized operational governance on monday.com: master projects, tasks, escalations, n8n orchestration — single source of truth, zero duplication.</p>
+        <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/tEcD6CK.png" alt="Monday"></div><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="pcard-tech-icon"><img src="https://imgur.com/PPRLGEu.png" alt="SharePoint"></div><span class="pcard-tech-more">+2</span></div>
+        <div class="pcard-metric">Single Source of Truth · 0 automation credits</div>
+      </div><span class="pcard-arrow">→</span>
     </div>
-
-    <div class="pcard" onclick="openModal('spx')" data-card="3">
-      <div class="pcard-icon">🚚</div>
-      <div class="pcard-tag">Singapore Logistics · WhatsApp Automation</div>
-      <h3>Logistics Operations Automation</h3>
-      <p>Driver monitoring, late detection, escalation handling, and hourly owner reporting — reducing admin workload by 70% with full traceability.</p>
-      <div class="pcard-tech">
-        <div class="logo-wrap"><img src="https://imgur.com/6VjifQA.png" alt="n8n" title="n8n"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/HLCvjkG.png" alt="WhatsApp" title="WhatsApp API"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/xklNvsa.png" alt="Google Sheets" title="Google Sheets"></div>
-        <div class="logo-wrap"><img src="https://imgur.com/ogS17C9.png" alt="Tesseract" title="Tesseract OCR"></div>
-        <span class="pcard-tech-more">+1</span>
-      </div>
-      <div class="pcard-metric">5-min monitoring · 3 retries · auto-escalation</div>
-      <span class="pcard-arrow">→</span>
+    <div class="pcard" onclick="openModal('spx')">
+      <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
+      <div class="pcard-content">
+        <div class="pcard-icon">🚚</div><div class="pcard-tag">Singapore Logistics · WhatsApp Automation</div><h3>Logistics Operations Automation</h3>
+        <p>Driver monitoring, late detection, escalation handling, and hourly owner reporting — reducing admin workload by 70% with full traceability.</p>
+        <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="pcard-tech-icon"><img src="https://imgur.com/HLCvjkG.png" alt="WhatsApp"></div><div class="pcard-tech-icon"><img src="https://imgur.com/xklNvsa.png" alt="Google Sheets"></div><div class="pcard-tech-icon"><img src="https://imgur.com/ogS17C9.png" alt="Tesseract OCR"></div><span class="pcard-tech-more">+1</span></div>
+        <div class="pcard-metric">5-min monitoring · 3 retries · auto-escalation</div>
+      </div><span class="pcard-arrow">→</span>
     </div>
-
   </div>
 </div>
 </section>
 
-<!-- ══ MORE SOLUTIONS ══ -->
 <section class="section">
 <div class="section-inner">
-  <div class="reveal">
-    <div class="section-eyebrow">Solutions</div>
-    <h2 class="section-heading">More automation systems</h2>
-    <p class="section-sub">Production-ready workflows across logistics, operations, and intelligence.</p>
-  </div>
+  <div class="reveal"><div class="section-eyebrow">Solutions</div><h2 class="section-heading">More automation systems</h2><p class="section-sub">Production-ready workflows across logistics, operations, and intelligence.</p></div>
   <div class="sol-grid reveal reveal-d1">
-    <div class="sol-card">
-      <div class="sol-icon">🗺️</div>
-      <h3>Driver logistics and real-time tracking</h3>
-      <p>WhatsApp API and Telegram bot integration for real-time delivery confirmations, driver status monitoring, and automated escalation chains.</p>
-      <div class="sol-tags">
-        <span class="sol-tag">WhatsApp API</span>
-        <span class="sol-tag">Telegram</span>
-        <span class="sol-tag">n8n</span>
-      </div>
-    </div>
-    <div class="sol-card">
-      <div class="sol-icon">📊</div>
-      <h3>Custom operations dashboard</h3>
-      <p>Tailored operational dashboard with n8n REST endpoints — built for clients without existing CRM or PM tools, zero licensing overhead.</p>
-      <div class="sol-tags">
-        <span class="sol-tag">REST API</span>
-        <span class="sol-tag">Custom UI</span>
-        <span class="sol-tag">n8n</span>
-      </div>
-    </div>
+    <div class="sol-card"><div class="sol-icon"><img src="https://imgur.com/xklNvsa.png" alt="Google Sheets"></div><h3>Google Sheets-Powered Automation Systems</h3><p>Scalable spreadsheet-driven automation workflows for business operations, HR systems, and project management without heavy backend infrastructure.</p><p>Google Sheets + AppScript Automation Suite: automated payroll processing, attendance tracking, project management, and scheduling systems powered by Google Sheets and Apps Script.</p><p>Additional capabilities include automated payroll calculation logic and pay summaries, attendance time-in/time-out tracking and reporting, project management Gantt Chart automation inside Google Sheets, and calendar-based scheduling and timeline synchronization.</p><div class="sol-tags"><span class="sol-tag">Google Sheets</span><span class="sol-tag">Apps Script</span><span class="sol-tag">Automation</span></div></div>
+    <div class="sol-card"><div class="sol-icon">🖥️</div><h3>Custom operations dashboard</h3><p>Tailored operational dashboard with n8n REST endpoints — built for clients without existing CRM or PM tools, zero licensing overhead.</p><div class="sol-tags"><span class="sol-tag">REST API</span><span class="sol-tag">Custom UI</span><span class="sol-tag">n8n</span></div></div>
   </div>
 </div>
 </section>
 
-<!-- ══ CLIENT JOURNEY ══ -->
 <section class="section" id="journey">
 <div class="section-inner">
-  <div class="reveal">
-    <div class="section-eyebrow">Client Journey</div>
-    <h2 class="section-heading">From start to success</h2>
-    <p class="section-sub">A transparent, milestone-driven engagement process — engineered for predictable outcomes.</p>
-  </div>
-  <div class="journey reveal reveal-d1">
-    <div class="journey-track">
-      <div class="jphase">
-        <div class="jphase-num">Phase 01</div>
-        <div class="jphase-title">Discovery &amp; Scoping</div>
-        <div class="jphase-sub">Brief, proposal, discovery call</div>
-        <ul class="jphase-items">
-          <li>Brief &amp; requirements gathering</li>
-          <li>Custom proposal</li>
-          <li>Discovery call</li>
-        </ul>
-        <div class="jphase-time">Days 1–5</div>
-      </div>
-      <div class="jphase">
-        <div class="jphase-num">Phase 02</div>
-        <div class="jphase-title">Agreement &amp; Kickoff</div>
-        <div class="jphase-sub">Sign, deposit, kickoff meeting</div>
-        <ul class="jphase-items">
-          <li>Sign agreement</li>
-          <li>Deposit 30–50%</li>
-          <li>Kickoff meeting</li>
-        </ul>
-        <div class="jphase-time">Week 1</div>
-      </div>
-      <div class="jphase">
-        <div class="jphase-num">Phase 03</div>
-        <div class="jphase-title">Agile Development</div>
-        <div class="jphase-sub">Sprints and milestone reviews</div>
-        <ul class="jphase-items">
-          <li>Sprints 1–2 — Foundation</li>
-          <li>Milestone review 1</li>
-          <li>Sprints 3–4 — Core build</li>
-          <li>Milestone review 2</li>
-        </ul>
-        <div class="jphase-time">Weeks 2–6</div>
-      </div>
-      <div class="jphase">
-        <div class="jphase-num">Phase 04</div>
-        <div class="jphase-title">Delivery &amp; UAT</div>
-        <div class="jphase-sub">Testing, training, documentation</div>
-        <ul class="jphase-items">
-          <li>UAT testing</li>
-          <li>Training session</li>
-          <li>Documentation handoff</li>
-          <li>Production go-live</li>
-        </ul>
-        <div class="jphase-time">Weeks 7–8</div>
-      </div>
-      <div class="jphase">
-        <div class="jphase-num">Phase 05</div>
-        <div class="jphase-title">Ongoing Support</div>
-        <div class="jphase-sub">Monthly retainer &amp; optimization</div>
-        <ul class="jphase-items">
-          <li>Maintenance &amp; monitoring</li>
-          <li>Quarterly optimization</li>
-          <li>Strategic review</li>
-        </ul>
-        <div class="jphase-time">Monthly ongoing</div>
-      </div>
-    </div>
-  </div>
+  <div class="reveal"><div class="section-eyebrow">Client Journey</div><h2 class="section-heading">From start to success</h2><p class="section-sub">A transparent, milestone-driven engagement process — engineered for predictable outcomes.</p></div>
+  <div class="journey reveal reveal-d1"><div class="journey-track">
+    <div class="jphase"><div class="jphase-num">Phase 01</div><div class="jphase-title">Discovery &amp; Scoping</div><div class="jphase-sub">Brief, proposal, discovery call</div><ul class="jphase-items"><li>Brief &amp; requirements gathering</li><li>Custom proposal</li><li>Discovery call</li></ul><div class="jphase-time">Days 1-5</div></div>
+    <div class="jphase"><div class="jphase-num">Phase 02</div><div class="jphase-title">Agreement &amp; Kickoff</div><div class="jphase-sub">Sign, deposit, kickoff meeting</div><ul class="jphase-items"><li>Sign agreement</li><li>Deposit 30-50%</li><li>Kickoff meeting</li></ul><div class="jphase-time">Week 1</div></div>
+    <div class="jphase"><div class="jphase-num">Phase 03</div><div class="jphase-title">Agile Development</div><div class="jphase-sub">Sprints and milestone reviews</div><ul class="jphase-items"><li>Sprints 1-2 — Foundation</li><li>Milestone review 1</li><li>Sprints 3-4 — Core build</li><li>Milestone review 2</li></ul><div class="jphase-time">Weeks 2-6</div></div>
+    <div class="jphase"><div class="jphase-num">Phase 04</div><div class="jphase-title">Delivery &amp; UAT</div><div class="jphase-sub">Testing, training, docs</div><ul class="jphase-items"><li>UAT testing</li><li>Training session</li><li>Documentation handoff</li><li>Production go-live</li></ul><div class="jphase-time">Weeks 7-8</div></div>
+    <div class="jphase"><div class="jphase-num">Phase 05</div><div class="jphase-title">Ongoing Support</div><div class="jphase-sub">Monthly retainer &amp; optimization</div><ul class="jphase-items"><li>Maintenance &amp; monitoring</li><li>Quarterly optimization</li><li>Strategic review</li></ul><div class="jphase-time">Monthly ongoing</div></div>
+  </div></div>
 </div>
 </section>
 
-<!-- ══ TECH STACK ══ -->
 <section class="section" id="stack">
 <div class="section-inner">
-  <div class="reveal">
-    <div class="section-eyebrow">Technology</div>
-    <h2 class="section-heading">Integrated stack</h2>
-    <p class="section-sub">Tools and platforms across orchestration, AI, infrastructure, and delivery.</p>
-  </div>
+  <div class="reveal"><div class="section-eyebrow">Technology</div><h2 class="section-heading">Integrated stack</h2><p class="section-sub">Tools and platforms across orchestration, AI, infrastructure, and delivery.</p></div>
   <div class="stack-grid reveal reveal-d1">
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="stack-item-name">n8n</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/azHFwXv.png" alt="Python"></div><div class="stack-item-name">Python</div></div>
@@ -1186,9 +345,10 @@ margin-top:0.52rem;flex-shrink:0;
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/avLqFcP.png" alt="Zoho"></div><div class="stack-item-name">Zoho CRM</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/aemrhmj.png" alt="Calendly"></div><div class="stack-item-name">Calendly</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/ogS17C9.png" alt="Tesseract"></div><div class="stack-item-name">Tesseract</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/zPVgXkP.png" alt="GoHighLevel"></div><div class="stack-item-name">GHL</div></div>
+    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/zPVgXkP.png" alt="GHL"></div><div class="stack-item-name">GHL</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/tEcD6CK.png" alt="Monday"></div><div class="stack-item-name">Monday</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/QPEyTXV.png" alt="ContactOut"></div><div class="stack-item-name">ContactOut</div></div>
+    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/p05TTKl.png" alt="LinkedIn"></div><div class="stack-item-name">LinkedIn</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/KxvLl2r.png" alt="Indeed"></div><div class="stack-item-name">Indeed</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/dAXTxdl.png" alt="Deepseek"></div><div class="stack-item-name">Deepseek</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/y0LwowW.png" alt="Gemini"></div><div class="stack-item-name">Gemini</div></div>
@@ -1200,8 +360,8 @@ margin-top:0.52rem;flex-shrink:0;
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/loVBnTm.png" alt="Messenger"></div><div class="stack-item-name">Messenger</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/QkzVW7J.png" alt="Instagram"></div><div class="stack-item-name">Instagram</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/juD3o2j.png" alt="Meta"></div><div class="stack-item-name">Meta APIs</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/sEEHa4J.png" alt="Google Cloud"></div><div class="stack-item-name">GCloud</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/xklNvsa.png" alt="Google Sheets"></div><div class="stack-item-name">Sheets</div></div>
+    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/sEEHa4J.png" alt="GCloud"></div><div class="stack-item-name">GCloud</div></div>
+    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/xklNvsa.png" alt="Sheets"></div><div class="stack-item-name">Sheets</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/5T3d9nS.png" alt="App Script"></div><div class="stack-item-name">App Script</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/9uPTSrq.png" alt="Canva"></div><div class="stack-item-name">Canva</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/YcwFMcA.png" alt="Figma"></div><div class="stack-item-name">Figma</div></div>
@@ -1213,81 +373,29 @@ margin-top:0.52rem;flex-shrink:0;
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/3sBtQOm.png" alt="Bootstrap"></div><div class="stack-item-name">Bootstrap</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/0z6ti8R.png" alt="React Native"></div><div class="stack-item-name">React Native</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/60T0ydo.png" alt="VS Code"></div><div class="stack-item-name">VS Code</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/aPVuCDV.png" alt="Visual Basic"></div><div class="stack-item-name">VB</div></div>
+    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/aPVuCDV.png" alt="VB"></div><div class="stack-item-name">VB</div></div>
     <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/GnGs7ez.png" alt="C#"></div><div class="stack-item-name">C#</div></div>
   </div>
 </div>
 </section>
 
-<!-- ══ ENGAGEMENT MODELS ══ -->
 <section class="section" id="models">
 <div class="section-inner">
-  <div class="reveal">
-    <div class="section-eyebrow">Flexibility</div>
-    <h2 class="section-heading">Engagement models</h2>
-    <p class="section-sub">Choose how we work together — from complete ownership transfer to fully managed infrastructure.</p>
-  </div>
+  <div class="reveal"><div class="section-eyebrow">Flexibility</div><h2 class="section-heading">Engagement models</h2><p class="section-sub">Choose how we work together — from complete ownership transfer to fully managed infrastructure.</p></div>
   <div class="models-grid reveal reveal-d1">
-    <div class="mcard">
-      <span class="mcard-icon">◈</span>
-      <h3>Project buyout</h3>
-      <p>Complete infrastructure ownership transfer with full technical documentation, handoff session, and source access — yours to operate independently.</p>
-      <div class="mcard-price">One-time payment</div>
-    </div>
-    <div class="mcard">
-      <span class="mcard-icon">◉</span>
-      <h3>Engineering retainer</h3>
-      <p>Ongoing support, monitoring, and maintenance with defined SLA — your dedicated automation engineer without full-time overhead.</p>
-      <div class="mcard-price">Monthly retainer</div>
-    </div>
-    <div class="mcard">
-      <span class="mcard-icon">◎</span>
-      <h3>Fully managed</h3>
-      <p>Zero internal overhead — hosting, backups, incident response, and operations included. Focus entirely on your business outcomes.</p>
-      <div class="mcard-price">All-inclusive</div>
-    </div>
+    <div class="mcard"><span class="mcard-icon">◈</span><h3>Project buyout</h3><p>Complete infrastructure ownership transfer with full technical documentation, handoff session, and source access — yours to operate independently.</p><div class="mcard-price">One-time payment</div></div>
+    <div class="mcard"><span class="mcard-icon">◉</span><h3>Engineering retainer</h3><p>Ongoing support, monitoring, and maintenance with defined SLA — your dedicated automation engineer without full-time overhead.</p><div class="mcard-price">Monthly retainer</div></div>
+    <div class="mcard"><span class="mcard-icon">◎</span><h3>Fully managed</h3><p>Zero internal overhead — hosting, backups, incident response, and operations included. Focus entirely on your business outcomes.</p><div class="mcard-price">All-inclusive</div></div>
   </div>
 </div>
 </section>
 
-<!-- ══ TESTIMONIALS ══ -->
-<section class="section">
-<div class="section-inner">
-  <div class="reveal">
-    <div class="section-eyebrow">Trusted By</div>
-    <h2 class="section-heading">What clients say</h2>
-  </div>
-  <div class="testi-grid reveal reveal-d1">
-    <div class="tcard">
-      <div class="tcard-quote">// CLIENT_01</div>
-      <p>"Danica architected our multi-region logistics tracking system. Resilient, well-documented, and production-ready from day one."</p>
-      <div class="tcard-author">— Logistics Operations Director, SEA</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-quote">// CLIENT_02</div>
-      <p>"The OCR pipeline eliminated 30+ weekly manual entries. Enterprise-grade reliability that just works."</p>
-      <div class="tcard-author">— Document Process Lead</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-quote">// CLIENT_03</div>
-      <p>"She builds governance and error resilience into every workflow. A genuine systems thinker — not just an automation builder."</p>
-      <div class="tcard-author">— HR Automation Partner</div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- ══ CONTACT ══ -->
 <section class="section" id="contact">
 <div class="section-inner">
   <div class="cta-wrap reveal">
     <h2>Design your automation backbone</h2>
     <p>Let's architect intelligent pipelines, reduce operational fragmentation, and build infrastructure that improves with time.</p>
-    <div class="cta-contact">
-      <a href="mailto:boton.danicamarie@gmail.com" class="cta-link">boton.danicamarie@gmail.com</a>
-      <span class="cta-sep">·</span>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--f3)">+63 963 850 6071</span>
-    </div>
+    <div class="cta-contact"><a href="mailto:boton.danicamarie@gmail.com" class="cta-link">boton.danicamarie@gmail.com</a><span class="cta-sep">·</span><span style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--f3)">+63 963 850 6071</span></div>
   </div>
 </div>
 </section>
@@ -1296,285 +404,41 @@ margin-top:0.52rem;flex-shrink:0;
   <p>Danica Marie Boton — Automation Systems Engineer · Workflow Architect · AI Integration Specialist</p>
   <p>n8n · Python · JavaScript · OpenAI · Claude · Supabase · Zoho · Monday · GHL · Google Sheets</p>
 </footer>
-
 <div id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 
-<!-- ══════════════════════════════════════
-     MODALS
-══════════════════════════════════════ -->
-
-<!-- MODAL: Healthcare / Smart Recruitment -->
+<!-- Modal: Healthcare -->
 <div class="modal-backdrop" id="modal-healthcare" role="dialog" aria-modal="true" aria-label="Smart Recruitment Management case study">
-  <div class="modal-shell">
-    <div class="modal-progress" id="mprog-healthcare"></div>
-    <div class="modal-header">
-      <div class="modal-header-left">
-        <span class="modal-badge">Healthcare · AI + CRM</span>
-        <span class="modal-title">Smart Recruitment Management</span>
-      </div>
-      <button class="modal-close" onclick="closeModal('healthcare')" aria-label="Close modal">✕</button>
-    </div>
-    <div class="modal-body" id="mbody-healthcare">
-
-      <div class="m-hero">
-        <h1>Smart Recruitment Management System</h1>
-        <p class="m-hero-sub">A fully automated, end-to-end recruitment pipeline for AristaCare — spanning social sourcing, credential verification, AI-powered screening, CRM synchronization, and automated interview scheduling. Zero manual handoffs at any stage.</p>
-      </div>
-
-      <div class="m-stats">
-        <div class="m-stat"><div class="m-stat-num">75%</div><div class="m-stat-label">Manual time reduction</div></div>
-        <div class="m-stat"><div class="m-stat-num">8+</div><div class="m-stat-label">Integrated platforms</div></div>
-        <div class="m-stat"><div class="m-stat-num">24/7</div><div class="m-stat-label">AI screening</div></div>
-        <div class="m-stat"><div class="m-stat-num">Real-time</div><div class="m-stat-label">CRM sync</div></div>
-      </div>
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Problem Statement</div>
-        <h2>Fragmented operations were blocking scale</h2>
-        <p>AristaCare's recruitment operation was distributed across six or more disconnected platforms — job boards, ATS, social media channels, a CRM, a verification portal, and recruiter-managed comms. No system communicated with another. The result was inconsistent candidate tracking, frequent duplicate processing, limited applicant history visibility, and an unsustainable manual workload of 40+ hours per week.</p>
-        <p>Recruiters had no unified view. Leadership had no reliable data. Time-to-hire was slow. And there was no foundation for scaling candidate volume without adding headcount.</p>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">System Architecture</div>
-        <h2>Event-driven pipeline from source to schedule</h2>
-        <div class="m-flow">Social Lead (FB/IG/LinkedIn/Indeed) → Zapier Bridge (LinkedIn) → n8n Orchestration Engine → Verification Layer (Sapphire Check) → AI Screening (OpenAI) → Deduplication Check → Zoho CRM + Supabase → Interview Scheduling (Calendly) → Automated Outreach</div>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Social Sourcing Layer</h3>
-            <ul>
-              <li>Facebook &amp; Instagram lead forms via Meta API</li>
-              <li>LinkedIn lead gen forms bridged via Zapier webhook</li>
-              <li>Indeed job posting integration</li>
-              <li>Unified candidate intake regardless of source</li>
-            </ul>
-          </div>
-          <div class="m-panel">
-            <h3>Orchestration Engine</h3>
-            <ul>
-              <li>n8n handles all heavy workflow logic</li>
-              <li>Zapier bridges LinkedIn (no native n8n trigger)</li>
-              <li>Hybrid approach: reliability + flexibility</li>
-              <li>Error handling with retry logic on all API calls</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Automation Logic</div>
-        <h2>Step-by-step workflow orchestration</h2>
-        <div class="m-step"><div class="m-step-num">1</div><div class="m-step-body"><strong>Lead capture &amp; normalization</strong><p>Candidate submits form on any source. n8n normalizes all fields into a standard schema: name, email, phone, resume link, source channel.</p></div></div>
-        <div class="m-step"><div class="m-step-num">2</div><div class="m-step-body"><strong>Deduplication check</strong><p>Queries Zoho CRM for existing records by email and phone. If duplicate found, merges data and updates record without creating a second profile.</p></div></div>
-        <div class="m-step"><div class="m-step-num">3</div><div class="m-step-body"><strong>CRM sync &amp; record creation</strong><p>Creates or updates candidate record in Zoho CRM with all relevant fields. Custom modules track recruitment stage, source, and full interaction history.</p></div></div>
-        <div class="m-step"><div class="m-step-num">4</div><div class="m-step-body"><strong>Credential verification</strong><p>Sapphire Check integration validates licenses, certifications, and background. Result logged to CRM and Supabase audit trail.</p></div></div>
-        <div class="m-step"><div class="m-step-num">5</div><div class="m-step-body"><strong>AI screening &amp; scoring</strong><p>Candidate profile sent to OpenAI. Evaluated against job description, required skills, and experience level. Returns score 0–100 with rationale.</p></div></div>
-        <div class="m-step"><div class="m-step-num">6</div><div class="m-step-body"><strong>Routing &amp; scheduling</strong><p>High-score candidates receive Calendly interview link via AI-generated personalized email. Low-score candidates receive automated rejection. All outcomes logged.</p></div></div>
-        <div class="m-code">Error handling: Retry on API timeout (3 attempts, exponential backoff)
+<div class="modal-panel" id="modal-healthcare-panel">
+  <div class="modal-header"><div class="modal-header-left"><div><div class="modal-eyebrow">Healthcare · AI + CRM</div><div class="modal-title">Smart Recruitment Management</div></div></div><button class="modal-close" onclick="closeModal('healthcare')" aria-label="Close">✕</button></div>
+  <div class="modal-scroll-bar"><div class="modal-scroll-fill" id="fill-healthcare"></div></div>
+  <div class="modal-body" id="body-healthcare">
+    <div class="modal-hero"><div class="modal-hero-badge">Healthcare · Healthcare Enterprise · 11-week delivery</div><h1>Smart Recruitment Management System</h1><p>A fully automated, end-to-end recruitment pipeline for Healthcare — spanning social sourcing, credential verification, AI-powered screening, CRM synchronization, and automated interview scheduling. Zero manual handoffs at any stage.</p></div>
+    <div class="modal-stats"><div class="mstat"><span class="mstat-val">75%</span><span class="mstat-label">Manual time reduction</span></div><div class="mstat"><span class="mstat-val">8+</span><span class="mstat-label">Integrated platforms</span></div><div class="mstat"><span class="mstat-val">24/7</span><span class="mstat-label">AI screening</span></div><div class="mstat"><span class="mstat-val">Real-time</span><span class="mstat-label">CRM sync</span></div></div>
+    <div class="msec"><div class="msec-tag">Problem Statement</div><h2>Fragmented operations were blocking scale</h2><p>Healthcare's recruitment operation was distributed across six or more disconnected platforms — job boards, ATS, social media channels, a CRM, a verification portal, and recruiter-managed comms. No system communicated with another. The result was inconsistent candidate tracking, frequent duplicate processing, limited applicant history visibility, and an unsustainable manual workload of 40+ hours per week.</p><p>Recruiters had no unified view. Leadership had no reliable data. Time-to-hire was slow. And there was no foundation for scaling candidate volume without adding headcount.</p><div class="m2col"><div class="mpanel"><h3>Fragmented recruitment systems</h3><ul><li>Job posting platforms</li><li>Applicant tracking systems</li><li>Social channels: Facebook, Instagram, LinkedIn</li><li>CRM and verification portals</li><li>Recruiter-managed communication channels</li></ul></div><div class="mpanel"><h3>Lack of centralized intelligence</h3><ul><li>Previous applications and history</li><li>Interview outcomes and feedback</li><li>Rejection reasons and patterns</li><li>Communication history across channels</li><li>Full recruitment lifecycle data</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">System Architecture</div><h2>Event-driven pipeline from source to schedule</h2><div class="architecture-flow"><div class="flow-title">End-to-end recruitment flow with Zapier + n8n orchestration</div><canvas class="flow-canvas" id="flow-healthcare" width="1000" height="240"></canvas></div><div class="m2col"><div class="mpanel"><h3>Social sourcing layer</h3><ul><li>Facebook and Instagram lead forms via Meta API</li><li>LinkedIn lead gen forms bridged via Zapier webhook</li><li>Indeed job posting integration</li><li>Unified candidate intake regardless of source</li></ul></div><div class="mpanel"><h3>Orchestration engine</h3><ul><li>n8n handles all heavy workflow logic</li><li>Zapier bridges LinkedIn where n8n has no native trigger</li><li>Hybrid approach: reliability plus flexibility</li><li>Error handling with retry logic on all API calls</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">Automation Logic</div><h2>Step-by-step workflow orchestration</h2><div class="m-step"><div class="m-step-num">1</div><div class="m-step-body"><strong>Lead capture and normalization</strong><p>Candidate submits on any source. n8n normalizes all fields into a standard schema: name, email, phone, resume link, source channel.</p></div></div><div class="m-step"><div class="m-step-num">2</div><div class="m-step-body"><strong>Deduplication check</strong><p>Queries Zoho CRM for existing records by email and phone. If duplicate found, merges data and updates the record without creating a second profile.</p></div></div><div class="m-step"><div class="m-step-num">3</div><div class="m-step-body"><strong>CRM sync and record creation</strong><p>Creates or updates candidate record in Zoho CRM. Custom modules track recruitment stage, source, and full interaction history.</p></div></div><div class="m-step"><div class="m-step-num">4</div><div class="m-step-body"><strong>Credential verification</strong><p>Sapphire Check validates licenses, certifications, and background. Result logs to CRM and Supabase audit trail.</p></div></div><div class="m-step"><div class="m-step-num">5</div><div class="m-step-body"><strong>AI screening and scoring</strong><p>Candidate profile is sent to OpenAI and evaluated against job description, required skills, and experience level. Returns score 0-100 with rationale.</p></div></div><div class="m-step"><div class="m-step-num">6</div><div class="m-step-body"><strong>Routing and scheduling</strong><p>High-score candidates receive Calendly interview link via AI-personalized email. Low-score candidates receive automated rejection. All outcomes are logged.</p></div></div><div class="m-code">Error handling: Retry on API timeout (3 attempts, exponential backoff)
 On failure: Log to Supabase error table, alert recruiter via Slack
 Deduplication prevents double CRM entries on webhook replay
-LinkedIn Zapier bridge: fires once per lead, idempotent webhook endpoint</div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Tech Stack Breakdown</div>
-        <h2>Categorized by layer</h2>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Orchestration</h3>
-            <div class="m-stack"><span class="m-tag">n8n</span><span class="m-tag">Zapier (LinkedIn bridge)</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>AI / LLMs</h3>
-            <div class="m-stack"><span class="m-tag">OpenAI GPT-4</span><span class="m-tag">AI email generation</span><span class="m-tag">Scoring logic</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>CRM / Tools</h3>
-            <div class="m-stack"><span class="m-tag">Zoho CRM</span><span class="m-tag">Calendly</span><span class="m-tag">Sapphire Check</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Data Layer</h3>
-            <div class="m-stack"><span class="m-tag">Supabase</span><span class="m-tag">Audit trail</span><span class="m-tag">Deduplication engine</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Communication</h3>
-            <div class="m-stack"><span class="m-tag">AI email outreach</span><span class="m-tag">Calendar invites</span><span class="m-tag">Status notifications</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Social Sourcing</h3>
-            <div class="m-stack"><span class="m-tag">Facebook Lead Ads</span><span class="m-tag">Instagram</span><span class="m-tag">LinkedIn</span><span class="m-tag">Indeed</span></div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Results / Impact</div>
-        <h2>Before vs. after</h2>
-        <div class="m-ba">
-          <div class="m-ba-col">
-            <div class="m-ba-label before">Before</div>
-            <ul>
-              <li>40+ hours/week on manual recruiting tasks</li>
-              <li>6+ fragmented platforms with no single source of truth</li>
-              <li>Duplicate candidate records across systems</li>
-              <li>Slow time-to-hire due to manual screening</li>
-              <li>No applicant history or interaction tracking</li>
-              <li>LinkedIn leads manually entered</li>
-            </ul>
-          </div>
-          <div class="m-ba-col">
-            <div class="m-ba-label after">After</div>
-            <ul>
-              <li>~10 hours/week — 75% reduction in admin time</li>
-              <li>Unified pipeline across 8+ integrated platforms</li>
-              <li>Automated deduplication with 99%+ accuracy</li>
-              <li>AI screening running 24/7, ~40% faster to interview</li>
-              <li>Full applicant timeline and history in CRM</li>
-              <li>LinkedIn leads auto-captured via Zapier + n8n</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">System Highlights</div>
-        <h2>What makes this system defensible</h2>
-        <ul class="m-highlights">
-          <li>Event-driven architecture — every trigger fires downstream actions automatically without polling</li>
-          <li>Zero manual handoffs — from lead capture through interview booking, no recruiter action required</li>
-          <li>Hybrid Zapier + n8n design elegantly solves LinkedIn's API gap without custom LinkedIn integration</li>
-          <li>Fail-safe retry logic with exponential backoff prevents data loss on transient API failures</li>
-          <li>Centralized data in Zoho CRM + Supabase builds a reusable talent database — past applicants become future pipeline</li>
-        </ul>
-      </div>
-
-    </div>
+LinkedIn Zapier bridge: fires once per lead, idempotent webhook endpoint</div></div>
+    <div class="msec"><div class="msec-tag">Tech Stack Breakdown</div><h2>Categorized by layer</h2><div class="m2col"><div class="mpanel"><h3>Orchestration</h3><div class="m-stack"><span class="m-tech-pill">n8n</span><span class="m-tech-pill">Zapier (LinkedIn bridge)</span></div></div><div class="mpanel"><h3>AI / LLMs</h3><div class="m-stack"><span class="m-tech-pill">OpenAI GPT-4</span><span class="m-tech-pill">AI email generation</span><span class="m-tech-pill">Scoring logic</span></div></div><div class="mpanel"><h3>CRM / Tools</h3><div class="m-stack"><span class="m-tech-pill">Zoho CRM</span><span class="m-tech-pill">Calendly</span><span class="m-tech-pill">Sapphire Check</span></div></div><div class="mpanel"><h3>Data Layer</h3><div class="m-stack"><span class="m-tech-pill">Supabase</span><span class="m-tech-pill">Audit trail</span><span class="m-tech-pill">Deduplication engine</span></div></div><div class="mpanel"><h3>Communication</h3><div class="m-stack"><span class="m-tech-pill">AI email outreach</span><span class="m-tech-pill">Calendar invites</span><span class="m-tech-pill">Status notifications</span></div></div><div class="mpanel"><h3>Social Sourcing</h3><div class="m-stack"><span class="m-tech-pill">Facebook Lead Ads</span><span class="m-tech-pill">Instagram</span><span class="m-tech-pill">LinkedIn</span><span class="m-tech-pill">Indeed</span></div></div></div></div>
+    <div class="msec"><div class="msec-tag">Results / Impact</div><h2>Before vs. after</h2><div class="ba-grid"><div class="ba-panel before"><div class="ba-panel-label">Before</div><ul><li>40+ hours/week on manual recruiting tasks</li><li>6+ fragmented platforms with no single source of truth</li><li>Duplicate candidate records across systems</li><li>Slow time-to-hire due to manual screening</li><li>No applicant history or interaction tracking</li><li>LinkedIn leads manually entered</li></ul></div><div class="ba-panel after"><div class="ba-panel-label">After</div><ul><li>~10 hours/week — 75% reduction in admin time</li><li>Unified pipeline across 8+ integrated platforms</li><li>Automated deduplication with 99%+ accuracy</li><li>AI screening running 24/7, ~40% faster to interview</li><li>Full applicant timeline and history in CRM</li><li>LinkedIn leads auto-captured via Zapier + n8n</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">System Highlights</div><h2>What makes this system defensible</h2><div class="m-highlights"><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Event-driven architecture</strong> — every trigger fires downstream actions automatically without polling.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Zero manual handoffs</strong> — from lead capture through interview booking, no recruiter action required.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Hybrid Zapier + n8n design</strong> solves LinkedIn's API gap without custom LinkedIn integration.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Fail-safe retry logic</strong> with exponential backoff prevents data loss on transient API failures.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Centralized data</strong> in Zoho CRM + Supabase builds a reusable talent database for future pipelines.</p></div></div></div>
   </div>
 </div>
+</div>
 
-<!-- MODAL: Monday / Enterprise Operations -->
+<!-- Modal: Monday -->
 <div class="modal-backdrop" id="modal-monday" role="dialog" aria-modal="true" aria-label="Enterprise Operations Workspace case study">
-  <div class="modal-shell">
-    <div class="modal-progress" id="mprog-monday"></div>
-    <div class="modal-header">
-      <div class="modal-header-left">
-        <span class="modal-badge">PMO · SSOT · Monday.com</span>
-        <span class="modal-title">Enterprise Operations Workspace</span>
-      </div>
-      <button class="modal-close" onclick="closeModal('monday')" aria-label="Close modal">✕</button>
-    </div>
-    <div class="modal-body" id="mbody-monday">
-
-      <div class="m-hero">
-        <h1>Enterprise Operations Workspace</h1>
-        <p class="m-hero-sub">A centralized operational backbone built on monday.com Standard tier — consolidating portfolio governance, task execution, escalation management, and departmental visibility into a Single Source of Truth. All heavy automation logic handled by n8n, consuming zero monday.com automation credits.</p>
-      </div>
-
-      <div class="m-stats">
-        <div class="m-stat"><div class="m-stat-num">5</div><div class="m-stat-label">Master boards</div></div>
-        <div class="m-stat"><div class="m-stat-num">~860</div><div class="m-stat-label">Monthly n8n runs</div></div>
-        <div class="m-stat"><div class="m-stat-num">0</div><div class="m-stat-label">Automation credits</div></div>
-        <div class="m-stat"><div class="m-stat-num">15-min</div><div class="m-stat-label">Sync cadence</div></div>
-      </div>
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Problem Statement</div>
-        <h2>Departmental silos were creating operational debt</h2>
-        <p>The organization managed projects across a fragmented collection of individual boards, spreadsheets, and departmental workspaces. Each project had its own task board with no relational link to the portfolio. Leadership had no unified view of project health. Overdue tasks went undetected until manually reviewed. Risk escalations were informal and inconsistent.</p>
-        <p>The high automation credit consumption from monday.com's native automations created cost pressure. The goal: consolidate everything into a governed SSOT architecture with no per-credit automation overhead.</p>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">System Architecture</div>
-        <h2>Monday as UI + database · n8n as orchestration engine</h2>
-        <div class="m-flow">Master Projects Board → Board Relation → Master Tasks Board → n8n Engine (every 15 min) → Overdue Calculation → Days Remaining Update → Escalations Board (auto-created) → Leadership Dashboards</div>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Monday Native (UI + DB)</h3>
-            <ul>
-              <li>Department mirror column — lookup from Projects</li>
-              <li>Status formatting and dashboard views</li>
-              <li>Manual data entry for project managers</li>
-              <li>Board relations: Projects ↔ Tasks ↔ Escalations</li>
-              <li>SharePoint links stored in file columns</li>
-            </ul>
-          </div>
-          <div class="m-panel">
-            <h3>n8n Workflow Engine</h3>
-            <ul>
-              <li>Overdue calculation: Yes / On time</li>
-              <li>Days remaining: computed daily delta</li>
-              <li>Auto-creates escalation for overdue tasks</li>
-              <li>Rate limited: 0.5s between API mutations</li>
-              <li>Schedule: every 15 min, weekdays 8AM–6PM ET</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Board Architecture</div>
-        <h2>Five boards · Zero duplication</h2>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Master Projects</h3>
-            <ul>
-              <li>Department: dropdown_mm3jy0qd</li>
-              <li>In-Charge, Status, Health, Priority, Due Date</li>
-              <li>Linked Tasks (mirror column)</li>
-              <li>Portfolio-level governance view</li>
-            </ul>
-          </div>
-          <div class="m-panel">
-            <h3>Master Tasks</h3>
-            <ul>
-              <li>Project connection: board_relation_mm3jp2t3</li>
-              <li>Department mirror: lookup_mm3jpvfa</li>
-              <li>Overdue: color_mm3j6cqf</li>
-              <li>Days Remaining: numeric_mm3j1175</li>
-              <li>Due Date: date_mm3jwed7</li>
-            </ul>
-          </div>
-          <div class="m-panel">
-            <h3>Escalations</h3>
-            <ul>
-              <li>Related Task: board_relation_mm3jt0yj</li>
-              <li>Severity: color_mm3j24e1 (auto = High)</li>
-              <li>Status: color_mm3jdh0j (auto = Pending)</li>
-              <li>No duplicate escalations per task</li>
-            </ul>
-          </div>
-          <div class="m-panel">
-            <h3>Project Requests + Departments</h3>
-            <ul>
-              <li>Intake pipeline for new project submissions</li>
-              <li>Department reference data for dropdown consistency</li>
-              <li>Approval workflow (planned Phase 2)</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Automation Logic</div>
-        <h2>n8n overdue and escalation engine</h2>
-        <div class="m-code">Schedule: Every 15 min — Mon–Fri, 8AM–6PM ET (skips weekends)
+<div class="modal-panel" id="modal-monday-panel">
+  <div class="modal-header"><div class="modal-header-left"><div><div class="modal-eyebrow">PMO · SSOT · Monday.com</div><div class="modal-title">Enterprise Operations Workspace</div></div></div><button class="modal-close" onclick="closeModal('monday')" aria-label="Close">✕</button></div>
+  <div class="modal-scroll-bar"><div class="modal-scroll-fill" id="fill-monday"></div></div>
+  <div class="modal-body" id="body-monday">
+    <div class="modal-hero"><div class="modal-hero-badge">Monday.com Standard · n8n Orchestration · Zero automation credits</div><h1>Enterprise Operations Workspace</h1><p>A centralized operational backbone built on monday.com Standard tier — consolidating portfolio governance, task execution, escalation management, and departmental visibility into a Single Source of Truth. All heavy automation logic handled by n8n, consuming zero monday.com automation credits.</p></div>
+    <div class="modal-stats"><div class="mstat"><span class="mstat-val">4</span><span class="mstat-label">Master boards</span></div><div class="mstat"><span class="mstat-val">~860</span><span class="mstat-label">Monthly n8n runs</span></div><div class="mstat"><span class="mstat-val">0</span><span class="mstat-label">Automation credits</span></div><div class="mstat"><span class="mstat-val">15-min</span><span class="mstat-label">Sync cadence</span></div></div>
+    <div class="msec"><div class="msec-tag">Problem Statement</div><h2>Departmental silos were creating operational debt</h2><p>The organization managed projects across a fragmented collection of individual boards, spreadsheets, and departmental workspaces. Each project had its own task board with no relational link to the portfolio. Leadership had no unified view of project health. Overdue tasks went undetected until manually reviewed. Risk escalations were informal and inconsistent.</p><p>The high automation credit consumption from monday.com's native automations created cost pressure. The goal: consolidate everything into a governed SSOT architecture with no per-credit automation overhead.</p><div class="m2col"><div class="mpanel"><h3>Key challenges</h3><ul><li>Separate boards per department and project</li><li>Duplicated task data across locations</li><li>No single source of truth for portfolio health</li><li>Manual overdue tracking and escalation</li><li>Inconsistent reporting for leadership</li><li>High automation credit consumption</li></ul></div><div class="mpanel"><h3>Business impact</h3><ul><li>Delayed risk identification</li><li>Inconsistent project governance</li><li>Leadership lacked real-time visibility</li><li>Unable to scale operations efficiently</li><li>High maintenance overhead for duplicated boards</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">System Architecture</div><h2>Monday as UI + database · n8n as orchestration engine</h2><div class="architecture-flow"><div class="flow-title">Master Operations Workflow — SSOT with n8n orchestration</div><canvas class="flow-canvas" id="flow-monday" width="1000" height="280"></canvas></div><div class="m2col"><div class="mpanel"><h3>Monday Native (UI + DB)</h3><ul><li>Department mirror column — lookup from Projects</li><li>Status formatting and dashboard views</li><li>Manual data entry for project managers</li><li>Board relations: Projects ↔ Tasks ↔ Escalations</li><li>SharePoint links stored in file columns</li></ul></div><div class="mpanel"><h3>n8n Workflow Engine</h3><ul><li>Overdue calculation: Yes / On time</li><li>Days remaining: computed daily delta</li><li>Auto-creates escalation for overdue tasks</li><li>Rate limited: 0.5s between API mutations</li><li>Schedule: every 15 min, weekdays 8AM-6PM ET</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">Board Architecture</div><h2>Four boards · Zero duplication</h2><div class="m2col"><div class="mpanel"><h3>Master Projects</h3><ul><li>Department: dropdown_mm3jy0qd</li><li>In-Charge, Status, Health, Priority, Due Date</li><li>Linked Tasks mirror column</li><li>Portfolio-level governance view</li></ul></div><div class="mpanel"><h3>Master Tasks</h3><ul><li>Project connection: board_relation_mm3jp2t3</li><li>Department mirror: lookup_mm3jpvfa</li><li>Overdue: color_mm3j6cqf</li><li>Days Remaining: numeric_mm3j1175</li><li>Due Date: date_mm3jwed7</li></ul></div><div class="mpanel"><h3>Escalations</h3><ul><li>Related Task: board_relation_mm3jt0yj</li><li>Severity: color_mm3j24e1 (auto = High)</li><li>Status: color_mm3jdh0j (auto = Pending)</li><li>No duplicate escalations per task</li></ul></div><div class="mpanel"><h3>Project Requests</h3><ul><li>Intake pipeline for new project submissions</li><li>Department reference data maintained as lookup source</li><li>Approval workflow planned for Phase 2</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">Automation Logic</div><h2>n8n overdue and escalation engine</h2><div class="m-code">Schedule: Every 15 min — Mon-Fri, 8AM-6PM ET (skips weekends)
 Monthly executions: ~860 (well within n8n free tier 2,500 limit)
 
 Workflow steps:
@@ -1586,365 +450,167 @@ Workflow steps:
    → Create Escalation record (Severity = High, Status = Pending, Date = Today)
 6. If escalation already exists: skip (no duplicates)
 
-Rate limiting: 0.5s delay between mutations to respect monday.com API limits</div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Tech Stack Breakdown</div>
-        <h2>Categorized by layer</h2>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Orchestration</h3>
-            <div class="m-stack"><span class="m-tag">n8n (self-hosted)</span><span class="m-tag">GraphQL API</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Project Management</h3>
-            <div class="m-stack"><span class="m-tag">Monday.com Standard</span><span class="m-tag">Board relations</span><span class="m-tag">Mirror columns</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>File Management</h3>
-            <div class="m-stack"><span class="m-tag">Microsoft SharePoint</span><span class="m-tag">Links-only in monday</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Planned integrations</h3>
-            <div class="m-stack"><span class="m-tag">Outlook calendar sync</span><span class="m-tag">Email notifications</span><span class="m-tag">SharePoint doc sync</span></div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Results / Impact</div>
-        <h2>Before vs. after</h2>
-        <div class="m-ba">
-          <div class="m-ba-col">
-            <div class="m-ba-label before">Before</div>
-            <ul>
-              <li>Separate boards per department and project</li>
-              <li>No centralized portfolio health view</li>
-              <li>Manual overdue tracking and escalation</li>
-              <li>High automation credit consumption</li>
-              <li>Inconsistent governance and reporting</li>
-              <li>Leadership lacked real-time visibility</li>
-            </ul>
-          </div>
-          <div class="m-ba-col">
-            <div class="m-ba-label after">After</div>
-            <ul>
-              <li>5 master boards — zero duplication</li>
-              <li>Real-time portfolio dashboard for leadership</li>
-              <li>Auto-generated escalations within 15 min of due date</li>
-              <li>Zero automation credits consumed — all logic in n8n</li>
-              <li>Consistent governance with defined role-based dashboards</li>
-              <li>Validated at scale: 50+ tasks bulk-imported via CSV</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">System Highlights</div>
-        <h2>What makes this architecture defensible</h2>
-        <ul class="m-highlights">
-          <li>True SSOT — all dashboards read from master boards, zero data duplication across views or departments</li>
-          <li>n8n-first approach keeps Monday as a pure UI and database layer, eliminating per-credit automation cost entirely</li>
-          <li>Escalation deduplication logic prevents repeated escalation records for the same task</li>
-          <li>Rate-limited API mutations (0.5s delay) ensure stability within monday.com API constraints at scale</li>
-          <li>Architecture stress-tested with a 50+ task CSV bulk import — maintained full relational integrity with no manual intervention</li>
-        </ul>
-      </div>
-
-    </div>
+Rate limiting: 0.5s delay between mutations to respect monday.com API limits</div></div>
+    <div class="msec"><div class="msec-tag">Tech Stack Breakdown</div><h2>Categorized by layer</h2><div class="m2col"><div class="mpanel"><h3>Orchestration</h3><div class="m-stack"><span class="m-tech-pill">n8n (self-hosted)</span><span class="m-tech-pill">GraphQL API</span></div></div><div class="mpanel"><h3>Project Management</h3><div class="m-stack"><span class="m-tech-pill">Monday.com Standard</span><span class="m-tech-pill">Board relations</span><span class="m-tech-pill">Mirror columns</span></div></div><div class="mpanel"><h3>File Management</h3><div class="m-stack"><span class="m-tech-pill">Microsoft SharePoint</span><span class="m-tech-pill">Links-only in monday</span></div></div><div class="mpanel"><h3>Planned integrations</h3><div class="m-stack"><span class="m-tech-pill">Outlook calendar sync</span><span class="m-tech-pill">Email notifications</span><span class="m-tech-pill">SharePoint doc sync</span></div></div></div></div>
+    <div class="msec"><div class="msec-tag">Results / Impact</div><h2>Before vs. after</h2><div class="ba-grid"><div class="ba-panel before"><div class="ba-panel-label">Before</div><ul><li>Separate boards per department and project</li><li>No centralized portfolio health view</li><li>Manual overdue tracking and escalation</li><li>High automation credit consumption</li><li>Inconsistent governance and reporting</li><li>Leadership lacked real-time visibility</li></ul></div><div class="ba-panel after"><div class="ba-panel-label">After</div><ul><li>4 master boards — zero duplication</li><li>Real-time portfolio dashboard for leadership</li><li>Auto-generated escalations within 15 min of due date</li><li>Zero automation credits consumed — all logic in n8n</li><li>Consistent governance with role-based dashboards</li><li>Validated at scale: 50+ tasks bulk-imported via CSV</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">System Highlights</div><h2>What makes this architecture defensible</h2><div class="m-highlights"><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>True SSOT</strong> — all dashboards read from master boards, zero data duplication across views or departments.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>n8n-first approach</strong> keeps Monday as a pure UI and database layer, eliminating per-credit automation cost entirely.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Escalation deduplication</strong> prevents repeated escalation records for the same task.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Rate-limited API mutations</strong> ensure stability within monday.com API constraints at scale.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Stress-tested architecture</strong> with a 50+ task CSV bulk import and no manual intervention.</p></div></div></div>
   </div>
 </div>
+</div>
 
-<!-- MODAL: SPX / Logistics -->
+<!-- Modal: SPX -->
 <div class="modal-backdrop" id="modal-spx" role="dialog" aria-modal="true" aria-label="Logistics Operations Automation case study">
-  <div class="modal-shell">
-    <div class="modal-progress" id="mprog-spx"></div>
-    <div class="modal-header">
-      <div class="modal-header-left">
-        <span class="modal-badge">Singapore Logistics · WhatsApp</span>
-        <span class="modal-title">Logistics Operations Automation</span>
-      </div>
-      <button class="modal-close" onclick="closeModal('spx')" aria-label="Close modal">✕</button>
-    </div>
-    <div class="modal-body" id="mbody-spx">
+<div class="modal-panel" id="modal-spx-panel">
+  <div class="modal-header"><div class="modal-header-left"><div><div class="modal-eyebrow">Singapore Logistics · WhatsApp</div><div class="modal-title">Logistics Operations Automation</div></div></div><button class="modal-close" onclick="closeModal('spx')" aria-label="Close">✕</button></div>
+  <div class="modal-scroll-bar"><div class="modal-scroll-fill" id="fill-spx"></div></div>
+  <div class="modal-body" id="body-spx">
+    <div class="modal-hero"><div class="modal-hero-badge">SPX · Singapore First-Mile · n8n + WhatsApp API</div><h1>Logistics Operations Automation System</h1><p>A driver monitoring, late detection, and automated escalation system for a Singapore-based logistics subcontractor. Built on n8n + WhatsApp API + Google Sheets, the system reduced admin follow-up workload by 70% and eliminated missed pickups caused by undetected delays.</p></div>
+    <div class="modal-stats"><div class="mstat"><span class="mstat-val">70%</span><span class="mstat-label">Admin workload reduction</span></div><div class="mstat"><span class="mstat-val">5-min</span><span class="mstat-label">Detection cadence</span></div><div class="mstat"><span class="mstat-val">3</span><span class="mstat-label">Retry attempts</span></div><div class="mstat"><span class="mstat-val">Hourly</span><span class="mstat-label">Owner reports</span></div></div>
+    <div class="msec"><div class="msec-tag">Problem Statement</div><h2>Manual monitoring was creating operational burnout</h2><p>A Singapore logistics subcontractor (3 drivers, 3 attendants, 2 vans) relied on the SPX mobile app for parcel scanning and assignment monitoring, but all tracking and follow-ups were entirely manual. Admins had to continuously watch the SPX screen and chase drivers by phone whenever a delay was suspected.</p><p>Drivers frequently started late without accountability. Missed pickups caused financial penalties and damaged client relationships. Store closing windows were being missed. The owner required constant updates that admins had to generate manually every hour.</p><div class="m2col"><div class="mpanel"><h3>Operational challenges</h3><ul><li>Admins manually monitored SPX app continuously</li><li>Drivers started late without accountability</li><li>Admins constantly chased drivers by phone</li><li>Missed pickups from undetected delays</li><li>Owner micro-managed operations constantly</li></ul></div><div class="mpanel"><h3>Business impact</h3><ul><li>High admin stress and burnout</li><li>Financial penalties from missed pickups</li><li>Delayed warehouse handovers</li><li>Poor management visibility</li><li>Inability to scale without adding headcount</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">Data Architecture</div><h2>Normalized operational data layer</h2><p>The original Excel sheets were not automation-friendly — containing merged cells, summary rows, and inconsistent formatting. A normalized operational data layer was created to enable automation.</p><div class="m-code">Raw Operations Sheet → Normalization Layer → Automation-Ready Sheet → n8n Workflows → WhatsApp
 
-      <div class="m-hero">
-        <h1>Logistics Operations Automation System</h1>
-        <p class="m-hero-sub">A driver monitoring, late detection, and automated escalation system for a Singapore-based logistics subcontractor. Built on n8n + WhatsApp API + Google Sheets, the system reduced admin follow-up workload by 70% and eliminated missed pickups caused by undetected delays.</p>
-      </div>
+Columns: Date | Driver Name | Phone | Route / Area | Planned Start Time | Actual Start Time | Actual End Time | Status | Followup Count | Remarks</div></div>
+    <div class="msec"><div class="msec-tag">System Architecture</div><h2>Automated monitoring and escalation pipeline</h2><div class="architecture-flow"><div class="flow-title">Logistics automation workflow with n8n + WhatsApp</div><canvas class="flow-canvas" id="flow-spx" width="1000" height="280"></canvas></div><div class="m2col"><div class="mpanel"><h3>Workflow 1: Driver Late Detection</h3><ul><li>Runs every 5 minutes</li><li>Compares Planned vs Actual Start Time</li><li>Sends WhatsApp follow-up to late drivers</li><li>Retries up to 3 times</li><li>Escalates to admin group if unresponsive</li></ul></div><div class="mpanel"><h3>Workflow 2: Hourly Owner Report</h3><ul><li>Runs every hour</li><li>Aggregates driver statuses</li><li>Flags delays and escalations</li><li>Sends structured WhatsApp report</li><li>Reduces owner micro-management</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">Automation Workflow 1</div><h2>Driver late detection and automated follow-up</h2><div class="flow-block"><div class="fl"><span class="fl-num">01</span><span class="fl-text">Read normalized operational sheet from Google Sheets every 5 minutes.</span></div><div class="fl"><span class="fl-num">02</span><span class="fl-text">For each driver with Planned Start Time passed and Actual Start Time empty: classify as LATE.</span></div><div class="fl"><span class="fl-num">03</span><span class="fl-text">Send WhatsApp reminder to driver and increment follow-up counter in sheet.</span></div><div class="fl"><span class="fl-num">04</span><span class="fl-text">Wait 5 minutes and retry up to 3 attempts.</span></div><div class="fl"><span class="fl-num">05</span><span class="fl-text">If no response after 3 retries: mark Unresponsive, notify admin WhatsApp group, instruct admins to call manually.</span></div></div><div class="m-code">Driver message:
+"Operations Update: Your scheduled pickup at [Store] at [Time] requires attention. Please confirm your status or call dispatch."
 
-      <div class="m-stats">
-        <div class="m-stat"><div class="m-stat-num">70%</div><div class="m-stat-label">Admin workload reduction</div></div>
-        <div class="m-stat"><div class="m-stat-num">5-min</div><div class="m-stat-label">Detection cadence</div></div>
-        <div class="m-stat"><div class="m-stat-num">3</div><div class="m-stat-label">Retry attempts</div></div>
-        <div class="m-stat"><div class="m-stat-num">Hourly</div><div class="m-stat-label">Owner reports</div></div>
-      </div>
+Admin escalation:
+"ESCALATION: Driver [Name] unresponsive after 3 follow-ups for [Route]. Please contact immediately."</div></div>
+    <div class="msec"><div class="msec-tag">Escalation Architecture</div><h2>Automation-first with human intervention only when needed</h2><div class="mini-flow"><div class="mini-flow-node">Late Driver Detected</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">Automated WhatsApp Follow-up (Attempt 1)</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">5-minute wait · Retry 2</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">5-minute wait · Retry 3</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">No Response after 3 attempts</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">Admin Group Escalation · Manual Intervention</div></div></div>
+    <div class="msec"><div class="msec-tag">Automation Workflow 2</div><h2>Hourly owner operations report</h2><div class="m-code">Operations Update – [Timestamp]
 
-      <div class="m-section">
-        <div class="m-section-eyebrow">Problem Statement</div>
-        <h2>Manual monitoring was creating operational burnout</h2>
-        <p>A Singapore logistics subcontractor (3 drivers, 3 attendants, 2 vans) relied on the SPX mobile app for parcel scanning and assignment monitoring, but all tracking and follow-ups were entirely manual. Admins had to continuously watch the SPX screen and chase drivers by phone whenever a delay was suspected.</p>
-        <p>Drivers frequently started late without accountability. Missed pickups caused financial penalties and damaged client relationships. Store closing windows were being missed. The owner required constant updates that admins had to generate manually every hour. The admin team could not leave their screens during operations.</p>
-      </div>
+Active Drivers:
+• Driver A – On Route – Est. completion 10:30 AM
+• Driver B – Late – Follow-up Sent
+• Driver C – Completed – All pickups done
 
-      <hr class="m-divider">
+Operational Flags:
+• No missed pickups reported
+• 1 driver pending response
+• All stores confirmed open
 
-      <div class="m-section">
-        <div class="m-section-eyebrow">System Architecture</div>
-        <h2>Automated monitoring and escalation pipeline</h2>
-        <div class="m-flow">SPX App (manual entry) → Normalized Google Sheets → n8n Every 5 Min → Late Detection Logic → WhatsApp Driver Follow-up → Retry (×3) → Admin Group Escalation + Hourly Owner Report</div>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Data Architecture</h3>
-            <ul>
-              <li>Raw SPX data normalized into automation-friendly sheet</li>
-              <li>One row per driver operation — no merged cells</li>
-              <li>Columns: Driver, Phone, Route, Planned Start, Actual Start, Status, Follow-up Count</li>
-              <li>Enables clean n8n querying without parsing overhead</li>
-            </ul>
-          </div>
-          <div class="m-panel">
-            <h3>Workflow 1: Late Detection</h3>
-            <ul>
-              <li>Runs every 5 minutes during operations</li>
-              <li>Compares Planned vs Actual Start Time</li>
-              <li>Sends WhatsApp follow-up to late drivers</li>
-              <li>Retries up to 3 times before escalation</li>
-              <li>Escalates unresponsive drivers to admin group</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Automation Logic</div>
-        <h2>Driver monitoring workflow</h2>
-        <div class="m-step"><div class="m-step-num">1</div><div class="m-step-body"><strong>Read normalized operations sheet</strong><p>Query Google Sheets every 5 minutes. Filter for drivers where Planned Start Time has passed and Actual Start Time is empty.</p></div></div>
-        <div class="m-step"><div class="m-step-num">2</div><div class="m-step-body"><strong>Late driver detection</strong><p>Driver classified as LATE. Follow-up counter checked against sheet. If count is 0–2, proceed with WhatsApp message.</p></div></div>
-        <div class="m-step"><div class="m-step-num">3</div><div class="m-step-body"><strong>WhatsApp follow-up sent</strong><p>"Reminder: Your pickup at [Store] was scheduled for [Time]. Please update your status." Follow-up count incremented in Sheets.</p></div></div>
-        <div class="m-step"><div class="m-step-num">4</div><div class="m-step-body"><strong>Retry logic (×3)</strong><p>Waits 5 minutes per cycle. Up to 3 follow-up attempts before escalation trigger. Each attempt logged to sheet.</p></div></div>
-        <div class="m-step"><div class="m-step-num">5</div><div class="m-step-body"><strong>Admin escalation</strong><p>If follow-up count reaches 3 with no response: driver marked Unresponsive, admin WhatsApp group notified, admins instructed to call manually.</p></div></div>
-        <div class="m-step"><div class="m-step-num">6</div><div class="m-step-body"><strong>Hourly owner report (Workflow 2)</strong><p>Separate workflow runs hourly. Aggregates all driver statuses, flags delays and escalations, sends structured WhatsApp report to owner.</p></div></div>
-        <div class="m-code">Escalation rule: followupCount >= 3 AND actualStartTime IS EMPTY
-Admin message: "⚠️ ESCALATION: Driver [Name] unresponsive after 3 follow-ups for [Route]."
-Owner report cadence: Every 1 hour during operations
-Sheet update: Each action logged — prevents duplicate follow-ups on restart</div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Tech Stack Breakdown</div>
-        <h2>Categorized by layer</h2>
-        <div class="m-cols">
-          <div class="m-panel">
-            <h3>Orchestration</h3>
-            <div class="m-stack"><span class="m-tag">n8n (self-hosted)</span><span class="m-tag">Schedule triggers</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Communication</h3>
-            <div class="m-stack"><span class="m-tag">WhatsApp Business API</span><span class="m-tag">Driver messages</span><span class="m-tag">Admin group</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Data Layer</h3>
-            <div class="m-stack"><span class="m-tag">Google Sheets</span><span class="m-tag">Normalized schema</span><span class="m-tag">Follow-up counter</span></div>
-          </div>
-          <div class="m-panel">
-            <h3>Planned: OCR Layer</h3>
-            <div class="m-stack"><span class="m-tag">Tesseract OCR</span><span class="m-tag">Python</span><span class="m-tag">Docker</span><span class="m-tag">Screenshot parsing</span></div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">Results / Impact</div>
-        <h2>Before vs. after</h2>
-        <div class="m-ba">
-          <div class="m-ba-col">
-            <div class="m-ba-label before">Before</div>
-            <ul>
-              <li>Admins monitored SPX app continuously</li>
-              <li>Drivers chased by manual phone calls</li>
-              <li>No structured escalation chain</li>
-              <li>Owner required manual hourly updates</li>
-              <li>Missed pickups from undetected delays</li>
-              <li>Admins unable to leave their screens</li>
-            </ul>
-          </div>
-          <div class="m-ba-col">
-            <div class="m-ba-label after">After</div>
-            <ul>
-              <li>Automated 5-minute monitoring cycle</li>
-              <li>WhatsApp follow-ups sent automatically</li>
-              <li>3-retry escalation chain before human intervention</li>
-              <li>Structured hourly WhatsApp report to owner</li>
-              <li>Missed pickups from undetected delays eliminated</li>
-              <li>70% reduction in admin follow-up workload</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <hr class="m-divider">
-
-      <div class="m-section">
-        <div class="m-section-eyebrow">System Highlights</div>
-        <h2>What makes this system defensible</h2>
-        <ul class="m-highlights">
-          <li>Automation-first escalation: humans only intervene after 3 automated attempts fail — reducing unnecessary interruptions</li>
-          <li>Normalized data layer: raw SPX Excel sheets re-architected for automation compatibility without changing existing admin workflow</li>
-          <li>Idempotent follow-up logic: follow-up counter in Sheets prevents duplicate messages on n8n restart or retry</li>
-          <li>Dual-workflow design: monitoring (5-min) and reporting (hourly) are separate workflows — isolated failures don't affect each other</li>
-          <li>OCR roadmap: next phase uses Tesseract to auto-extract SPX screenshot data, removing the last remaining manual data entry step</li>
-        </ul>
-      </div>
-
-    </div>
+Escalations: None
+Next update in 1 hour.</div></div>
+    <div class="msec"><div class="msec-tag">Tech Stack Breakdown</div><h2>Categorized by layer</h2><div class="m2col"><div class="mpanel"><h3>Orchestration</h3><div class="m-stack"><span class="m-tech-pill">n8n (self-hosted)</span><span class="m-tech-pill">Schedule triggers</span></div></div><div class="mpanel"><h3>Communication</h3><div class="m-stack"><span class="m-tech-pill">WhatsApp Business API</span><span class="m-tech-pill">Driver messages</span><span class="m-tech-pill">Admin group</span></div></div><div class="mpanel"><h3>Data Layer</h3><div class="m-stack"><span class="m-tech-pill">Google Sheets</span><span class="m-tech-pill">Normalized schema</span><span class="m-tech-pill">Follow-up counter</span></div></div><div class="mpanel"><h3>Planned: OCR Layer</h3><div class="m-stack"><span class="m-tech-pill">Tesseract OCR</span><span class="m-tech-pill">Python</span><span class="m-tech-pill">Docker</span><span class="m-tech-pill">Screenshot parsing</span></div></div></div></div>
+    <div class="msec"><div class="msec-tag">Results / Impact</div><h2>Before vs. after</h2><div class="ba-grid"><div class="ba-panel before"><div class="ba-panel-label">Before</div><ul><li>Admins monitored SPX app continuously</li><li>Drivers chased by manual phone calls</li><li>No structured escalation chain</li><li>Owner required manual hourly updates</li><li>Missed pickups from undetected delays</li><li>Admins unable to leave their screens</li></ul></div><div class="ba-panel after"><div class="ba-panel-label">After</div><ul><li>Automated 5-minute monitoring cycle</li><li>WhatsApp follow-ups sent automatically</li><li>3-retry escalation chain before human intervention</li><li>Structured hourly WhatsApp report to owner</li><li>Missed pickups from undetected delays eliminated</li><li>70% reduction in admin follow-up workload</li></ul></div></div></div>
+    <div class="msec"><div class="msec-tag">System Highlights</div><h2>What makes this system defensible</h2><div class="m-highlights"><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Automation-first escalation</strong> — humans only intervene after 3 automated attempts fail.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Normalized data layer</strong> makes raw SPX exports automation-compatible without changing the admin workflow.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Idempotent follow-up logic</strong> uses a sheet counter to prevent duplicate messages on n8n restart or retry.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Dual-workflow design</strong> isolates monitoring and reporting so one failure does not block the other.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>OCR roadmap</strong> uses Tesseract to remove the last remaining manual data entry step.</p></div></div></div>
   </div>
+</div>
 </div>
 
 <script>
 (function(){
-  var prog = document.getElementById('progress');
-  function updateProg(){
-    var s = document.documentElement.scrollTop;
-    var h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    prog.style.transform = 'scaleX('+(s/h)+')';
+var cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring'),mx=window.innerWidth/2,my=window.innerHeight/2,cx=mx,cy=my,rx=mx,ry=my;
+if(cur&&ring&&window.matchMedia('(pointer:fine)').matches){
+  document.addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;document.body.classList.add('cursor-ready');},{passive:true});
+  document.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-ready','cursor-hover');},{passive:true});
+  (function animCursor(){
+    cx+=(mx-cx)*.35;cy+=(my-cy)*.35;rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
+    cur.style.left=cx.toFixed(2)+'px';cur.style.top=cy.toFixed(2)+'px';
+    ring.style.left=rx.toFixed(2)+'px';ring.style.top=ry.toFixed(2)+'px';
+    requestAnimationFrame(animCursor);
+  })();
+  document.querySelectorAll('a,button,.pcard,.stack-item,.mcard,.tcard,.sol-card,.jphase,.modal-close').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});});
+}
+
+var nav=document.getElementById('main-nav'),prog=document.getElementById('progress'),bt=document.getElementById('back-top');
+window.addEventListener('scroll',function(){var s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;if(prog)prog.style.transform='scaleX('+(h>0?s/h:0)+')';if(bt)bt.classList.toggle('show',s>500);if(nav)nav.classList.toggle('scrolled',s>60);},{passive:true});
+
+var revEls=document.querySelectorAll('.reveal');
+var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+revEls.forEach(function(el){ro.observe(el);});
+
+var isMobile=window.innerWidth<768;
+document.querySelectorAll('.pcard').forEach(function(card){
+  var isHovered=false,tiltX=0,tiltY=0,targetX=0,targetY=0,animId=null;
+  function lerpTilt(){
+    tiltX+=(targetX-tiltX)*.12;tiltY+=(targetY-tiltY)*.12;
+    if(!isMobile){card.style.transform='perspective(900px) rotateX('+tiltY+'deg) rotateY('+tiltX+'deg) translateZ(8px) scale(1.015)';}
+    if(isHovered){animId=requestAnimationFrame(lerpTilt);}
+    else{tiltX+=(0-tiltX)*.18;tiltY+=(0-tiltY)*.18;if(Math.abs(tiltX)>.01||Math.abs(tiltY)>.01){if(!isMobile){card.style.transform='perspective(900px) rotateX('+tiltY+'deg) rotateY('+tiltX+'deg) translateZ(0px) scale(1)';}animId=requestAnimationFrame(lerpTilt);}else if(!isMobile){card.style.transform='perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0) scale(1)';}}
   }
-  var bt = document.getElementById('back-top');
-  window.addEventListener('scroll', function(){
-    updateProg();
-    bt.classList.toggle('show', window.scrollY > 400);
-  }, {passive:true});
+  card.addEventListener('mousemove',function(e){if(isMobile)return;var rect=card.getBoundingClientRect(),cx=(e.clientX-rect.left)/rect.width,cy=(e.clientY-rect.top)/rect.height;targetX=(cx-.5)*10;targetY=-(cy-.5)*8;card.style.setProperty('--gx',(cx*100).toFixed(1)+'%');card.style.setProperty('--gy',(cy*100).toFixed(1)+'%');});
+  card.addEventListener('mouseenter',function(){isHovered=true;if(animId)cancelAnimationFrame(animId);animId=requestAnimationFrame(lerpTilt);});
+  card.addEventListener('mouseleave',function(){isHovered=false;targetX=0;targetY=0;if(animId)cancelAnimationFrame(animId);animId=requestAnimationFrame(lerpTilt);});
+});
 
-  var revEls = document.querySelectorAll('.reveal');
-  var ro = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting) e.target.classList.add('in');
-    });
-  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
-  revEls.forEach(function(el){ ro.observe(el); });
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var id=this.getAttribute('href').slice(1);if(!id)return;var el=document.getElementById(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}});});
 
-  document.querySelectorAll('.pcard').forEach(function(card){
-    card.addEventListener('mousemove', function(e){
-      var rect = card.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1)+'%';
-      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1)+'%';
-      card.style.setProperty('--mx', x);
-      card.style.setProperty('--my', y);
-    });
-  });
+var phases=document.querySelectorAll('.jphase');
+var po=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var idx=Array.from(phases).indexOf(e.target);e.target.style.transitionDelay=(idx*.08)+'s';e.target.style.opacity='1';e.target.style.transform='translateY(0)';po.unobserve(e.target);}});},{threshold:.1});
+phases.forEach(function(p){p.style.opacity='0';p.style.transform='translateY(18px)';p.style.transition='opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1)';po.observe(p);});
+var sItems=document.querySelectorAll('.stack-item');
+var so=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var idx=Array.from(sItems).indexOf(e.target);setTimeout(function(){e.target.style.opacity='1';e.target.style.transform='translateY(0) scale(1)';},idx*14);so.unobserve(e.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
+sItems.forEach(function(s){s.style.opacity='0';s.style.transform='translateY(12px) scale(.97)';s.style.transition='opacity .45s ease,transform .45s ease';so.observe(s);});
 
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click', function(e){
-      var id = this.getAttribute('href').slice(1);
-      if(!id) return;
-      var el = document.getElementById(id);
-      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
-    });
-  });
+/* Hero orchestration canvas */
+var canvas=document.getElementById('orch-canvas');
+if(canvas){
+  var ctx=canvas.getContext('2d'),W,H,nodes=[],ambientParticles=[],connections=[],mouse={x:-999,y:-999},dpr=Math.min(window.devicePixelRatio||1,2);
+  function resizeHero(){var hero=document.getElementById('hero');W=hero.offsetWidth;H=hero.offsetHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);buildNodes();}
+  function buildNodes(){nodes=[];connections=[];var isM=W<768,n1=isM?5:7,n2=isM?6:12,r1=isM?W*.18:W*.16,r2=isM?W*.35:W*.30;nodes.push({x:W*.5,y:H*.5,r:4,type:'hub',ox:0,oy:0,mx:0,my:0});for(var i=0;i<n1;i++){var a=(i/n1*Math.PI*2)+Math.PI/8;nodes.push({x:W*.5+Math.cos(a)*r1,y:H*.5+Math.sin(a)*r1*.65,r:2.5,pulse:Math.random()*Math.PI*2,pulseDir:1,type:'mid',offset:{x:(Math.random()-.5)*20,y:(Math.random()-.5)*20},ox:0,oy:0,mx:0,my:0});}for(var j=0;j<n2;j++){var a2=(j/n2*Math.PI*2)+Math.PI/14;nodes.push({x:W*.5+Math.cos(a2)*r2,y:H*.5+Math.sin(a2)*r2*.6,r:1.8,pulse:Math.random()*Math.PI*2,pulseDir:Math.random()>.5?1:-1,type:'outer',offset:{x:(Math.random()-.5)*30,y:(Math.random()-.5)*30},ox:0,oy:0,mx:0,my:0});}var hub=nodes[0],ring1=nodes.slice(1,1+n1),ring2=nodes.slice(1+n1);ring1.forEach(function(n){connections.push({a:hub,b:n,prog:Math.random(),speed:.003+Math.random()*.002,active:true,col:'pu'});});ring2.forEach(function(n,i){connections.push({a:ring1[i%ring1.length],b:n,prog:Math.random(),speed:.002+Math.random()*.002,active:Math.random()>.3,col:Math.random()>.5?'cy':'pu'});});ambientParticles=[];for(var ap=0;ap<25;ap++)ambientParticles.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.15,size:Math.random()*1.5+.3,life:Math.random(),decay:.001+Math.random()*.001});}
+  var t=0;
+  function drawHero(){ctx.clearRect(0,0,W,H);t+=.008;nodes.forEach(function(n,i){if(n.type==='hub')return;n.pulse+=.025*n.pulseDir;n.ox=n.offset.x*Math.sin(n.pulse*.4+i)*.3;n.oy=n.offset.y*Math.cos(n.pulse*.3+i)*.3;var dx=mouse.x-(n.x+n.ox),dy=mouse.y-(n.y+n.oy),dist=Math.sqrt(dx*dx+dy*dy),infl=Math.max(0,1-dist/180);n.mx=(dx/Math.max(dist,1))*infl*-8;n.my=(dy/Math.max(dist,1))*infl*-8;});connections.forEach(function(c){if(!c.active)return;var ax=c.a.x+(c.a.ox||0)+(c.a.mx||0),ay=c.a.y+(c.a.oy||0)+(c.a.my||0),bx=c.b.x+(c.b.ox||0)+(c.b.mx||0),by=c.b.y+(c.b.oy||0)+(c.b.my||0);ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.strokeStyle=c.col==='cy'?'rgba(79,209,197,.12)':'rgba(139,92,246,.1)';ctx.lineWidth=.7;ctx.stroke();c.prog+=c.speed;if(c.prog>1)c.prog=0;var px=ax+(bx-ax)*c.prog,py=ay+(by-ay)*c.prog;ctx.beginPath();ctx.arc(px,py,1.8,0,Math.PI*2);ctx.fillStyle=c.col==='cy'?'rgba(79,209,197,.9)':'rgba(167,139,250,.9)';ctx.fill();});nodes.forEach(function(n,i){var nx=n.x+(n.ox||0)+(n.mx||0),ny=n.y+(n.oy||0)+(n.my||0),pv=Math.sin(t*1.2+i*.7)*.5+.5;if(n.type==='hub'){[40,28,18].forEach(function(r,ri){ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.strokeStyle='rgba(139,92,246,'+(.04-ri*.01)*pv+')';ctx.lineWidth=1;ctx.stroke();});ctx.beginPath();ctx.arc(nx,ny,5,0,Math.PI*2);ctx.fillStyle='rgba(139,92,246,.8)';ctx.fill();ctx.beginPath();ctx.arc(nx,ny,3,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,.95)';ctx.fill();}else{var r=n.r*(1+pv*.25),col=n.type==='mid'?'rgba(139,92,246,':'rgba(79,209,197,';ctx.beginPath();ctx.arc(nx,ny,r+4,0,Math.PI*2);ctx.fillStyle=col+(.08*(pv+.3))+')';ctx.fill();ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.fillStyle=col+(.7+pv*.3)+')';ctx.fill();}});ambientParticles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;if(p.life<=0){p.x=Math.random()*W;p.y=Math.random()*H;p.life=Math.random();}ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle='rgba(139,92,246,'+(p.life*.15)+')';ctx.fill();});requestAnimationFrame(drawHero);}
+  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  window.addEventListener('resize',function(){isMobile=window.innerWidth<768;resizeHero();},{passive:true});
+  resizeHero();drawHero();
+}
 
-  var phases = document.querySelectorAll('.jphase');
-  var po = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){
-        var idx = Array.from(phases).indexOf(e.target);
-        e.target.style.transitionDelay = (idx * 0.07)+'s';
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-        po.unobserve(e.target);
-      }
-    });
-  },{threshold:0.1});
-  phases.forEach(function(p){
-    p.style.opacity = '0';
-    p.style.transform = 'translateY(16px)';
-    p.style.transition = 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-    po.observe(p);
-  });
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){if(w<2*r)r=w/2;if(h<2*r)r=h/2;this.moveTo(x+r,y);this.lineTo(x+w-r,y);this.quadraticCurveTo(x+w,y,x+w,y+r);this.lineTo(x+w,y+h-r);this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);this.lineTo(x+r,y+h);this.quadraticCurveTo(x,y+h,x,y+h-r);this.lineTo(x,y+r);this.quadraticCurveTo(x,y,x+r,y);return this;};
+}
 
-  var sItems = document.querySelectorAll('.stack-item');
-  var so = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){
-        var idx = Array.from(sItems).indexOf(e.target);
-        setTimeout(function(){
-          e.target.style.opacity = '1';
-          e.target.style.transform = 'translateY(0)';
-        }, idx * 18);
-        so.unobserve(e.target);
-      }
-    });
-  },{threshold:0.05,rootMargin:'0px 0px -20px 0px'});
-  sItems.forEach(function(s){
-    s.style.opacity = '0';
-    s.style.transform = 'translateY(10px)';
-    s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-    so.observe(s);
-  });
+var FLOW_DEFS={
+  healthcare:{
+    height:240,
+    nodes:[{name:'Social Sourcing',sub:'FB/IG/Indeed',x:.07,y:.5},{name:'Zapier',sub:'LinkedIn Bridge',x:.25,y:.5},{name:'Verification',sub:'Sapphire Check',x:.43,y:.5},{name:'AI Screening',sub:'OpenAI',x:.61,y:.5},{name:'Zoho CRM',sub:'Central DB',x:.79,y:.5},{name:'Interview',sub:'Calendly',x:.94,y:.5}],
+    connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3},{from:4,to:5,colorIdx:4}],
+    colors:['#a855f7','#f97316','#06b6d4','#ec4899','#10b981','#eab308']
+  },
+  monday:{
+    height:280,
+    nodes:[{name:'Master Projects',sub:'Portfolio',x:.08,y:.5},{name:'Master Tasks',sub:'Execution',x:.28,y:.5},{name:'n8n Engine',sub:'Overdue/Calc',x:.5,y:.5},{name:'Escalations',sub:'Auto-create',x:.72,y:.5},{name:'Dashboards',sub:'Leadership/Dept',x:.9,y:.5}],
+    connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3}],
+    colors:['#a855f7','#06b6d4','#f97316','#10b981','#ec4899']
+  },
+  spx:{
+    height:280,
+    nodes:[{name:'SPX App',sub:'Manual Entry',x:.07,y:.5},{name:'Google Sheets',sub:'Normalized Data',x:.25,y:.5},{name:'n8n Engine',sub:'5-min Monitoring',x:.5,y:.5},{name:'WhatsApp',sub:'Driver Follow-up',x:.73,y:.5},{name:'Admin/Owner',sub:'Escalation/Report',x:.92,y:.5}],
+    connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3}],
+    colors:['#a855f7','#f97316','#06b6d4','#10b981','#ec4899']
+  }
+};
+function FlowDiagram(canvasEl,id){
+  this.canvas=canvasEl;this.ctx=canvasEl.getContext('2d');this.def=FLOW_DEFS[id];this.particles=[];this.animId=null;this.running=false;this.isMobile=false;this.width=0;this.height=0;this.resize();this.initParticles();
+}
+FlowDiagram.prototype.getPos=function(node){var nodeW=this.isMobile?118:112,nodeH=42,padX=nodeW/2+10,padY=nodeH/2+8,idx=this.def.nodes.indexOf(node),count=this.def.nodes.length;if(this.isMobile&&node.mobileY!==undefined)return{x:this.width/2,y:Math.max(padY,Math.min(this.height-padY,node.mobileY*this.height))};var step=count>1?(this.width-padX*2)/(count-1):0;return{x:padX+(idx*step),y:Math.max(padY,Math.min(this.height-padY,node.y*this.height))};};
+FlowDiagram.prototype.resize=function(){var container=this.canvas.parentElement;this.isMobile=window.innerWidth<768;var nodes=this.def.nodes;if(this.isMobile&&nodes[0].mobileY===undefined){nodes.forEach(function(node,idx){node.mobileY=.1+(idx/(nodes.length-1))*.8;});}var targetWidth=Math.min(1000,container.clientWidth-32);if(targetWidth<360)targetWidth=360;this.width=targetWidth;this.height=this.isMobile?Math.max(280,nodes.length*62):this.def.height;this.canvas.width=this.width;this.canvas.height=this.height;this.canvas.style.width=this.width+'px';this.canvas.style.height=this.height+'px';};
+FlowDiagram.prototype.initParticles=function(){var self=this;this.particles=[];this.def.connections.forEach(function(_,idx){self.particles.push({connIdx:idx,progress:Math.random(),speed:.0025+Math.random()*.0025});});};
+FlowDiagram.prototype.drawNode=function(node,pos,color){var ctx=this.ctx,w=this.isMobile?118:112,h=42;ctx.shadowBlur=4;ctx.shadowColor=color;ctx.fillStyle='#16161c';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(pos.x-w/2,pos.y-h/2,w,h,10);ctx.fill();ctx.stroke();ctx.shadowBlur=0;var fontSize=this.isMobile?9:Math.max(9,Math.min(11,this.width/80));ctx.font='600 '+fontSize+'px "Inter", sans-serif';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillStyle='#fff';ctx.fillText(node.name,pos.x-w/2+10,pos.y-4);ctx.font=(fontSize-2)+'px "Inter", sans-serif';ctx.fillStyle='#a1a1aa';ctx.fillText(node.sub||'',pos.x-w/2+10,pos.y+12);};
+FlowDiagram.prototype.drawConnection=function(fromPos,toPos,color,progress){var ctx=this.ctx,cp1x,cp1y,cp2x,cp2y;if(this.isMobile){cp1x=fromPos.x;cp1y=fromPos.y+(toPos.y-fromPos.y)*.3;cp2x=toPos.x;cp2y=toPos.y-(toPos.y-fromPos.y)*.3;}else{cp1x=fromPos.x+(toPos.x-fromPos.x)*.35;cp1y=fromPos.y-8;cp2x=toPos.x-(toPos.x-fromPos.x)*.35;cp2y=toPos.y+8;}if(progress===null||progress===undefined){ctx.beginPath();ctx.moveTo(fromPos.x,fromPos.y);ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,toPos.x,toPos.y);ctx.strokeStyle=color+'cc';ctx.lineWidth=1.4;ctx.stroke();return;}var t=progress,x=Math.pow(1-t,3)*fromPos.x+3*Math.pow(1-t,2)*t*cp1x+3*(1-t)*Math.pow(t,2)*cp2x+Math.pow(t,3)*toPos.x,y=Math.pow(1-t,3)*fromPos.y+3*Math.pow(1-t,2)*t*cp1y+3*(1-t)*Math.pow(t,2)*cp2y+Math.pow(t,3)*toPos.y;ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.beginPath();ctx.arc(x,y,1.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();};
+FlowDiagram.prototype.draw=function(){var self=this,ctx=this.ctx;ctx.clearRect(0,0,this.width,this.height);this.def.connections.forEach(function(conn,idx){var fromPos=self.getPos(self.def.nodes[conn.from]),toPos=self.getPos(self.def.nodes[conn.to]),color=self.def.colors[conn.colorIdx%self.def.colors.length];self.drawConnection(fromPos,toPos,color,null,conn.dashed);self.particles.filter(function(p){return p.connIdx===idx;}).forEach(function(p){p.progress+=p.speed;if(p.progress>1)p.progress=0;self.drawConnection(fromPos,toPos,color,p.progress,conn.dashed);});});this.def.nodes.forEach(function(node,i){self.drawNode(node,self.getPos(node),self.def.colors[i%self.def.colors.length]);});};
+FlowDiagram.prototype.start=function(){if(this.running)return;this.running=true;var self=this;function loop(){if(!self.running)return;self.draw();self.animId=requestAnimationFrame(loop);}loop();};
+FlowDiagram.prototype.stop=function(){this.running=false;if(this.animId)cancelAnimationFrame(this.animId);};
+var flowInstances={};
+function initFlow(id){var canvasEl=document.getElementById('flow-'+id);if(!canvasEl)return;if(flowInstances[id]){flowInstances[id].resize();flowInstances[id].start();return;}flowInstances[id]=new FlowDiagram(canvasEl,id);flowInstances[id].start();}
+function stopFlow(id){if(flowInstances[id])flowInstances[id].stop();}
+window.addEventListener('resize',function(){isMobile=window.innerWidth<768;Object.keys(flowInstances).forEach(function(id){flowInstances[id].resize();});},{passive:true});
 
-  /* ── MODAL SYSTEM ── */
-  var activeModal = null;
-
-  window.openModal = function(id){
-    if(activeModal) closeModal(activeModal);
-    var backdrop = document.getElementById('modal-'+id);
-    if(!backdrop) return;
-    activeModal = id;
-    document.body.style.overflow = 'hidden';
-    backdrop.classList.add('open');
-    backdrop.focus();
-    // scroll progress for modal
-    var body = document.getElementById('mbody-'+id);
-    var progBar = document.getElementById('mprog-'+id);
-    if(body && progBar){
-      backdrop.addEventListener('scroll', function(){
-        var s = backdrop.scrollTop;
-        var h = backdrop.scrollHeight - backdrop.clientHeight;
-        progBar.style.transform = 'scaleX('+(h > 0 ? s/h : 0)+')';
-      }, {passive:true});
-    }
-  };
-
-  window.closeModal = function(id){
-    var backdrop = document.getElementById('modal-'+id);
-    if(!backdrop) return;
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-    activeModal = null;
-    // reset scroll
-    setTimeout(function(){ backdrop.scrollTop = 0; }, 350);
-  };
-
-  // Click outside modal shell to close
-  document.querySelectorAll('.modal-backdrop').forEach(function(backdrop){
-    backdrop.addEventListener('click', function(e){
-      if(e.target === backdrop){
-        var id = backdrop.id.replace('modal-','');
-        closeModal(id);
-      }
-    });
-  });
-
-  // ESC key to close
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && activeModal){
-      closeModal(activeModal);
-    }
-  });
-
+var activeModal=null;
+window.openModal=function(id){
+  if(activeModal)window.closeModal(activeModal);
+  var backdrop=document.getElementById('modal-'+id);if(!backdrop)return;
+  document.body.style.overflow='hidden';backdrop.classList.add('open');activeModal=id;backdrop.scrollTop=0;
+  setTimeout(function(){initFlow(id);},120);
+  updateModalScroll(id,backdrop);
+};
+window.closeModal=function(id){
+  var backdrop=document.getElementById('modal-'+id);if(!backdrop)return;
+  backdrop.classList.remove('open');document.body.style.overflow='';activeModal=null;stopFlow(id);
+};
+function updateModalScroll(id,backdrop){var fill=document.getElementById('fill-'+id);if(!fill)return;var total=backdrop.scrollHeight-backdrop.clientHeight;fill.style.width=(total>0?(backdrop.scrollTop/total*100):0)+'%';}
+document.querySelectorAll('.modal-backdrop').forEach(function(backdrop){backdrop.addEventListener('scroll',function(){var id=backdrop.id.replace('modal-','');updateModalScroll(id,backdrop);},{passive:true});backdrop.addEventListener('mousedown',function(e){if(e.target===backdrop)window.closeModal(backdrop.id.replace('modal-',''));});});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&activeModal)window.closeModal(activeModal);});
 })();
 </script>
 </body>
