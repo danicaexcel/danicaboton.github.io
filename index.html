@@ -133,6 +133,13 @@ nav.scrolled{background:rgba(10,11,16,.92)}
 .pcard-arrow{position:absolute;bottom:2rem;right:2rem;width:28px;height:28px;border-radius:6px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--pu-bright);opacity:0;transform:translateX(-8px) translateZ(0);transition:all .4s cubic-bezier(.16,1,.3,1);z-index:3}
 .pcard:hover .pcard-arrow{opacity:1;transform:translateX(0) translateZ(0);box-shadow:0 4px 16px rgba(139,92,246,.3)}
 
+/* 2-col grid for flagship when only 2 cards */
+.projects-grid-2{grid-template-columns:repeat(2,1fr)!important}
+.projects-grid-2 .pcard:not(:nth-child(3n+1)){border-left:none}
+.projects-grid-2 .pcard:nth-child(n+4){border-top:none}
+.projects-grid-2 .pcard:not(:first-child){border-left:1.5px solid var(--border)}
+.projects-grid-2 .pcard:nth-child(n+3){border-top:1.5px solid var(--border)}
+
 /* Shared content grids */
 .sol-grid,.models-grid,.testi-grid{display:grid;gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .sol-grid{grid-template-columns:repeat(2,1fr)}.models-grid,.testi-grid{grid-template-columns:repeat(3,1fr)}
@@ -188,7 +195,7 @@ footer{border-top:1px solid var(--border);padding:2.2rem;text-align:center}foote
 .modal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.8rem 0}.mstat{background:var(--bg-2);padding:1.3rem 1rem;text-align:center}.mstat-val{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:700;color:var(--white);letter-spacing:-.035em;display:block}.mstat-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.07em;text-transform:uppercase;display:block;margin-top:.3rem}
 .msec{margin-bottom:2.8rem;padding-bottom:2.8rem;border-bottom:1px solid var(--border)}.msec:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}.msec-tag{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.13em;text-transform:uppercase;color:var(--pu);margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem}.msec-tag::before{content:'';width:13px;height:1px;background:var(--pu);opacity:.7}
 .msec h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.025em;margin-bottom:1.1rem;line-height:1.3}.msec p{font-size:.85rem;color:var(--f2);line-height:1.75;margin-bottom:.85rem}
-.m2col,.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.2rem 0}.mpanel,.ba-panel{background:var(--bg-2);padding:1.5rem}.mpanel h3{font-size:.83rem;font-weight:600;color:var(--f1);margin-bottom:.8rem;letter-spacing:-.01em}.mpanel ul,.ba-panel ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}.mpanel ul li,.ba-panel ul li{font-size:.8rem;color:var(--f2);display:flex;align-items:flex-start;gap:.55rem;line-height:1.5}.mpanel ul li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--pu);opacity:.65;margin-top:.5rem;flex-shrink:0}.m-feature-list{display:flex;flex-direction:column;gap:.85rem}.m-feature{display:flex;align-items:flex-start;gap:.55rem}.m-feature-check{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.4;margin-top:.08rem;flex-shrink:0}.m-feature p{font-size:.8rem;color:var(--f2);line-height:1.52}.m-feature p strong{color:var(--f1);display:block;margin-bottom:.18rem}
+.m2col,.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.2rem 0}.mpanel,.ba-panel{background:var(--bg-2);padding:1.5rem}.mpanel h3{font-size:.83rem;font-weight:600;color:var(--f1);margin-bottom:.8rem;letter-spacing:-.01em}.mpanel ul,.ba-panel ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}.mpanel ul li,.ba-panel ul li{font-size:.8rem;color:var(--f2);display:flex;align-items:flex-start;gap:.55rem;line-height:1.5}.mpanel ul li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--pu);opacity:.65;margin-top:.5rem;flex-shrink:0}.m-feature-list{display:flex;flex-direction:column;gap:.85rem}.m-feature{display:flex;align-items:flex-start;gap:.55rem}.m-feature-check{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.4;margin-top:.08rem;flex-shrink:0}.m-feature p{font-size:.8rem;color:var(--f2);line-height:1.52;margin:0}.m-feature p strong{color:var(--f1);display:block;margin-bottom:.18rem}
 .flow-block{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin:1.2rem 0;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--f2);line-height:2}.flow-block .fl{display:flex;align-items:flex-start;gap:.85rem;padding:.38rem 0}.flow-block .fl-num{color:var(--pu);min-width:22px;font-size:.64rem;margin-top:.12rem}.flow-block .fl-text{color:var(--f2)}.flow-block .fl-note{color:var(--cy);font-size:.64rem}
 .m-code{background:rgba(0,0,0,.35);border:1px solid var(--border);border-left:2px solid var(--pu);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--f2);line-height:1.9;white-space:pre-wrap;margin:1rem 0}
 .m-step{display:flex;gap:1rem;margin-bottom:.85rem;padding:1rem 1.1rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px}.m-step-num{width:28px;height:28px;border-radius:50%;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--pu);flex-shrink:0}.m-step-body strong{font-size:.84rem;color:var(--white);display:block;margin-bottom:.2rem}.m-step-body p{font-size:.78rem;color:var(--f2);line-height:1.5;margin:0}
@@ -229,7 +236,6 @@ footer{border-top:1px solid var(--border);padding:2.2rem;text-align:center}foote
       <div class="dd-menu">
         <a href="#" onclick="openModal('healthcare');return false">Smart Recruitment Management</a>
         <a href="#" onclick="openModal('monday');return false">Enterprise Operations Workspace</a>
-        <a href="#" onclick="openModal('spx');return false">Logistics Operations Automation</a>
       </div>
     </div>
     <a href="#journey" class="nav-link-hide">Journey</a>
@@ -271,9 +277,9 @@ footer{border-top:1px solid var(--border);padding:2.2rem;text-align:center}foote
   <div class="reveal">
     <div class="section-eyebrow">Flagship Engagements</div>
     <h2 class="section-heading">Enterprise automation systems</h2>
-    <p class="section-sub">Three production systems, each a fully engineered operational backbone. Click any to open the full case study.</p>
+    <p class="section-sub">Two production systems, each a fully engineered operational backbone. Click any to open the full case study.</p>
   </div>
-  <div class="projects-grid reveal reveal-d1" id="proj-grid">
+  <div class="projects-grid projects-grid-2 reveal reveal-d1" id="proj-grid">
     <div class="pcard" onclick="openModal('healthcare')">
       <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
       <div class="pcard-content">
@@ -290,15 +296,6 @@ footer{border-top:1px solid var(--border);padding:2.2rem;text-align:center}foote
         <p>Centralized operational governance on monday.com: master projects, tasks, escalations, and n8n orchestration with a single source of truth and zero duplication.</p>
         <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/tEcD6CK.png" alt="Monday"></div><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><span class="pcard-tech-more">+2</span></div>
         <div class="pcard-metric">Single Source of Truth · 0 automation credits</div>
-      </div><span class="pcard-arrow">→</span>
-    </div>
-    <div class="pcard" onclick="openModal('spx')">
-      <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
-      <div class="pcard-content">
-        <div class="pcard-icon">🚚</div><div class="pcard-tag">Singapore Logistics · WhatsApp Automation</div><h3>Logistics Operations Automation</h3>
-        <p>Driver monitoring, late detection, escalation handling, and hourly owner reporting, reducing admin workload by 70% with full traceability.</p>
-        <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="pcard-tech-icon"><img src="https://imgur.com/HLCvjkG.png" alt="WhatsApp"></div><div class="pcard-tech-icon"><img src="https://imgur.com/xklNvsa.png" alt="Google Sheets"></div><div class="pcard-tech-icon"><img src="https://imgur.com/ogS17C9.png" alt="Tesseract OCR"></div><span class="pcard-tech-more">+1</span></div>
-        <div class="pcard-metric">5-min monitoring · 3 retries · auto-escalation</div>
       </div><span class="pcard-arrow">→</span>
     </div>
   </div>
@@ -472,51 +469,6 @@ Rate limiting: 0.5s delay between mutations to respect monday.com API limits</di
 </div>
 </div>
 
-<!-- Modal: SPX -->
-<div class="modal-backdrop" id="modal-spx" role="dialog" aria-modal="true" aria-label="Logistics Operations Automation case study">
-<div class="modal-panel" id="modal-spx-panel">
-  <div class="modal-header"><div class="modal-header-left"><div><div class="modal-eyebrow">Singapore Logistics · WhatsApp</div><div class="modal-title">Logistics Operations Automation</div></div></div><button class="modal-close" onclick="closeModal('spx')" aria-label="Close">✕</button></div>
-  <div class="modal-scroll-bar"><div class="modal-scroll-fill" id="fill-spx"></div></div>
-  <div class="modal-body" id="body-spx">
-    <div class="modal-hero"><div class="modal-hero-badge">SPX · Singapore First-Mile · n8n + WhatsApp API</div><h1>Logistics Operations Automation System</h1><p>A driver monitoring, late detection, and automated escalation system for a Singapore-based logistics subcontractor. Built on n8n + WhatsApp API + Google Sheets, the system reduced admin follow-up workload by 70% and eliminated missed pickups caused by undetected delays.</p></div>
-    <div class="modal-stats"><div class="mstat"><span class="mstat-val">70%</span><span class="mstat-label">Admin workload reduction</span></div><div class="mstat"><span class="mstat-val">5-min</span><span class="mstat-label">Detection cadence</span></div><div class="mstat"><span class="mstat-val">3</span><span class="mstat-label">Retry attempts</span></div><div class="mstat"><span class="mstat-val">Hourly</span><span class="mstat-label">Owner reports</span></div></div>
-    <div class="msec"><div class="msec-tag">Problem Statement</div><h2>Manual monitoring was creating operational burnout</h2><p>A Singapore logistics subcontractor (3 drivers, 3 attendants, 2 vans) relied on the SPX mobile app for parcel scanning and assignment monitoring, but all tracking and follow-ups were entirely manual. Admins had to continuously watch the SPX screen and chase drivers by phone whenever a delay was suspected.</p><p>Drivers frequently started late without accountability. Missed pickups caused financial penalties and damaged client relationships. Store closing windows were being missed. The owner required constant updates that admins had to generate manually every hour.</p><div class="m2col"><div class="mpanel"><h3>Operational challenges</h3><ul><li>Admins manually monitored SPX app continuously</li><li>Drivers started late without accountability</li><li>Admins constantly chased drivers by phone</li><li>Missed pickups from undetected delays</li><li>Owner micro-managed operations constantly</li></ul></div><div class="mpanel"><h3>Business impact</h3><ul><li>High admin stress and burnout</li><li>Financial penalties from missed pickups</li><li>Delayed warehouse handovers</li><li>Poor management visibility</li><li>Inability to scale without adding headcount</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Data Architecture</div><h2>Normalized operational data layer</h2><p>The original Excel sheets were not automation-friendly, containing merged cells, summary rows, and inconsistent formatting. A normalized operational data layer was created to enable automation.</p><div class="m-code">Raw Operations Sheet → Normalization Layer → Automation-Ready Sheet → n8n Workflows → WhatsApp
-
-Columns: Date | Driver Name | Phone | Route / Area | Planned Start Time | Actual Start Time | Actual End Time | Status | Followup Count | Remarks</div></div>
-    <div class="msec"><div class="msec-tag">System Architecture</div><h2>Automated monitoring and escalation pipeline</h2><div class="architecture-flow"><div class="flow-title">Logistics automation workflow with n8n + WhatsApp</div><canvas class="flow-canvas" id="flow-spx" width="1000" height="280"></canvas></div><div class="m2col"><div class="mpanel"><h3>Workflow 1: Driver Late Detection</h3><ul><li>Runs every 5 minutes</li><li>Compares Planned vs Actual Start Time</li><li>Sends WhatsApp follow-up to late drivers</li><li>Retries up to 3 times</li><li>Escalates to admin group if unresponsive</li></ul></div><div class="mpanel"><h3>Workflow 2: Hourly Owner Report</h3><ul><li>Runs every hour</li><li>Aggregates driver statuses</li><li>Flags delays and escalations</li><li>Sends structured WhatsApp report</li><li>Reduces owner micro-management</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Automation Workflow 1</div><h2>Driver late detection and automated follow-up</h2><div class="flow-block"><div class="fl"><span class="fl-num">01</span><span class="fl-text">Read normalized operational sheet from Google Sheets every 5 minutes.</span></div><div class="fl"><span class="fl-num">02</span><span class="fl-text">For each driver with Planned Start Time passed and Actual Start Time empty: classify as LATE.</span></div><div class="fl"><span class="fl-num">03</span><span class="fl-text">Send WhatsApp reminder to driver and increment follow-up counter in sheet.</span></div><div class="fl"><span class="fl-num">04</span><span class="fl-text">Wait 5 minutes and retry up to 3 attempts.</span></div><div class="fl"><span class="fl-num">05</span><span class="fl-text">If no response after 3 retries: mark Unresponsive, notify admin WhatsApp group, instruct admins to call manually.</span></div></div><div class="m-code">Driver message:
-"Operations Update: Your scheduled pickup at [Store] at [Time] requires attention. Please confirm your status or call dispatch."
-
-Admin escalation:
-"ESCALATION: Driver [Name] unresponsive after 3 follow-ups for [Route]. Please contact immediately."</div></div>
-    <div class="msec"><div class="msec-tag">Escalation Architecture</div><h2>Automation-first with human intervention only when needed</h2><div class="mini-flow"><div class="mini-flow-node">Late Driver Detected</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">Automated WhatsApp Follow-up (Attempt 1)</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">5-minute wait · Retry 2</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">5-minute wait · Retry 3</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">No Response after 3 attempts</div><div class="mini-flow-arrow">↓</div><div class="mini-flow-node">Admin Group Escalation · Manual Intervention</div></div></div>
-    <div class="msec"><div class="msec-tag">Automation Workflow 2</div><h2>Hourly owner operations report</h2><div class="m-code">Operations Update – [Timestamp]
-
-Active Drivers:
-• Driver A – On Route – Est. completion 10:30 AM
-• Driver B – Late – Follow-up Sent
-• Driver C – Completed – All pickups done
-
-Operational Flags:
-• No missed pickups reported
-• 1 driver pending response
-• All stores confirmed open
-
-Escalations: None
-Next update in 1 hour.</div></div>
-    <div class="msec"><div class="msec-tag">Tech Stack Breakdown</div><h2>Categorized by layer</h2><div class="m2col"><div class="mpanel"><h3>Orchestration</h3><div class="m-stack"><span class="m-tech-pill">n8n (self-hosted)</span><span class="m-tech-pill">Schedule triggers</span></div></div><div class="mpanel"><h3>Communication</h3><div class="m-stack"><span class="m-tech-pill">WhatsApp Business API</span><span class="m-tech-pill">Driver messages</span><span class="m-tech-pill">Admin group</span></div></div><div class="mpanel"><h3>Data Layer</h3><div class="m-stack"><span class="m-tech-pill">Google Sheets</span><span class="m-tech-pill">Normalized schema</span><span class="m-tech-pill">Follow-up counter</span></div></div><div class="mpanel"><h3>Planned: OCR Layer</h3><div class="m-stack"><span class="m-tech-pill">Tesseract OCR</span><span class="m-tech-pill">Python</span><span class="m-tech-pill">Docker</span><span class="m-tech-pill">Screenshot parsing</span></div></div></div></div>
-    <div class="msec"><div class="msec-tag">Results / Impact</div><h2>Before vs. after</h2><div class="ba-grid"><div class="ba-panel before"><div class="ba-panel-label">Before</div><ul><li>Admins monitored SPX app continuously</li><li>Drivers chased by manual phone calls</li><li>No structured escalation chain</li><li>Owner required manual hourly updates</li><li>Missed pickups from undetected delays</li><li>Admins unable to leave their screens</li></ul></div><div class="ba-panel after"><div class="ba-panel-label">After</div><ul><li>Automated 5-minute monitoring cycle</li><li>WhatsApp follow-ups sent automatically</li><li>3-retry escalation chain before human intervention</li><li>Structured hourly WhatsApp report to owner</li><li>Missed pickups from undetected delays eliminated</li><li>70% reduction in admin follow-up workload</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Resiliency Architecture</div><h2>Redundancy methods + full audit trail</h2><div class="m2col"><div class="mpanel"><h3>🔄 Redundancy &amp; fault tolerance</h3><div class="m-feature-list"><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Exponential backoff retry</strong>3 attempts with 2s, 4s, 8s delays before failure declaration</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Dual-path failover</strong>Primary webhook with automatic secondary endpoint trigger on timeout</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Idempotent processing</strong>Every webhook uses a unique transaction ID and duplicate requests are ignored</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Dead letter queue</strong>Failed messages are stored with full payload and can be replayed safely</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>State checkpointing</strong>Workflow state is saved after each major step and resumes from the last checkpoint on crash</p></div></div></div><div class="mpanel"><h3>📋 Observability &amp; audit</h3><div class="m-feature-list"><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Every state change logged</strong>Supabase audit table captures timestamps, actor, and before or after values</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Execution traceability</strong>n8n execution IDs are linked to business transaction IDs for end-to-end debugging</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Proactive alerting</strong>Slack webhook triggers on repeated failures and error table monitoring runs every 5 minutes</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Retry analytics</strong>Dashboard tracks retry success rate, average retry count, and common failure patterns</p></div></div></div></div><div class="m-code" style="margin-top:1rem;"><strong>Redundancy in action:</strong>
-• Webhook timeout (5s) → triggers failover endpoint
-• Retry 1 (2s) → fail → Retry 2 (4s) → fail → Retry 3 (8s) → fail → Dead letter queue
-• Idempotency key: tx_{timestamp}_{uuid} prevents double processing on replay
-• Checkpoint saved after: lead capture, deduplication, CRM write, scheduling</div></div>
-    <div class="msec"><div class="msec-tag">System Highlights</div><h2>What makes this system defensible</h2><div class="m-highlights"><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Multi-layer redundancy</strong> — auto-retry with exponential backoff + failover paths + dead letter queue + idempotent processing ensures zero data loss even under API failures.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Automation-first escalation</strong> — humans only intervene after 3 automated attempts fail.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Normalized data layer</strong> makes raw SPX exports automation-compatible without changing the admin workflow.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Idempotent follow-up logic</strong> uses a sheet counter to prevent duplicate messages on n8n restart or retry.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Dual-workflow design</strong> isolates monitoring and reporting so one failure does not block the other.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>OCR roadmap</strong> uses Tesseract to remove the last remaining manual data entry step.</p></div></div></div>
-  </div>
-</div>
-</div>
-
 <script>
 (function(){
 var cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring'),mx=window.innerWidth/2,my=window.innerHeight/2,cx=mx,cy=my,rx=mx,ry=my;
@@ -591,12 +543,6 @@ var FLOW_DEFS={
     nodes:[{name:'Master Projects',sub:'Portfolio',x:.08,y:.5},{name:'Master Tasks',sub:'Execution',x:.28,y:.5},{name:'n8n Engine',sub:'Overdue/Calc',x:.5,y:.5},{name:'Escalations',sub:'Auto-create',x:.72,y:.5},{name:'Dashboards',sub:'Leadership/Dept',x:.9,y:.5}],
     connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3}],
     colors:['#a855f7','#06b6d4','#f97316','#10b981','#ec4899']
-  },
-  spx:{
-    height:280,
-    nodes:[{name:'SPX App',sub:'Manual Entry',x:.07,y:.5},{name:'Google Sheets',sub:'Normalized Data',x:.25,y:.5},{name:'n8n Engine',sub:'5-min Monitoring',x:.5,y:.5},{name:'WhatsApp',sub:'Driver Follow-up',x:.73,y:.5},{name:'Admin/Owner',sub:'Escalation/Report',x:.92,y:.5}],
-    connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3}],
-    colors:['#a855f7','#f97316','#06b6d4','#10b981','#ec4899']
   }
 };
 function FlowDiagram(canvasEl,id){
