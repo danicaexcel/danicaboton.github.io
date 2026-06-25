@@ -1,584 +1,711 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Danica Marie Boton · Automation Systems Engineer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0A0B10;--bg-1:#11131A;--bg-2:#171A23;--bg-3:#1E2130;
-  --border:rgba(255,255,255,0.055);--border-hi:rgba(255,255,255,0.10);--border-pu:rgba(139,92,246,0.28);
-  --pu:#8B5CF6;--pu-dim:#7C3AED;--pu-bright:#A78BFA;
-  --mg:#C084FC;--cy:#4FD1C5;--cy-dim:#38B2AC;--or:#f97316;--pk:#ec4899;--gn:#10b981;
-  --white:#ffffff;--f1:#E8E8EE;--f2:#9999AA;--f3:#55556A;
-  --glow-pu:rgba(139,92,246,0.18);--glow-cy:rgba(79,209,197,0.10);
-}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Inter',sans-serif;background:var(--bg);color:var(--f1);
-  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:auto;
-}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(139,92,246,0.35);border-radius:2px}
-button,a{font:inherit}button{border:0}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>DCode · Dee AI Automation Studio</title>
+  <meta name="description" content="DCode portfolio featuring Dee, an AI automation agent for workflow architecture, CRM orchestration, dashboards, OCR, and resilient business systems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080d;
+      --bg-2: #0e111a;
+      --panel: rgba(255,255,255,.065);
+      --panel-strong: rgba(255,255,255,.105);
+      --line: rgba(255,255,255,.14);
+      --line-strong: rgba(255,255,255,.24);
+      --text: #f7f8ff;
+      --muted: #aeb6c8;
+      --soft: #76809a;
+      --accent: #71f4d3;
+      --accent-2: #9ca7ff;
+      --accent-3: #ffb86b;
+      --danger: #ff6d8d;
+      --shadow: 0 24px 90px rgba(0,0,0,.55);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% -10%, rgba(113,244,211,.18), transparent 35%),
+        radial-gradient(circle at 90% 10%, rgba(156,167,255,.17), transparent 30%),
+        radial-gradient(circle at 50% 105%, rgba(255,184,107,.10), transparent 34%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 15%, black, transparent 74%);
+      z-index: -2;
+    }
+    .orb {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 999px;
+      filter: blur(36px);
+      opacity: .18;
+      z-index: -1;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .orb.one { background: var(--accent); left: -180px; top: 18%; }
+    .orb.two { background: var(--accent-2); right: -160px; top: 34%; animation-delay: -5s; }
+    .orb.three { background: var(--accent-3); left: 34%; bottom: -250px; animation-delay: -10s; }
+    @keyframes drift { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(55px,-45px,0) scale(1.15); } }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(22px);
+      background: rgba(7,8,13,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(113,244,211,.95), rgba(156,167,255,.9));
+      color: #071019;
+      box-shadow: 0 0 30px rgba(113,244,211,.28);
+      animation: pulseGlow 3.2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow { 50% { box-shadow: 0 0 46px rgba(113,244,211,.42); transform: translateY(-1px); } }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      transition: .25s ease;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.08); }
+    .hero {
+      min-height: calc(100vh - 74px);
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 48px;
+      align-items: center;
+      padding: 76px 0 90px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: .02em;
+      padding: 9px 12px;
+      border: 1px solid rgba(113,244,211,.28);
+      background: rgba(113,244,211,.07);
+      border-radius: 999px;
+    }
+    .live-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 16px var(--accent); animation: blink 1.4s infinite; }
+    @keyframes blink { 50% { opacity: .3; transform: scale(.75); } }
+    h1 {
+      font-size: clamp(48px, 8vw, 92px);
+      line-height: .9;
+      letter-spacing: -.075em;
+      margin: 22px 0 24px;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #fff, #b7fff0 45%, #b8bdff 78%, #fff);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 7s linear infinite;
+    }
+    @keyframes shimmer { to { background-position: 220% 0; } }
+    .hero p {
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.62;
+      max-width: 650px;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 14px 18px;
+      color: var(--text);
+      background: rgba(255,255,255,.07);
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    }
+    .btn.primary { background: linear-gradient(135deg, rgba(113,244,211,.22), rgba(156,167,255,.18)); border-color: rgba(113,244,211,.45); }
+    .btn::after { content: ""; position: absolute; inset: -80% -20%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent); transform: translateX(-120%) rotate(10deg); transition: .55s ease; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:hover::after { transform: translateX(120%) rotate(10deg); }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
+    .metric {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+    }
+    .metric strong { display: block; font-size: 30px; letter-spacing: -.05em; }
+    .metric span { color: var(--soft); font-size: 12px; }
+    .console-wrap { perspective: 1200px; }
+    .console {
+      position: relative;
+      min-height: 560px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.035));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform: rotateX(4deg) rotateY(-5deg);
+      animation: floatPanel 6s ease-in-out infinite;
+    }
+    @keyframes floatPanel { 50% { transform: rotateX(1deg) rotateY(-2deg) translateY(-12px); } }
+    .console::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 28% 12%, rgba(113,244,211,.22), transparent 25%), radial-gradient(circle at 80% 40%, rgba(156,167,255,.18), transparent 24%);
+      pointer-events: none;
+    }
+    .console-top { position: relative; display:flex; justify-content:space-between; align-items:center; padding: 18px; border-bottom:1px solid var(--line); }
+    .traffic { display:flex; gap:8px; }
+    .traffic i { width:11px; height:11px; border-radius:999px; background:rgba(255,255,255,.24); }
+    .console-title { font-family:"JetBrains Mono", monospace; color:var(--muted); font-size:12px; }
+    .agent { position: relative; padding: 28px; display: grid; gap: 20px; }
+    .avatar {
+      height: 235px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(113,244,211,.24), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .avatar-core {
+      position: relative;
+      width: 124px; height: 124px;
+      border-radius: 38px;
+      background: linear-gradient(135deg, rgba(113,244,211,.95), rgba(156,167,255,.85));
+      box-shadow: 0 0 70px rgba(113,244,211,.32);
+      animation: breathe 3.6s ease-in-out infinite;
+    }
+    .avatar-core::before, .avatar-core::after { content:""; position:absolute; background:#071019; border-radius:999px; top:45px; width:15px; height:15px; animation: eyeMove 4s ease-in-out infinite; }
+    .avatar-core::before { left:35px; } .avatar-core::after { right:35px; }
+    .mouth { position:absolute; left:43px; bottom:32px; width:38px; height:9px; background:#071019; border-radius:999px; animation: talk 1.1s ease-in-out infinite; }
+    @keyframes breathe { 50% { transform: scale(1.05) translateY(-5px); border-radius: 44px; } }
+    @keyframes eyeMove { 50% { transform: translateX(5px); } }
+    @keyframes talk { 50% { height: 16px; border-radius: 0 0 18px 18px; } }
+    .signal-ring { position: absolute; inset: -28px; border: 1px solid rgba(113,244,211,.24); border-radius: 45px; animation: ring 2.8s linear infinite; }
+    .signal-ring:nth-child(2) { inset: -52px; animation-delay: -.9s; }
+    @keyframes ring { from { opacity: .85; transform: scale(.82); } to { opacity: 0; transform: scale(1.22); } }
+    .chat-card {
+      border:1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(12px);
+    }
+    .chat-card small { color: var(--accent); font-family:"JetBrains Mono", monospace; }
+    .typing { margin-top:10px; color:var(--muted); line-height:1.55; }
+    .typing::after { content:"_"; color:var(--accent); animation: blink 1s infinite; }
+    .pipeline-mini { display:grid; gap:10px; }
+    .pipe-row { display:flex; align-items:center; gap:8px; font-family:"JetBrains Mono", monospace; font-size:11px; color:var(--muted); }
+    .pipe-node { padding:8px 10px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.06); white-space:nowrap; }
+    .pipe-line { flex:1; height:1px; position:relative; background:rgba(255,255,255,.13); overflow:hidden; }
+    .pipe-line::after { content:""; position:absolute; inset:0; width:38%; background:linear-gradient(90deg, transparent, var(--accent), transparent); animation: flow 1.6s linear infinite; }
+    @keyframes flow { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
+    section { padding: 86px 0; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:28px; }
+    .section-tag { color: var(--accent); font-family:"JetBrains Mono", monospace; font-size:12px; margin-bottom:10px; }
+    h2 { font-size: clamp(34px, 5vw, 58px); letter-spacing:-.06em; line-height:.98; }
+    .section-head p { color:var(--muted); max-width:460px; line-height:1.6; }
+    .grid { display:grid; gap:18px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.035));
+      padding: 24px;
+      overflow: hidden;
+      min-height: 250px;
+      transition: transform .28s ease, border-color .28s ease, background .28s ease;
+    }
+    .card::before { content:""; position:absolute; inset:0; opacity:0; background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(113,244,211,.16), transparent 32%); transition:.25s ease; pointer-events:none; }
+    .card:hover { transform: translateY(-8px); border-color:rgba(113,244,211,.36); background: linear-gradient(145deg, rgba(255,255,255,.115), rgba(255,255,255,.045)); }
+    .card:hover::before { opacity:1; }
+    .card > * { position:relative; z-index:1; }
+    .pill { display:inline-flex; padding:8px 10px; border:1px solid var(--line); border-radius:999px; color:var(--accent); font-size:12px; background:rgba(113,244,211,.06); margin-bottom:18px; }
+    .card h3 { font-size: 24px; letter-spacing:-.035em; margin-bottom:12px; }
+    .card p { color:var(--muted); line-height:1.65; }
+    .stack { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+    .chip { padding:7px 9px; border-radius:999px; border:1px solid var(--line); color:#cfd5e7; font-size:12px; background:rgba(0,0,0,.18); }
+    .impact { margin-top:20px; color:var(--accent-3); font-family:"JetBrains Mono", monospace; font-size:12px; }
+    .motion-diagram {
+      margin-top:18px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.16);
+      border-radius:22px;
+      padding:16px;
+      overflow:hidden;
+    }
+    .flow-track { display:flex; align-items:center; gap:10px; min-width:max-content; animation: slowPan 16s linear infinite; }
+    .flow-step { padding:10px 12px; border-radius:15px; border:1px solid var(--line); background:rgba(255,255,255,.06); color:#dce3f5; font-size:12px; white-space:nowrap; }
+    .arrow { color:var(--accent); opacity:.85; }
+    @keyframes slowPan { 0%,10% { transform:translateX(0); } 90%,100% { transform:translateX(calc(-100% + min(760px, 100vw - 80px))); } }
+    .journey { position:relative; display:grid; gap:16px; }
+    .journey::before { content:""; position:absolute; left:25px; top:20px; bottom:20px; width:2px; background:linear-gradient(var(--accent), var(--accent-2)); opacity:.45; }
+    .phase { position:relative; display:grid; grid-template-columns:52px 1fr auto; gap:16px; align-items:center; padding:18px; border:1px solid var(--line); border-radius:20px; background:rgba(255,255,255,.045); }
+    .phase-num { height:52px; border-radius:18px; display:grid; place-items:center; background:rgba(113,244,211,.12); border:1px solid rgba(113,244,211,.24); color:var(--accent); font-weight:800; }
+    .phase h3 { margin-bottom:5px; } .phase p, .phase time { color:var(--muted); font-size:13px; }
+    .marquee { overflow:hidden; border:1px solid var(--line); border-radius:24px; background:rgba(255,255,255,.045); padding:16px 0; }
+    .marquee-track { display:flex; gap:12px; width:max-content; animation: marquee 34s linear infinite; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .tool { padding:12px 16px; border-radius:16px; border:1px solid var(--line); background:rgba(0,0,0,.18); color:#d6ddf1; white-space:nowrap; }
+    .models .card { min-height: 210px; }
+    .contact {
+      text-align:center;
+      padding: 80px 24px;
+      border-radius: var(--radius-xl);
+      border:1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(113,244,211,.12), rgba(156,167,255,.12), rgba(255,184,107,.08));
+      box-shadow: var(--shadow);
+    }
+    .contact p { color:var(--muted); margin:18px auto 26px; max-width:680px; line-height:1.65; }
+    footer { padding: 34px 0 60px; color:var(--soft); font-size:13px; }
+    .scroll-top { position:fixed; right:22px; bottom:22px; width:46px; height:46px; border-radius:999px; border:1px solid var(--line); background:rgba(7,8,13,.75); backdrop-filter:blur(18px); display:grid; place-items:center; opacity:0; transform:translateY(14px); transition:.25s ease; z-index:40; }
+    .scroll-top.show { opacity:1; transform:translateY(0); }
+    .reveal { opacity:0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+    .reveal.in { opacity:1; transform: translateY(0); }
 
-/* Cursor */
-#cursor{position:fixed;left:0;top:0;width:10px;height:10px;background:var(--pu);border-radius:50%;pointer-events:none;z-index:99999;transform:translate3d(-50%,-50%,0);opacity:0;will-change:left,top,width,height;transition:width .25s,height .25s,background .25s,opacity .18s}
-#cursor-ring{position:fixed;left:0;top:0;width:36px;height:36px;border:1px solid rgba(139,92,246,.45);border-radius:50%;pointer-events:none;z-index:99998;transform:translate3d(-50%,-50%,0);opacity:0;will-change:left,top,width,height;transition:width .3s,height .3s,border-color .3s,opacity .18s}
-body.cursor-ready #cursor,body.cursor-ready #cursor-ring{opacity:1}
-body.cursor-hover #cursor{width:18px;height:18px;background:var(--mg)}
-body.cursor-hover #cursor-ring{width:52px;height:52px;border-color:rgba(192,132,252,.4)}
-@media (pointer:fine){body{cursor:none}}
+    .brand em { font-style: normal; color: var(--accent); opacity: .78; letter-spacing: .01em; }
+    .case-card { cursor: pointer; }
+    .open-hint {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      color: var(--accent);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      opacity: .72;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .case-card:hover .open-hint { opacity: 1; transform: translateX(5px); }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 34px 18px;
+      overflow-y: auto;
+      background: rgba(3,4,8,.78);
+      backdrop-filter: blur(22px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .28s ease, visibility .28s ease;
+    }
+    .modal-backdrop.open { opacity: 1; visibility: visible; }
+    .modal-panel {
+      width: min(940px, 100%);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(113,244,211,.12), transparent 30%),
+        radial-gradient(circle at 86% 12%, rgba(156,167,255,.14), transparent 32%),
+        linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform: translateY(22px) scale(.97);
+      transition: transform .34s ease;
+    }
+    .modal-backdrop.open .modal-panel { transform: translateY(0) scale(1); }
+    .modal-header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 20px 24px;
+      background: rgba(7,8,13,.86);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-kicker { color: var(--accent); font-family: "JetBrains Mono", monospace; font-size: 12px; margin-bottom: 6px; }
+    .modal-title { font-size: 24px; font-weight: 800; letter-spacing: -.045em; }
+    .modal-close {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .modal-body { padding: 26px; }
+    .modal-hero { margin-bottom: 22px; }
+    .modal-hero h3 { font-size: clamp(30px, 4.5vw, 52px); letter-spacing: -.06em; line-height: .98; margin-bottom: 14px; }
+    .modal-hero p, .modal-section p { color: var(--muted); line-height: 1.7; }
+    .modal-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .modal-stat, .modal-section {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(0,0,0,.18);
+      padding: 18px;
+    }
+    .modal-stat strong { display: block; font-size: 26px; letter-spacing: -.04em; }
+    .modal-stat span { color: var(--soft); font-size: 12px; }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .modal-section h4 { font-size: 18px; margin-bottom: 10px; }
+    .modal-section ul { list-style: none; display: grid; gap: 9px; color: var(--muted); line-height: 1.55; }
+    .modal-section li::before { content: "✦"; color: var(--accent); margin-right: 8px; }
+    body.modal-open { overflow: hidden; }
+    @media (max-width: 760px) {
+      .modal-stats, .modal-grid { grid-template-columns: 1fr; }
+      .modal-body { padding: 18px; }
+    }
 
-/* Progress */
-#progress{position:fixed;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--pu),var(--mg),var(--cy));transform-origin:0%;transform:scaleX(0);z-index:9999;transition:transform .08s linear}
-
-/* Nav */
-nav{position:sticky;top:0;z-index:1000;background:rgba(10,11,16,.75);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid var(--border);transition:background .4s}
-nav.scrolled{background:rgba(10,11,16,.92)}
-.nav-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
-.logo{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:400;color:var(--f2);letter-spacing:.01em;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:.4rem}
-.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--pu);display:inline-block;animation:pulse-dot 2.4s ease infinite}
-.logo span{color:var(--pu)}.logo:hover{color:var(--f1)}
-.nav-links{display:flex;align-items:center;gap:.2rem}
-.nav-links a{font-size:.78rem;font-weight:500;color:var(--f3);text-decoration:none;padding:.4rem .85rem;border-radius:6px;transition:all .2s;letter-spacing:.01em}
-.nav-links a:hover{color:var(--f1);background:rgba(255,255,255,.04)}
-.nav-links .nav-cta{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.22);color:var(--pu);border-radius:6px;font-size:.75rem;padding:.38rem 1rem;transition:all .25s}
-.nav-links .nav-cta:hover{background:rgba(139,92,246,.22);border-color:rgba(139,92,246,.4);color:var(--white)}
-.dd{position:relative}.dd-btn{cursor:default!important}
-.dd-menu{display:none;position:absolute;top:calc(100% + 10px);left:0;min-width:280px;background:var(--bg-2);border:1px solid var(--border-hi);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(139,92,246,.08);overflow:hidden;z-index:2000}
-.dd:hover .dd-menu{display:block}.dd::after{content:'';position:absolute;top:100%;left:0;width:100%;height:14px;background:transparent}
-.dd-menu a{display:block;padding:.75rem 1.1rem;font-size:.78rem;color:var(--f2);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s}
-.dd-menu a:last-child{border-bottom:none}.dd-menu a:hover{background:rgba(139,92,246,.08);color:var(--f1);padding-left:1.4rem}
-
-/* Hero */
-.hero{position:relative;min-height:94vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-bg-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;opacity:.4}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(139,92,246,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,.04) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 75%);mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 75%);pointer-events:none;animation:gridDrift 20s ease-in-out infinite}
-@keyframes gridDrift{0%,100%{background-position:0 0,0 0}50%{background-position:36px 36px,36px 36px}}
-.hero-glow-a,.hero-glow-b,.hero-glow-c{position:absolute;border-radius:50%;pointer-events:none;animation:breathe 10s ease-in-out infinite}
-.hero-glow-a{top:-15%;left:-5%;width:800px;height:800px;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,rgba(139,92,246,.02) 40%,transparent 70%)}
-.hero-glow-b{bottom:-15%;right:-5%;width:700px;height:700px;background:radial-gradient(circle,rgba(79,209,197,.05) 0%,transparent 70%);animation-delay:3s}
-.hero-glow-c{top:20%;right:15%;width:400px;height:400px;background:radial-gradient(circle,rgba(192,132,252,.04) 0%,transparent 70%);animation-delay:1.5s}
-@keyframes breathe{0%,100%{transform:scale(1) translateZ(0);opacity:.6}50%{transform:scale(1.12) translateZ(0);opacity:1}}
-#orch-canvas{position:absolute;inset:0;pointer-events:none;opacity:0;animation:fadeIn 2.5s ease .8s forwards}
-@keyframes fadeIn{to{opacity:1}}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:860px;padding:2rem 1.5rem}
-.hero-status{display:inline-flex;align-items:center;gap:.6rem;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);padding:.38rem 1.1rem .38rem .8rem;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.67rem;font-weight:400;color:rgba(167,139,250,.9);margin-bottom:2.5rem;letter-spacing:.05em;opacity:0;animation:slideUp .8s cubic-bezier(.16,1,.3,1) .3s forwards}
-.hero-status-dot{width:7px;height:7px;border-radius:50%;background:var(--pu);animation:pulse-dot 2s ease infinite;flex-shrink:0}
-@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.5)}50%{box-shadow:0 0 0 6px rgba(139,92,246,0)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(3.2rem,6.5vw,5.8rem);font-weight:800;line-height:.95;letter-spacing:-.045em;color:var(--white);margin-bottom:1.6rem;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) .5s forwards}
-.gradient-name{background:linear-gradient(135deg,var(--white) 0%,var(--pu-bright) 50%,var(--mg) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:1.08rem;font-weight:400;color:var(--f2);max-width:580px;margin:0 auto;line-height:1.75;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) .7s forwards}
-.hero-meta{margin-top:3.2rem;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) .9s forwards}
-.hero-stat{text-align:center}.hero-stat-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:700;color:var(--white);letter-spacing:-.04em;background:linear-gradient(135deg,var(--white),var(--pu-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-stat-label{font-size:.7rem;color:var(--f3);margin-top:.15rem;letter-spacing:.04em;text-transform:uppercase}
-.hero-divider{width:1px;height:40px;background:linear-gradient(to bottom,transparent,var(--border-hi),transparent)}
-.hero-actions{margin-top:2.8rem;display:flex;align-items:center;justify-content:center;gap:1rem;opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) 1.05s forwards}
-.btn-pri,.btn-ghost{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;font-size:.82rem;font-weight:500;letter-spacing:.01em;cursor:none}
-.btn-pri{gap:.6rem;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.32);color:var(--white);padding:.75rem 1.6rem;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.16,1,.3,1)}
-.btn-pri::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(192,132,252,.1));opacity:0;transition:opacity .3s}
-.btn-pri:hover::before{opacity:1}.btn-pri:hover{border-color:rgba(139,92,246,.55);transform:translateY(-2px);box-shadow:0 12px 32px rgba(139,92,246,.22)}
-.btn-ghost{gap:.5rem;color:var(--f3);padding:.75rem 1.3rem;transition:all .25s}.btn-ghost:hover{color:var(--f1);background:rgba(255,255,255,.04)}
-.scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:slideUp 1s ease 1.8s forwards}
-.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,rgba(139,92,246,.6),transparent);animation:scrollPulse 2s ease-in-out infinite}
-@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.8)}50%{opacity:1;transform:scaleY(1)}}
-
-/* Sections */
-.section{padding:7rem 0;border-top:1px solid var(--border);position:relative}
-.section-inner{max-width:1320px;margin:0 auto;padding:0 2rem}
-.section-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:'JetBrains Mono',monospace;font-size:.64rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--pu);margin-bottom:1rem}
-.section-eyebrow::before{content:'';width:20px;height:1px;background:var(--pu);opacity:.7}
-.section-heading{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-.035em;color:var(--white);line-height:1.05}
-.section-sub{font-size:.9rem;color:var(--f2);margin-top:.9rem;max-width:540px;line-height:1.75}
-
-/* Project cards */
-.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;margin-top:3.5rem;border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
-.pcard{background:var(--bg-1);padding:2.4rem;cursor:none;position:relative;overflow:hidden;transform-style:preserve-3d;transform:perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);transition:transform .4s cubic-bezier(.16,1,.3,1),background .4s cubic-bezier(.16,1,.3,1),box-shadow .4s cubic-bezier(.16,1,.3,1);will-change:transform}
-.pcard::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at var(--gx,50%) var(--gy,40%),rgba(139,92,246,.10) 0%,transparent 65%);opacity:0;transition:opacity .5s ease;pointer-events:none;z-index:0}
-.pcard-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.3}
-.pcard-border,.pcard-shimmer,.pcard-corner-tl,.pcard-corner-br,.pcard-pulse{position:absolute;pointer-events:none}
-.pcard-border{inset:0;z-index:1;opacity:0;transition:opacity .45s ease;background:linear-gradient(var(--bg-1),var(--bg-1)) padding-box,linear-gradient(135deg,rgba(139,92,246,0) 0%,rgba(139,92,246,.5) 30%,rgba(192,132,252,.4) 60%,rgba(79,209,197,.3) 100%) border-box}
-.pcard-shimmer{inset:0;background:linear-gradient(105deg,transparent 0%,transparent 35%,rgba(255,255,255,.025) 45%,rgba(255,255,255,.055) 50%,rgba(255,255,255,.025) 55%,transparent 65%,transparent 100%);transform:translateX(-100%);z-index:2}
-.pcard-corner-tl,.pcard-corner-br{width:80px;height:80px;z-index:1;opacity:0;transition:opacity .4s ease}.pcard-corner-tl{top:0;left:0;background:radial-gradient(circle at 0% 0%,rgba(139,92,246,.28) 0%,transparent 70%)}.pcard-corner-br{bottom:0;right:0;background:radial-gradient(circle at 100% 100%,rgba(79,209,197,.18) 0%,transparent 70%)}
-.pcard-pulse{top:50%;left:50%;width:100%;height:100%;border:1px solid rgba(139,92,246,0);transform:translate(-50%,-50%) scale(.95);z-index:0;opacity:0}
-.pcard-content{position:relative;z-index:3}
-.pcard:hover{background:var(--bg-2);box-shadow:0 24px 64px rgba(0,0,0,.55),0 8px 24px rgba(139,92,246,.14),0 0 0 1px rgba(139,92,246,.18),inset 0 1px 0 rgba(255,255,255,.06)}
-.pcard:hover::before,.pcard:hover .pcard-border,.pcard:hover .pcard-corner-tl,.pcard:hover .pcard-corner-br{opacity:1}
-.pcard:hover .pcard-shimmer{animation:shimmerSlide .9s cubic-bezier(.4,0,.2,1) forwards}.pcard:hover .pcard-pulse{animation:cardPulse 2s ease-in-out infinite}
-@keyframes shimmerSlide{0%{transform:translateX(-100%);opacity:0}10%,90%{opacity:1}100%{transform:translateX(120%);opacity:0}}
-@keyframes cardPulse{0%{opacity:0;transform:translate(-50%,-50%) scale(.95);border-color:rgba(139,92,246,.15)}50%{opacity:1;transform:translate(-50%,-50%) scale(1);border-color:rgba(139,92,246,.06)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.02);border-color:rgba(139,92,246,0)}}
-.pcard:not(:nth-child(3n+1)){border-left:1.5px solid var(--border)}.pcard:nth-child(n+4){border-top:1.5px solid var(--border)}
-.pcard-icon{width:46px;height:46px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;margin-bottom:1.7rem;font-size:1.3rem;transition:border-color .35s,transform .45s cubic-bezier(.16,1,.3,1),box-shadow .35s}
-.pcard:hover .pcard-icon{border-color:rgba(139,92,246,.45);transform:translateY(-3px) scale(1.06);box-shadow:0 8px 24px rgba(139,92,246,.2)}
-.pcard-tag{font-family:'JetBrains Mono',monospace;font-size:.61rem;color:var(--f3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.65rem;transition:color .3s}
-.pcard:hover .pcard-tag{color:rgba(139,92,246,.7)}
-.pcard h3{font-family:'Syne',sans-serif;font-size:1.12rem;font-weight:700;letter-spacing:-.025em;color:var(--white);margin-bottom:.8rem;line-height:1.3;transition:transform .4s cubic-bezier(.16,1,.3,1)}
-.pcard:hover h3{transform:translateY(-2px)}
-.pcard p{font-size:.83rem;color:var(--f2);line-height:1.7;margin-bottom:1.3rem;transition:transform .45s cubic-bezier(.16,1,.3,1)}
-.pcard:hover p{transform:translateY(-1px)}
-.pcard-tech{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-bottom:1.3rem;transition:transform .5s cubic-bezier(.16,1,.3,1)}
-.pcard:hover .pcard-tech{transform:translateY(-1px)}
-.pcard-tech-icon{width:22px;height:22px;border-radius:4px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;padding:2px;flex-shrink:0;transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.pcard:hover .pcard-tech-icon{transform:translateY(-2px)}.pcard-tech-icon img{width:100%;height:100%;object-fit:contain}
-.pcard-tech-more{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.05em;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.15rem .45rem;border-radius:3px;transition:background .3s,color .3s,border-color .3s}
-.pcard:hover .pcard-tech-more{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.2);color:var(--pu-bright)}
-.pcard-metric{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--cy);letter-spacing:.02em;transition:transform .55s cubic-bezier(.16,1,.3,1),text-shadow .3s}
-.pcard:hover .pcard-metric{transform:translateY(-1px);text-shadow:0 0 12px rgba(79,209,197,.4)}
-.pcard-arrow{position:absolute;bottom:2rem;right:2rem;width:28px;height:28px;border-radius:6px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--pu-bright);opacity:0;transform:translateX(-8px) translateZ(0);transition:all .4s cubic-bezier(.16,1,.3,1);z-index:3}
-.pcard:hover .pcard-arrow{opacity:1;transform:translateX(0) translateZ(0);box-shadow:0 4px 16px rgba(139,92,246,.3)}
-
-/* 2-col grid for flagship when only 2 cards */
-.projects-grid-2{grid-template-columns:repeat(2,1fr)!important}
-.projects-grid-2 .pcard:not(:nth-child(3n+1)){border-left:none}
-.projects-grid-2 .pcard:nth-child(n+4){border-top:none}
-.projects-grid-2 .pcard:not(:first-child){border-left:1.5px solid var(--border)}
-.projects-grid-2 .pcard:nth-child(n+3){border-top:1.5px solid var(--border)}
-
-/* Shared content grids */
-.sol-grid,.models-grid,.testi-grid{display:grid;gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.sol-grid,.models-grid,.testi-grid{grid-template-columns:repeat(3,1fr)}
-.sol-card,.mcard,.tcard{background:var(--bg-1);transition:background .25s;position:relative}.sol-card{padding:2.2rem;overflow:hidden}.mcard{padding:2.5rem 2.2rem}.tcard{padding:2.2rem}
-.sol-card:hover,.mcard:hover,.tcard:hover{background:var(--bg-2)}.sol-card:not(:first-child),.mcard:not(:first-child),.tcard:not(:first-child){border-left:1px solid var(--border)}
-.sol-icon{width:38px;height:38px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:1.2rem}
-.sol-icon img{width:22px;height:22px;object-fit:contain}
-.sol-card h3,.mcard h3{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);letter-spacing:-.015em}.sol-card h3{font-size:.98rem;margin-bottom:.5rem}.mcard h3{font-size:1.08rem;margin-bottom:.65rem;letter-spacing:-.02em}
-.sol-card p,.mcard p,.tcard p{font-size:.83rem;color:var(--f2);line-height:1.7}.sol-card p{margin-bottom:.85rem}.mcard p{margin-bottom:1.4rem}.tcard p{font-size:.85rem;font-style:italic;margin-bottom:1.2rem;line-height:1.72}
-.sol-tags{display:flex;flex-wrap:wrap;gap:.4rem}.sol-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.07em;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--f3);padding:.25rem .6rem;border-radius:4px}
-.mcard-icon{font-size:1.5rem;margin-bottom:1.5rem;display:block;letter-spacing:-.05em}.mcard-price{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--cy);letter-spacing:.05em;padding-top:1.2rem;border-top:1px solid var(--border)}
-.tcard-quote{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--pu);opacity:.45;margin-bottom:1rem;letter-spacing:.03em}.tcard-author{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--f3);letter-spacing:.06em}
-
-/* Journey */
-.journey{margin-top:3.5rem;position:relative}.journey-track{display:flex;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.jphase{flex:1;padding:2rem 1.6rem;background:var(--bg-1);border-right:1px solid var(--border);transition:background .3s;position:relative;cursor:default}.jphase:last-child{border-right:none}.jphase:hover{background:var(--bg-2)}
-.jphase-num{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.13em;color:var(--f3);text-transform:uppercase;margin-bottom:.9rem}
-.jphase-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:-.01em;color:var(--white);margin-bottom:.5rem;line-height:1.3}.jphase-sub{font-size:.71rem;color:var(--f3);margin-bottom:1rem;line-height:1.5}
-.jphase-items{list-style:none;display:flex;flex-direction:column;gap:.4rem}.jphase-items li{font-size:.71rem;color:var(--f2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.45}.jphase-items li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--pu);opacity:.55;margin-top:.42rem;flex-shrink:0}
-.jphase-time{margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.61rem;color:var(--cy);letter-spacing:.05em}
-
-/* Stack */
-.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:10px;overflow:hidden}
-.stack-item{background:var(--bg-1);padding:1.4rem .8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .2s;cursor:default}
-.stack-item:hover{background:var(--bg-2)}.stack-logo-wrap{width:36px;height:36px;border-radius:6px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;padding:4px;transition:transform .25s cubic-bezier(.16,1,.3,1)}.stack-item:hover .stack-logo-wrap{transform:scale(1.08) translateY(-2px)}
-.stack-logo-wrap img{width:100%;height:100%;object-fit:contain}.stack-item-name{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--f3);text-align:center;letter-spacing:.04em;line-height:1.3}
-
-/* CTA */
-.cta-wrap{padding:3.8rem;background:var(--bg-1);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden}
-.cta-wrap::before{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.07) 0%,transparent 70%);pointer-events:none}
-.cta-wrap::after{content:'';position:absolute;bottom:-80px;left:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(79,209,197,.05) 0%,transparent 70%);pointer-events:none}
-.cta-wrap h2{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2.4rem);font-weight:700;letter-spacing:-.035em;color:var(--white);margin-bottom:.8rem}.cta-wrap p{font-size:.9rem;color:var(--f2);margin-bottom:2.2rem;max-width:500px;line-height:1.7}
-.cta-contact{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap}.cta-link{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--pu);text-decoration:none;letter-spacing:.02em;transition:color .2s}.cta-link:hover{color:var(--white)}.cta-sep{color:var(--border-hi)}
-footer{border-top:1px solid var(--border);padding:2.2rem;text-align:center}footer p{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--f3);letter-spacing:.04em;line-height:1.9}
-#back-top{position:fixed;bottom:2rem;right:2rem;width:40px;height:40px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;cursor:none;z-index:1000;opacity:0;visibility:hidden;transition:all .35s cubic-bezier(.16,1,.3,1);color:var(--f3);font-size:.8rem}
-#back-top.show{opacity:1;visibility:visible}#back-top:hover{background:var(--bg-3);border-color:var(--border-pu);color:var(--pu);transform:translateY(-3px)}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}.reveal.in{opacity:1;transform:translateY(0)}.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
-
-/* Modal */
-.modal-backdrop{position:fixed;inset:0;z-index:10000;display:flex;align-items:flex-start;justify-content:center;background:rgba(5,5,10,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease;overflow-y:auto;padding:2.5rem 1.5rem}
-.modal-backdrop.open{opacity:1;visibility:visible}
-.modal-panel{width:100%;max-width:960px;background:var(--bg-1);border:1px solid var(--border-hi);border-radius:14px;position:relative;transform:scale(.95) translateY(20px);transition:transform .4s cubic-bezier(.16,1,.3,1);margin:auto;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px rgba(139,92,246,.08)}
-.modal-backdrop.open .modal-panel{transform:scale(1) translateY(0)}
-.modal-header{position:sticky;top:0;z-index:10;background:rgba(17,19,26,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:1.3rem 2.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.modal-header-left{display:flex;align-items:center;gap:1rem;min-width:0}.modal-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.61rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pu)}.modal-title{font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:700;color:var(--white);letter-spacing:-.02em;line-height:1.2}
-.modal-close{width:36px;height:36px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--f3);cursor:none;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .2s;flex-shrink:0}
-.modal-close:hover{background:rgba(255,255,255,.08);color:var(--f1);border-color:var(--border-hi)}
-.modal-scroll-bar{position:sticky;top:63px;z-index:9;height:2px;background:var(--border)}.modal-scroll-fill{height:100%;background:linear-gradient(90deg,var(--pu),var(--mg),var(--cy));width:0%;transition:width .1s linear}
-.modal-body{padding:2.8rem 2.4rem}
-.modal-hero{margin-bottom:2.8rem;padding-bottom:2.8rem;border-bottom:1px solid var(--border)}
-.modal-hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);padding:.32rem .9rem;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.61rem;color:var(--pu);margin-bottom:1.2rem;letter-spacing:.05em}
-.modal-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.045em;color:var(--white);margin-bottom:1rem;line-height:1.05}.modal-hero p{font-size:.9rem;color:var(--f2);max-width:700px;line-height:1.75}
-.modal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.8rem 0}.mstat{background:var(--bg-2);padding:1.3rem 1rem;text-align:center}.mstat-val{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:700;color:var(--white);letter-spacing:-.035em;display:block}.mstat-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.07em;text-transform:uppercase;display:block;margin-top:.3rem}
-.msec{margin-bottom:2.8rem;padding-bottom:2.8rem;border-bottom:1px solid var(--border)}.msec:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}.msec-tag{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.13em;text-transform:uppercase;color:var(--pu);margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem}.msec-tag::before{content:'';width:13px;height:1px;background:var(--pu);opacity:.7}
-.msec h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.025em;margin-bottom:1.1rem;line-height:1.3}.msec p{font-size:.85rem;color:var(--f2);line-height:1.75;margin-bottom:.85rem}
-.m2col,.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.2rem 0}.mpanel,.ba-panel{background:var(--bg-2);padding:1.5rem}.mpanel h3{font-size:.83rem;font-weight:600;color:var(--f1);margin-bottom:.8rem;letter-spacing:-.01em}.mpanel ul,.ba-panel ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}.mpanel ul li,.ba-panel ul li{font-size:.8rem;color:var(--f2);display:flex;align-items:flex-start;gap:.55rem;line-height:1.5}.mpanel ul li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--pu);opacity:.65;margin-top:.5rem;flex-shrink:0}.m-feature-list{display:flex;flex-direction:column;gap:.85rem}.m-feature{display:flex;align-items:flex-start;gap:.55rem}.m-feature-check{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.4;margin-top:.08rem;flex-shrink:0}.m-feature p{font-size:.8rem;color:var(--f2);line-height:1.52;margin:0}.m-feature p strong{color:var(--f1);display:block;margin-bottom:.18rem}
-.flow-block{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin:1.2rem 0;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--f2);line-height:2}.flow-block .fl{display:flex;align-items:flex-start;gap:.85rem;padding:.38rem 0}.flow-block .fl-num{color:var(--pu);min-width:22px;font-size:.64rem;margin-top:.12rem}.flow-block .fl-text{color:var(--f2)}.flow-block .fl-note{color:var(--cy);font-size:.64rem}
-.m-code{background:rgba(0,0,0,.35);border:1px solid var(--border);border-left:2px solid var(--pu);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--f2);line-height:1.9;white-space:pre-wrap;margin:1rem 0}
-.m-step{display:flex;gap:1rem;margin-bottom:.85rem;padding:1rem 1.1rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px}.m-step-num{width:28px;height:28px;border-radius:50%;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--pu);flex-shrink:0}.m-step-body strong{font-size:.84rem;color:var(--white);display:block;margin-bottom:.2rem}.m-step-body p{font-size:.78rem;color:var(--f2);line-height:1.5;margin:0}
-.architecture-flow{background:var(--bg-2);border-radius:12px;border:1px solid var(--border);padding:1.2rem;margin:1.2rem 0;overflow:hidden}.flow-title{text-align:center;font-size:.68rem;color:var(--f3);margin-bottom:1rem;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}.flow-canvas{display:block;margin:0 auto;max-width:100%;height:auto;border-radius:10px}
-.m-stack{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.m-stack-group{margin-bottom:1.1rem}.m-stack-group-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--f3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:.55rem}.m-tech-pill{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;padding:.32rem .7rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--f2);letter-spacing:.02em}.m-tech-pill-icon{width:14px;height:14px;border-radius:2px;background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;padding:1px;flex-shrink:0}.m-tech-pill-icon img{width:100%;height:100%;object-fit:contain}
-.ba-panel-label{font-family:'JetBrains Mono',monospace;font-size:.59rem;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.8rem}.ba-panel.before .ba-panel-label{color:#e06060}.ba-panel.after .ba-panel-label{color:var(--cy)}.ba-panel.before ul li::before{content:'x';color:#e06060;font-size:.64rem;margin-top:.1rem;flex-shrink:0}.ba-panel.after ul li::before{content:'✓';color:var(--cy);font-size:.64rem;margin-top:.1rem;flex-shrink:0}
-.m-highlights{display:flex;flex-direction:column;gap:.55rem;margin:1.2rem 0}.m-highlight{display:flex;align-items:flex-start;gap:.8rem;padding:.9rem 1.1rem;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.11);border-radius:7px;transition:background .25s,border-color .25s}.m-highlight:hover{background:rgba(139,92,246,.07);border-color:rgba(139,92,246,.18)}.m-highlight-dot{width:6px;height:6px;border-radius:50%;background:var(--pu);margin-top:.36rem;flex-shrink:0}.m-highlight p{font-size:.83rem;color:var(--f2);line-height:1.55;margin:0}.m-highlight p strong{color:var(--f1)}
-.mini-flow{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin:1rem 0}.mini-flow-node{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:.75rem 1.2rem;text-align:center;width:100%;max-width:330px;font-size:.8rem;color:var(--f2)}.mini-flow-arrow{color:var(--cy);font-family:'JetBrains Mono',monospace}
-
-@media(max-width:1024px){
-  .projects-grid{grid-template-columns:repeat(2,1fr)}.projects-grid-2{grid-template-columns:1fr!important}.projects-grid-2 .pcard:not(:first-child){border-left:none;border-top:1.5px solid var(--border)}.projects-grid-2 .pcard:first-child{border-left:none}.pcard:nth-child(2n){border-left:1.5px solid var(--border)}.pcard:nth-child(2n+1){border-left:none}.pcard:nth-child(n+3){border-top:1.5px solid var(--border)}
-  .sol-grid,.models-grid{grid-template-columns:1fr}.mcard:nth-child(3){border-left:none;border-top:1px solid var(--border)}
-  .testi-grid{grid-template-columns:1fr}.tcard:not(:first-child){border-left:none;border-top:1px solid var(--border)}
-  .journey-track{flex-direction:column}.jphase{border-right:none;border-bottom:1px solid var(--border)}.jphase:last-child{border-bottom:none}
-  .modal-stats{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:768px){
-  body{cursor:auto}#cursor,#cursor-ring{display:none}.section{padding:4.5rem 0}.section-inner,.nav-inner{padding:0 1.25rem}
-  .hero-meta{gap:1.8rem}.hero-divider{display:none}.hero h1{font-size:clamp(2.8rem,10vw,4rem)}
-  .projects-grid,.sol-grid,.models-grid{grid-template-columns:1fr}.pcard:not(:first-child),.sol-card:not(:first-child),.mcard:not(:first-child){border-left:none;border-top:1.5px solid var(--border)}.pcard{transform:none!important}
-  .stack-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}.nav-links .nav-link-hide{display:none}.cta-wrap{padding:2.2rem}
-  .modal-backdrop{padding:.8rem}.modal-body{padding:1.5rem 1.2rem}.modal-header{padding:1rem 1.2rem}.m2col,.ba-grid{grid-template-columns:1fr}.modal-title{font-size:.9rem}.scroll-indicator{display:none}#orch-canvas{opacity:.5}
-}
-@media(max-width:480px){.modal-stats{grid-template-columns:1fr 1fr}.hero-stat-num{font-size:1.7rem}.hero-actions{flex-direction:column}}
-</style>
+    @media (max-width: 920px) {
+      .hero, .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .console { min-height: 470px; transform:none; }
+      .section-head { display:block; }
+      .section-head p { margin-top:12px; }
+      .nav-links { display:none; }
+    }
+    @media (max-width: 560px) {
+      .container { width:min(100% - 28px, var(--max)); }
+      .metrics { grid-template-columns:1fr; }
+      .phase { grid-template-columns:52px 1fr; }
+      .phase time { grid-column:2; }
+      h1 { font-size: 50px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity:1; transform:none; }
+    }
+  </style>
 </head>
 <body>
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-<div id="progress"></div>
-
-<nav id="main-nav">
-<div class="nav-inner">
-  <a class="logo" href="#"><span class="logo-dot"></span>db<span>.</span>auto</a>
-  <div class="nav-links">
-    <div class="dd">
-      <a class="dd-btn" href="#work">Work</a>
-      <div class="dd-menu">
-        <a href="#" onclick="openModal('healthcare');return false">Smart Recruitment Management</a>
-        <a href="#" onclick="openModal('monday');return false">Enterprise Operations Workspace</a>
+  <div class="orb one"></div><div class="orb two"></div><div class="orb three"></div>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand"><span class="brand-mark">DC</span><span>DCode <em>/ Dee</em></span></a>
+      <div class="nav-links">
+        <a href="#work">Work</a><a href="#solutions">Solutions</a><a href="#journey">Journey</a><a href="#stack">Stack</a><a href="#models">Models</a><a href="#contact">Contact</a>
       </div>
     </div>
-    <a href="#journey" class="nav-link-hide">Journey</a>
-    <a href="#stack" class="nav-link-hide">Stack</a>
-    <a href="#models" class="nav-link-hide">Models</a>
-    <a href="#contact" class="nav-cta">Contact</a>
-  </div>
-</div>
-</nav>
+  </nav>
 
-<section class="hero" id="hero">
-  <div class="hero-bg-noise"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-glow-a"></div>
-  <div class="hero-glow-b"></div>
-  <div class="hero-glow-c"></div>
-  <canvas id="orch-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-status"><span class="hero-status-dot"></span>Automation Systems Engineer · Available for projects · Resiliency by design</div>
-    <h1><span class="gradient-name">Danica Marie Boton</span></h1>
-    <p class="hero-sub">Turning fragmented tools and data into seamless automation systems that streamline business success.</p>
-    <div class="hero-meta">
-      <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Workflows deployed</div></div>
-      <div class="hero-divider"></div>
-      <div class="hero-stat"><div class="hero-stat-num">8+</div><div class="hero-stat-label">Enterprise integrations</div></div>
-      <div class="hero-divider"></div>
-      <div class="hero-stat"><div class="hero-stat-num">99.99%</div><div class="hero-stat-label">Resiliency uptime</div></div>
+  <main id="top">
+    <header class="container hero">
+      <div class="hero-copy reveal">
+        <span class="eyebrow"><i class="live-dot"></i> DCode Studio · Dee AI Agent · Automation systems in motion</span>
+        <h1>DCode <span class="gradient-text">with Dee</span></h1>
+        <p>DCode turns fragmented tools and data into intelligent automation systems — powered by Dee, the AI agent built to orchestrate workflows, decisions, and handoffs.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#work">Explore projects <span>→</span></a>
+          <a class="btn" href="mailto:boton.danicamarie@gmail.com">Get in touch <span>↗</span></a>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong data-count="30">0</strong><span>Automations shipped</span></div>
+          <div class="metric"><strong data-count="8">0</strong><span>AI/CRM integrations</span></div>
+          <div class="metric"><strong>99.99%</strong><span>Resilient workflows</span></div>
+        </div>
+      </div>
+      <div class="console-wrap reveal">
+        <div class="console">
+          <div class="console-top"><div class="traffic"><i></i><i></i><i></i></div><span class="console-title">Dee AI automation workspace</span></div>
+          <div class="agent">
+            <div class="avatar">
+              <div class="avatar-core"><span class="signal-ring"></span><span class="signal-ring"></span><span class="mouth"></span></div>
+            </div>
+            <div class="chat-card">
+              <small>agent status: consulting</small>
+              <div class="typing">I’m Dee — I map fragmented workflows, watch for handoffs, and help DCode design automation architecture across CRM, AI, data, and orchestration layers.</div>
+            </div>
+            <div class="pipeline-mini">
+              <div class="pipe-row"><span class="pipe-node">Lead</span><span class="pipe-line"></span><span class="pipe-node">AI Screen</span><span class="pipe-line"></span><span class="pipe-node">CRM</span></div>
+              <div class="pipe-row"><span class="pipe-node">Monday</span><span class="pipe-line"></span><span class="pipe-node">n8n</span><span class="pipe-line"></span><span class="pipe-node">Escalation</span></div>
+              <div class="pipe-row"><span class="pipe-node">OCR</span><span class="pipe-line"></span><span class="pipe-node">Supabase</span><span class="pipe-line"></span><span class="pipe-node">Dashboard</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="container reveal" id="work">
+      <div class="section-head">
+        <div><div class="section-tag">DCode Flagship Systems</div><h2>Automation systems with Dee inside</h2></div>
+        <p>Production systems and workflow backbones by DCode. Click any project to open its detail card.</p>
+      </div>
+      <div class="grid two">
+        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('healthcare')" data-modal="healthcare">
+          <span class="pill">Healthcare · AI + CRM Sync</span>
+          <h3>Smart Recruitment Management</h3>
+          <p>End-to-end recruitment pipeline: social sourcing, verification, AI screening, centralized database, interview scheduling, and automated outreach with zero manual handoffs.</p>
+          <div class="motion-diagram"><div class="flow-track"><span class="flow-step">FB / IG / LinkedIn / Indeed</span><span class="arrow">→</span><span class="flow-step">Zapier Bridge</span><span class="arrow">→</span><span class="flow-step">n8n Engine</span><span class="arrow">→</span><span class="flow-step">Sapphire Check</span><span class="arrow">→</span><span class="flow-step">OpenAI Screening</span><span class="arrow">→</span><span class="flow-step">Zoho + Supabase</span><span class="arrow">→</span><span class="flow-step">Calendly</span></div></div>
+          <div class="stack"><span class="chip">n8n</span><span class="chip">Zapier</span><span class="chip">OpenAI</span><span class="chip">Zoho CRM</span><span class="chip">Supabase</span><span class="chip">Calendly</span></div>
+          <div class="impact">↓ 75% manual reduction · 8+ integrations · 24/7 AI screening</div><div class="open-hint">Open project details →</div>
+        </article>
+        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('monday')" data-modal="monday">
+          <span class="pill">PMO · SSOT · n8n Orchestration</span>
+          <h3>Enterprise Operations Workspace</h3>
+          <p>Centralized governance on monday.com: master projects, tasks, escalations, and leadership dashboards with n8n handling automation logic to avoid monday automation credits.</p>
+          <div class="motion-diagram"><div class="flow-track"><span class="flow-step">Master Projects</span><span class="arrow">→</span><span class="flow-step">Board Relation</span><span class="arrow">→</span><span class="flow-step">Master Tasks</span><span class="arrow">→</span><span class="flow-step">n8n every 15 min</span><span class="arrow">→</span><span class="flow-step">Overdue Logic</span><span class="arrow">→</span><span class="flow-step">Escalations</span><span class="arrow">→</span><span class="flow-step">Dashboards</span></div></div>
+          <div class="stack"><span class="chip">Monday.com</span><span class="chip">n8n</span><span class="chip">SharePoint</span><span class="chip">Dashboards</span></div>
+          <div class="impact">Single Source of Truth · 0 automation credits · 15-min sync</div><div class="open-hint">Open project details →</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container reveal" id="solutions">
+      <div class="section-head">
+        <div><div class="section-tag">DCode Solutions</div><h2>More automation systems</h2></div>
+        <p>Production-ready workflows across logistics, operations, HR, payroll, spreadsheet systems, OCR, and custom dashboards. Each card opens a project breakdown.</p>
+      </div>
+      <div class="grid three">
+        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('sheets')" data-modal="sheets"><span class="pill">Google Workspace</span><h3>Google Sheets-Powered Automation Systems</h3><p>Spreadsheet-driven automation for automated payroll processing, attendance monitoring, project management Gantt charts, and calendar scheduling using Google Sheets and Apps Script.</p><div class="stack"><span class="chip">Google Sheets</span><span class="chip">Apps Script</span><span class="chip">Payroll</span><span class="chip">Attendance</span></div><div class="open-hint">Open project details →</div></article>
+        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('dashboard')" data-modal="dashboard"><span class="pill">Operations Intelligence</span><h3>Custom Operations Dashboard</h3><p>Tailored dashboards with n8n REST endpoints for clients without existing CRM or PM tools, enabling operational visibility with low licensing overhead.</p><div class="stack"><span class="chip">REST API</span><span class="chip">Custom UI</span><span class="chip">n8n</span><span class="chip">Supabase</span></div><div class="open-hint">Open project details →</div></article>
+        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('ocr')" data-modal="ocr"><span class="pill">Logistics · OCR</span><h3>SPX OCR Automated Encoder System</h3><p>OCR-assisted workflow that extracts operational data from uploaded images, validates fields, normalizes records, and routes clean data into a centralized database.</p><div class="stack"><span class="chip">n8n</span><span class="chip">Supabase</span><span class="chip">Tesseract</span><span class="chip">Telegram</span></div><div class="open-hint">Open project details →</div></article>
+      </div>
+    </section>
+
+    <section class="container reveal" id="journey">
+      <div class="section-head">
+        <div><div class="section-tag">Client Journey</div><h2>From start to success</h2></div>
+        <p>A transparent, milestone-driven engagement process engineered for predictable outcomes.</p>
+      </div>
+      <div class="journey">
+        <div class="phase"><div class="phase-num">01</div><div><h3>Discovery & Scoping</h3><p>Brief, requirements gathering, proposal, and discovery call.</p></div><time>Days 1–5</time></div>
+        <div class="phase"><div class="phase-num">02</div><div><h3>Agreement & Kickoff</h3><p>Agreement signing, 30–50% deposit, kickoff meeting, and project workspace setup.</p></div><time>Week 1</time></div>
+        <div class="phase"><div class="phase-num">03</div><div><h3>Agile Development</h3><p>Foundation build, core automation, milestone reviews, redundancy, and failover testing.</p></div><time>Weeks 2–6</time></div>
+        <div class="phase"><div class="phase-num">04</div><div><h3>Delivery & UAT</h3><p>UAT, training session, documentation handoff, and production go-live.</p></div><time>Weeks 7–8</time></div>
+        <div class="phase"><div class="phase-num">05</div><div><h3>Ongoing Support</h3><p>Maintenance, monitoring, quarterly optimization, and strategic review.</p></div><time>Monthly</time></div>
+      </div>
+    </section>
+
+    <section class="container reveal" id="stack">
+      <div class="section-head">
+        <div><div class="section-tag">Technology</div><h2>Integrated stack</h2></div>
+        <p>Tools and platforms across orchestration, AI, infrastructure, CRM, communication, and delivery.</p>
+      </div>
+      <div class="marquee" aria-label="Technology stack marquee"><div class="marquee-track" id="marqueeTrack"></div></div>
+    </section>
+
+    <section class="container reveal models" id="models">
+      <div class="section-head">
+        <div><div class="section-tag">Flexibility</div><h2>Engagement models</h2></div>
+        <p>Choose how we work together, from ownership transfer to fully managed infrastructure.</p>
+      </div>
+      <div class="grid three">
+        <article class="card tilt-card"><span class="pill">One-time payment</span><h3>Project buyout</h3><p>Complete infrastructure ownership transfer with full documentation, handoff session, and source access.</p></article>
+        <article class="card tilt-card"><span class="pill">Monthly retainer</span><h3>Engineering retainer</h3><p>Ongoing support, monitoring, maintenance, defined SLA, and a dedicated automation engineer without full-time overhead.</p></article>
+        <article class="card tilt-card"><span class="pill">All-inclusive</span><h3>Fully managed</h3><p>Hosting, backups, incident response, and operations included so clients can focus on business outcomes.</p></article>
+      </div>
+    </section>
+
+    <section class="container reveal" id="contact">
+      <div class="contact">
+        <div class="section-tag">Build with DCode</div>
+        <h2>Build your automation backbone with DCode</h2>
+        <p>Let’s architect intelligent pipelines with Dee, reduce operational fragmentation, and build infrastructure that improves with time.</p>
+        <div class="hero-actions" style="justify-content:center"><a class="btn primary" href="mailto:boton.danicamarie@gmail.com">boton.danicamarie@gmail.com</a><a class="btn" href="tel:+639638506071">+63 963 850 6071</a></div>
+      </div>
+    </section>
+  </main>
+  <footer class="container">DCode by Danica Marie Boton · Dee AI Agent · Automation Systems Engineer · Workflow Architect<br/>n8n · Python · JavaScript · OpenAI · Claude · Supabase · Zoho · Monday · GHL · Google Sheets</footer>
+
+  <div class="modal-backdrop" id="modal-healthcare" role="dialog" aria-modal="true" aria-label="Smart Recruitment Management project details">
+    <div class="modal-panel">
+      <div class="modal-header"><div><div class="modal-kicker">Healthcare · AI + CRM Sync</div><div class="modal-title">Smart Recruitment Management</div></div><button class="modal-close" onclick="closeModal('healthcare')" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="modal-hero"><h3>End-to-end recruitment automation</h3><p>A fully automated pipeline spanning social sourcing, verification, AI screening, CRM synchronization, and interview scheduling with zero manual handoffs.</p></div>
+        <div class="modal-stats"><div class="modal-stat"><strong>75%</strong><span>Manual time reduction</span></div><div class="modal-stat"><strong>8+</strong><span>Integrated platforms</span></div><div class="modal-stat"><strong>24/7</strong><span>AI screening</span></div><div class="modal-stat"><strong>Real-time</strong><span>CRM sync</span></div></div>
+        <div class="modal-grid"><div class="modal-section"><h4>Workflow</h4><ul><li>Lead capture from Facebook, Instagram, LinkedIn, and Indeed</li><li>Zapier bridge plus n8n orchestration</li><li>Credential verification and deduplication</li><li>OpenAI scoring with Calendly scheduling</li></ul></div><div class="modal-section"><h4>Impact</h4><ul><li>Reduced repetitive recruiter admin work</li><li>Unified candidate history in CRM</li><li>Improved interview routing speed</li><li>Resilient retry and failover logic</li></ul></div></div>
+      </div>
     </div>
-    <div class="hero-actions">
-      <button class="btn-pri" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">View case studies<span style="opacity:.7"></span></button>
-      <a href="#contact" class="btn-ghost">Get in touch →</a>
+  </div>
+  <div class="modal-backdrop" id="modal-monday" role="dialog" aria-modal="true" aria-label="Enterprise Operations Workspace project details">
+    <div class="modal-panel">
+      <div class="modal-header"><div><div class="modal-kicker">PMO · SSOT · n8n Orchestration</div><div class="modal-title">Enterprise Operations Workspace</div></div><button class="modal-close" onclick="closeModal('monday')" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="modal-hero"><h3>Monday.com as UI, n8n as the workflow brain</h3><p>A centralized operational backbone consolidating projects, tasks, escalations, and dashboards into a single source of truth while avoiding monday automation credit usage.</p></div>
+        <div class="modal-stats"><div class="modal-stat"><strong>4</strong><span>Master boards</span></div><div class="modal-stat"><strong>~860</strong><span>Monthly n8n runs</span></div><div class="modal-stat"><strong>0</strong><span>Automation credits</span></div><div class="modal-stat"><strong>15-min</strong><span>Sync cadence</span></div></div>
+        <div class="modal-grid"><div class="modal-section"><h4>Architecture</h4><ul><li>Master Projects, Master Tasks, Escalations, and Requests</li><li>Board relations and mirror columns for governance</li><li>n8n overdue logic and escalation creation</li><li>Leadership dashboards for operational visibility</li></ul></div><div class="modal-section"><h4>Impact</h4><ul><li>Zero duplicated task data across departments</li><li>Faster risk identification</li><li>Consistent reporting for leadership</li><li>Scalable operations without credit pressure</li></ul></div></div>
+      </div>
     </div>
   </div>
-  <div class="scroll-indicator"><div class="scroll-line"></div></div>
-</section>
-
-<section class="section" id="work">
-<div class="section-inner">
-  <div class="reveal">
-    <div class="section-eyebrow">Flagship Engagements</div>
-    <h2 class="section-heading">Enterprise automation systems</h2>
-    <p class="section-sub">Two production systems, each a fully engineered operational backbone. Click any to open the full case study.</p>
-  </div>
-  <div class="projects-grid projects-grid-2 reveal reveal-d1" id="proj-grid">
-    <div class="pcard" onclick="openModal('healthcare')">
-      <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
-      <div class="pcard-content">
-        <div class="pcard-icon">🏥</div><div class="pcard-tag">Healthcare · AI + CRM Sync</div><h3>Smart Recruitment Management</h3>
-        <p>End-to-end recruitment pipeline: social sourcing, verification, AI screening, centralized database, interview scheduling with zero manual handoffs.</p>
-        <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="pcard-tech-icon"><img src="https://imgur.com/odOb8ta.png" alt="Zapier"></div><div class="pcard-tech-icon"><img src="https://imgur.com/BBQUr2n.png" alt="OpenAI"></div><div class="pcard-tech-icon"><img src="https://imgur.com/avLqFcP.png" alt="Zoho CRM"></div><div class="pcard-tech-icon"><img src="https://imgur.com/aemrhmj.png" alt="Calendly"></div><span class="pcard-tech-more">+3</span></div>
-        <div class="pcard-metric">↓ 75% manual reduction · 8+ integrations</div>
-      </div><span class="pcard-arrow">→</span>
-    </div>
-    <div class="pcard" onclick="openModal('monday')">
-      <div class="pcard-noise"></div><div class="pcard-border"></div><div class="pcard-shimmer"></div><div class="pcard-corner-tl"></div><div class="pcard-corner-br"></div><div class="pcard-pulse"></div>
-      <div class="pcard-content">
-        <div class="pcard-icon">🏢</div><div class="pcard-tag">PMO · SSOT · n8n Orchestration</div><h3>Enterprise Operations Workspace</h3>
-        <p>Centralized operational governance on monday.com: master projects, tasks, escalations, and n8n orchestration with a single source of truth and zero duplication.</p>
-        <div class="pcard-tech"><div class="pcard-tech-icon"><img src="https://imgur.com/tEcD6CK.png" alt="Monday"></div><div class="pcard-tech-icon"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><span class="pcard-tech-more">+2</span></div>
-        <div class="pcard-metric">Single Source of Truth · 0 automation credits</div>
-      </div><span class="pcard-arrow">→</span>
+  <div class="modal-backdrop" id="modal-sheets" role="dialog" aria-modal="true" aria-label="Google Sheets automation project details">
+    <div class="modal-panel">
+      <div class="modal-header"><div><div class="modal-kicker">Google Workspace · Apps Script</div><div class="modal-title">Google Sheets-Powered Automation Systems</div></div><button class="modal-close" onclick="closeModal('sheets')" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="modal-hero"><h3>Spreadsheet systems that behave like lightweight apps</h3><p>Scalable spreadsheet-driven workflows for payroll, attendance, project timelines, and scheduling without heavy backend infrastructure.</p></div>
+        <div class="modal-grid"><div class="modal-section"><h4>Modules</h4><ul><li>Automated payroll calculations and pay summaries</li><li>Attendance time-in/time-out tracking</li><li>Gantt chart and timeline automation</li><li>Calendar-based scheduling synchronization</li></ul></div><div class="modal-section"><h4>DCode value</h4><ul><li>Keeps familiar spreadsheet workflows</li><li>Adds validation and repeatable logic</li><li>Improves visibility for admin teams</li><li>Creates reusable templates for growth</li></ul></div></div>
+      </div>
     </div>
   </div>
-</div>
-</section>
-
-<section class="section">
-<div class="section-inner">
-  <div class="reveal"><div class="section-eyebrow">Solutions</div><h2 class="section-heading">More automation systems</h2><p class="section-sub">Production-ready workflows across logistics, operations, and intelligence.</p></div>
-  <div class="sol-grid reveal reveal-d1">
-    <div class="sol-card"><div class="sol-icon"><img src="https://imgur.com/xklNvsa.png" alt="Google Sheets"></div><h3>Google Sheets-Powered Automation Systems</h3><p>Scalable spreadsheet-driven automation workflows for business operations, HR systems, and project management without heavy backend infrastructure.</p><p>Google Sheets + AppScript Automation Suite: automated payroll processing, attendance tracking, project management, and scheduling systems powered by Google Sheets and Apps Script.</p><p>Additional capabilities include automated payroll calculation logic and pay summaries, attendance time-in/time-out tracking and reporting, project management Gantt Chart automation inside Google Sheets, and calendar-based scheduling and timeline synchronization.</p><div class="sol-tags"><span class="sol-tag">Google Sheets</span><span class="sol-tag">Apps Script</span><span class="sol-tag">Automation</span></div></div>
-    <div class="sol-card"><div class="sol-icon">🖥️</div><h3>Custom operations dashboard</h3><p>Tailored operational dashboard with n8n REST endpoints, built for clients without existing CRM or PM tools and with zero licensing overhead.</p><div class="sol-tags"><span class="sol-tag">REST API</span><span class="sol-tag">Custom UI</span><span class="sol-tag">n8n</span></div></div>
-    <div class="sol-card"><div class="sol-icon">📄</div><h3>SPX OCR Automated Encoder System</h3><p>OCR-assisted automation workflow that extracts operational data from uploaded images and routes validated records into a centralized database system.</p><p>n8n + Supabase + Tesseract OCR + Ngrok + Telegram + Google Drive pipeline with automated image-to-database encoding, file handling, validation checks, retry-safe execution, and structured data normalization before insertion.</p><p>Reduced repetitive manual encoding workload while improving encoding consistency, traceability, and operational scalability for low-cost deployment.</p><div class="sol-tags"><span class="sol-tag">OCR</span><span class="sol-tag">Data Pipeline</span><span class="sol-tag">Validation Layer</span><span class="sol-tag">Retry Logic</span></div></div>
+  <div class="modal-backdrop" id="modal-dashboard" role="dialog" aria-modal="true" aria-label="Custom operations dashboard project details">
+    <div class="modal-panel">
+      <div class="modal-header"><div><div class="modal-kicker">Operations Intelligence · Custom UI</div><div class="modal-title">Custom Operations Dashboard</div></div><button class="modal-close" onclick="closeModal('dashboard')" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="modal-hero"><h3>Operational visibility without platform lock-in</h3><p>A tailored dashboard with n8n REST endpoints for teams that need a focused control surface before investing in a full CRM or PM suite.</p></div>
+        <div class="modal-grid"><div class="modal-section"><h4>Workflow</h4><ul><li>Custom UI captures structured operational records</li><li>REST endpoints pass validated payloads to n8n</li><li>n8n routes status updates and notifications</li><li>Dashboard becomes a lightweight source of truth</li></ul></div><div class="modal-section"><h4>Best fit</h4><ul><li>Lean teams without existing CRM or PM tools</li><li>Low licensing overhead requirements</li><li>Fast operational reporting needs</li><li>Dee-ready control layer for future intelligence</li></ul></div></div>
+      </div>
+    </div>
   </div>
-</div>
-</section>
-
-<section class="section" id="journey">
-<div class="section-inner">
-  <div class="reveal"><div class="section-eyebrow">Client Journey</div><h2 class="section-heading">From start to success</h2><p class="section-sub">A transparent, milestone-driven engagement process engineered for predictable outcomes.</p></div>
-  <div class="journey reveal reveal-d1"><div class="journey-track">
-    <div class="jphase"><div class="jphase-num">Phase 01</div><div class="jphase-title">Discovery &amp; Scoping</div><div class="jphase-sub">Brief, proposal, discovery call</div><ul class="jphase-items"><li>Brief &amp; requirements gathering</li><li>Custom proposal</li><li>Discovery call</li></ul><div class="jphase-time">Days 1-5</div></div>
-    <div class="jphase"><div class="jphase-num">Phase 02</div><div class="jphase-title">Agreement &amp; Kickoff</div><div class="jphase-sub">Sign, deposit, kickoff meeting</div><ul class="jphase-items"><li>Sign agreement</li><li>Deposit 30-50%</li><li>Kickoff meeting</li></ul><div class="jphase-time">Week 1</div></div>
-    <div class="jphase"><div class="jphase-num">Phase 03</div><div class="jphase-title">Agile Development</div><div class="jphase-sub">Sprints and milestone reviews</div><ul class="jphase-items"><li>Sprints 1-2, Foundation</li><li>Milestone review 1</li><li>Sprints 3-4, Core build</li><li>Milestone review 2</li><li><strong>Redundancy &amp; failover testing</strong></li></ul><div class="jphase-time">Weeks 2-6</div></div>
-    <div class="jphase"><div class="jphase-num">Phase 04</div><div class="jphase-title">Delivery &amp; UAT</div><div class="jphase-sub">Testing, training, docs</div><ul class="jphase-items"><li>UAT testing</li><li>Training session</li><li>Documentation handoff</li><li>Production go-live</li></ul><div class="jphase-time">Weeks 7-8</div></div>
-    <div class="jphase"><div class="jphase-num">Phase 05</div><div class="jphase-title">Ongoing Support</div><div class="jphase-sub">Monthly retainer &amp; optimization</div><ul class="jphase-items"><li>Maintenance &amp; monitoring</li><li>Quarterly optimization</li><li>Strategic review</li></ul><div class="jphase-time">Monthly ongoing</div></div>
-  </div></div>
-</div>
-</section>
-
-<section class="section" id="stack">
-<div class="section-inner">
-  <div class="reveal"><div class="section-eyebrow">Technology</div><h2 class="section-heading">Integrated stack</h2><p class="section-sub">Tools and platforms across orchestration, AI, infrastructure, and delivery.</p></div>
-  <div class="stack-grid reveal reveal-d1">
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/6VjifQA.png" alt="n8n"></div><div class="stack-item-name">n8n</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/azHFwXv.png" alt="Python"></div><div class="stack-item-name">Python</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/vi5luwZ.png" alt="JavaScript"></div><div class="stack-item-name">JavaScript</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/BBQUr2n.png" alt="OpenAI"></div><div class="stack-item-name">OpenAI</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/MjtQWvP.png" alt="Claude"></div><div class="stack-item-name">Claude</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/pBbLqBK.png" alt="Supabase"></div><div class="stack-item-name">Supabase</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/WU4Dxp8.png" alt="Docker"></div><div class="stack-item-name">Docker</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/aYkJ7sr.png" alt="Azure"></div><div class="stack-item-name">Azure</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/HLCvjkG.png" alt="Telegram"></div><div class="stack-item-name">Telegram</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/6zOLilT.png" alt="Facebook"></div><div class="stack-item-name">Facebook</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/avLqFcP.png" alt="Zoho"></div><div class="stack-item-name">Zoho CRM</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/aemrhmj.png" alt="Calendly"></div><div class="stack-item-name">Calendly</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/ogS17C9.png" alt="Tesseract"></div><div class="stack-item-name">Tesseract</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/zPVgXkP.png" alt="GHL"></div><div class="stack-item-name">GHL</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/tEcD6CK.png" alt="Monday"></div><div class="stack-item-name">Monday</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/QPEyTXV.png" alt="ContactOut"></div><div class="stack-item-name">ContactOut</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/p05TTKl.png" alt="LinkedIn"></div><div class="stack-item-name">LinkedIn</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/KxvLl2r.png" alt="Indeed"></div><div class="stack-item-name">Indeed</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/dAXTxdl.png" alt="Deepseek"></div><div class="stack-item-name">Deepseek</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/y0LwowW.png" alt="Gemini"></div><div class="stack-item-name">Gemini</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/rIlLk9v.png" alt="Copilot"></div><div class="stack-item-name">Copilot</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/eIC5f8O.png" alt="Cursor"></div><div class="stack-item-name">Cursor</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/TvhK8Ol.png" alt="OpenProject"></div><div class="stack-item-name">OpenProject</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/qpmJkYt.png" alt="Trello"></div><div class="stack-item-name">Trello</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/PPRLGEu.png" alt="Notion"></div><div class="stack-item-name">Notion</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/loVBnTm.png" alt="Messenger"></div><div class="stack-item-name">Messenger</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/QkzVW7J.png" alt="Instagram"></div><div class="stack-item-name">Instagram</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/juD3o2j.png" alt="Meta"></div><div class="stack-item-name">Meta APIs</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/sEEHa4J.png" alt="GCloud"></div><div class="stack-item-name">GCloud</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/xklNvsa.png" alt="Sheets"></div><div class="stack-item-name">Sheets</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/5T3d9nS.png" alt="App Script"></div><div class="stack-item-name">App Script</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/9uPTSrq.png" alt="Canva"></div><div class="stack-item-name">Canva</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/YcwFMcA.png" alt="Figma"></div><div class="stack-item-name">Figma</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/odOb8ta.png" alt="Zapier"></div><div class="stack-item-name">Zapier</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/SwtIdcU.png" alt="JSON"></div><div class="stack-item-name">JSON</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/GLJ5Wiu.png" alt="YAML"></div><div class="stack-item-name">YAML</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/IhJ6166.png" alt="HTML5"></div><div class="stack-item-name">HTML5</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/jRcOeDk.png" alt="CSS3"></div><div class="stack-item-name">CSS3</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/3sBtQOm.png" alt="Bootstrap"></div><div class="stack-item-name">Bootstrap</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/0z6ti8R.png" alt="React Native"></div><div class="stack-item-name">React Native</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/60T0ydo.png" alt="VS Code"></div><div class="stack-item-name">VS Code</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/aPVuCDV.png" alt="VB"></div><div class="stack-item-name">VB</div></div>
-    <div class="stack-item"><div class="stack-logo-wrap"><img src="https://imgur.com/GnGs7ez.png" alt="C#"></div><div class="stack-item-name">C#</div></div>
+  <div class="modal-backdrop" id="modal-ocr" role="dialog" aria-modal="true" aria-label="SPX OCR encoder project details">
+    <div class="modal-panel">
+      <div class="modal-header"><div><div class="modal-kicker">Logistics · OCR Data Pipeline</div><div class="modal-title">SPX OCR Automated Encoder System</div></div><button class="modal-close" onclick="closeModal('ocr')" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="modal-hero"><h3>Image-to-database encoding with validation</h3><p>An OCR-assisted workflow that extracts operational data from uploaded images, validates fields, normalizes records, and routes clean data into a centralized database.</p></div>
+        <div class="modal-grid"><div class="modal-section"><h4>Pipeline</h4><ul><li>Image intake through Telegram and Google Drive</li><li>Tesseract OCR extraction and parsing</li><li>Validation checks before database insertion</li><li>Supabase write with traceable record history</li></ul></div><div class="modal-section"><h4>Reliability</h4><ul><li>Retry-safe n8n execution</li><li>Error routing for unclear OCR results</li><li>Structured normalization before insertion</li><li>Low-cost deployment path with Ngrok</li></ul></div></div>
+      </div>
+    </div>
   </div>
-</div>
-</section>
 
-<section class="section" id="models">
-<div class="section-inner">
-  <div class="reveal"><div class="section-eyebrow">Flexibility</div><h2 class="section-heading">Engagement models</h2><p class="section-sub">Choose how we work together, from complete ownership transfer to fully managed infrastructure.</p></div>
-  <div class="models-grid reveal reveal-d1">
-    <div class="mcard"><span class="mcard-icon">◈</span><h3>Project buyout</h3><p>Complete infrastructure ownership transfer with full technical documentation, handoff session, and source access so it is yours to operate independently.</p><div class="mcard-price">One-time payment</div></div>
-    <div class="mcard"><span class="mcard-icon">◉</span><h3>Engineering retainer</h3><p>Ongoing support, monitoring, and maintenance with a defined SLA, plus a dedicated automation engineer without full-time overhead.</p><div class="mcard-price">Monthly retainer</div></div>
-    <div class="mcard"><span class="mcard-icon">◎</span><h3>Fully managed</h3><p>Zero internal overhead with hosting, backups, incident response, and operations included. Focus entirely on your business outcomes.</p><div class="mcard-price">All-inclusive</div></div>
-  </div>
-</div>
-</section>
+  <a href="#top" class="scroll-top" id="scrollTop">↑</a>
+  <script>
+    const stack = ['n8n','Python','JavaScript','OpenAI','Claude','Supabase','Docker','Azure','Telegram','Facebook','Zoho CRM','Calendly','Tesseract','GHL','Monday','ContactOut','LinkedIn','Indeed','Deepseek','Gemini','Copilot','Cursor','OpenProject','Trello','Notion','Messenger','Instagram','Meta APIs','GCloud','Sheets','Apps Script','Canva','Figma','Zapier','JSON','YAML','HTML5','CSS3','Bootstrap','React Native','VS Code','VB','C#'];
+    const marqueeTrack = document.getElementById('marqueeTrack');
+    [...stack, ...stack].forEach(item => {
+      const el = document.createElement('span');
+      el.className = 'tool';
+      el.textContent = item;
+      marqueeTrack.appendChild(el);
+    });
 
-<section class="section" id="contact">
-<div class="section-inner">
-  <div class="cta-wrap reveal">
-    <h2>Design your automation backbone</h2>
-    <p>Let's architect intelligent pipelines, reduce operational fragmentation, and build infrastructure that improves with time.</p>
-    <div class="cta-contact"><a href="mailto:boton.danicamarie@gmail.com" class="cta-link">boton.danicamarie@gmail.com</a><span class="cta-sep">·</span><span style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--f3)">+63 963 850 6071</span></div>
-  </div>
-</div>
-</section>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('in');
+      });
+    }, { threshold: .14 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-<footer>
-  <p>Danica Marie Boton, Automation Systems Engineer · Workflow Architect · AI Integration Specialist</p>
-  <p>n8n · Python · JavaScript · OpenAI · Claude · Supabase · Zoho · Monday · GHL · Google Sheets</p>
-  
-</footer>
-<div id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+    const counters = document.querySelectorAll('[data-count]');
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.count);
+        let current = 0;
+        const step = Math.max(1, Math.ceil(target / 32));
+        const tick = () => {
+          current += step;
+          if (current >= target) { el.textContent = target + '+'; return; }
+          el.textContent = current + '+';
+          requestAnimationFrame(tick);
+        };
+        tick();
+        countObserver.unobserve(el);
+      });
+    }, { threshold: .8 });
+    counters.forEach(el => countObserver.observe(el));
 
-<!-- Modal: Healthcare -->
-<div class="modal-backdrop" id="modal-healthcare" role="dialog" aria-modal="true" aria-label="Smart Recruitment Management case study">
-<div class="modal-panel" id="modal-healthcare-panel">
-  <div class="modal-header"><div class="modal-header-left"><div><div class="modal-eyebrow">Healthcare · AI + CRM</div><div class="modal-title">Smart Recruitment Management</div></div></div><button class="modal-close" onclick="closeModal('healthcare')" aria-label="Close">✕</button></div>
-  <div class="modal-scroll-bar"><div class="modal-scroll-fill" id="fill-healthcare"></div></div>
-  <div class="modal-body" id="body-healthcare">
-    <div class="modal-hero"><div class="modal-hero-badge">Healthcare · Healthcare Enterprise · 11-week delivery</div><h1>Smart Recruitment Management System</h1><p>A fully automated, end-to-end recruitment pipeline for Healthcare spanning social sourcing, credential verification, AI-powered screening, CRM synchronization, and automated interview scheduling. Zero manual handoffs at any stage.</p></div>
-    <div class="modal-stats"><div class="mstat"><span class="mstat-val">75%</span><span class="mstat-label">Manual time reduction</span></div><div class="mstat"><span class="mstat-val">8+</span><span class="mstat-label">Integrated platforms</span></div><div class="mstat"><span class="mstat-val">24/7</span><span class="mstat-label">AI screening</span></div><div class="mstat"><span class="mstat-val">Real-time</span><span class="mstat-label">CRM sync</span></div></div>
-    <div class="msec"><div class="msec-tag">Problem Statement</div><h2>Fragmented operations were blocking scale</h2><p>Healthcare's recruitment operation was distributed across six or more disconnected platforms, including job boards, ATS, social media channels, a CRM, a verification portal, and recruiter-managed comms. No system communicated with another. The result was inconsistent candidate tracking, frequent duplicate processing, limited applicant history visibility, and an unsustainable manual workload of 40+ hours per week.</p><p>Recruiters had no unified view. Leadership had no reliable data. Time-to-hire was slow. And there was no foundation for scaling candidate volume without adding headcount.</p><div class="m2col"><div class="mpanel"><h3>Fragmented recruitment systems</h3><ul><li>Job posting platforms</li><li>Applicant tracking systems</li><li>Social channels: Facebook, Instagram, LinkedIn</li><li>CRM and verification portals</li><li>Recruiter-managed communication channels</li></ul></div><div class="mpanel"><h3>Lack of centralized intelligence</h3><ul><li>Previous applications and history</li><li>Interview outcomes and feedback</li><li>Rejection reasons and patterns</li><li>Communication history across channels</li><li>Full recruitment lifecycle data</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">System Architecture</div><h2>Event-driven pipeline from source to schedule</h2><div class="architecture-flow"><div class="flow-title">End-to-end recruitment flow with Zapier + n8n orchestration</div><canvas class="flow-canvas" id="flow-healthcare" width="1000" height="240"></canvas></div><div class="m2col"><div class="mpanel"><h3>Social sourcing layer</h3><ul><li>Facebook and Instagram lead forms via Meta API</li><li>LinkedIn lead gen forms bridged via Zapier webhook</li><li>Indeed job posting integration</li><li>Unified candidate intake regardless of source</li></ul></div><div class="mpanel"><h3>Orchestration engine</h3><ul><li>n8n handles all heavy workflow logic</li><li>Zapier bridges LinkedIn where n8n has no native trigger</li><li>Hybrid approach: reliability plus flexibility</li><li>Error handling with retry logic on all API calls</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Automation Logic</div><h2>Step-by-step workflow orchestration</h2><div class="m-step"><div class="m-step-num">1</div><div class="m-step-body"><strong>Lead capture and normalization</strong><p>Candidate submits on any source. n8n normalizes all fields into a standard schema: name, email, phone, resume link, source channel.</p></div></div><div class="m-step"><div class="m-step-num">2</div><div class="m-step-body"><strong>Deduplication check</strong><p>Queries Zoho CRM for existing records by email and phone. If duplicate found, merges data and updates the record without creating a second profile.</p></div></div><div class="m-step"><div class="m-step-num">3</div><div class="m-step-body"><strong>CRM sync and record creation</strong><p>Creates or updates candidate record in Zoho CRM. Custom modules track recruitment stage, source, and full interaction history.</p></div></div><div class="m-step"><div class="m-step-num">4</div><div class="m-step-body"><strong>Credential verification</strong><p>Sapphire Check validates licenses, certifications, and background. Result logs to CRM and Supabase audit trail.</p></div></div><div class="m-step"><div class="m-step-num">5</div><div class="m-step-body"><strong>AI screening and scoring</strong><p>Candidate profile is sent to OpenAI and evaluated against job description, required skills, and experience level. Returns score 0-100 with rationale.</p></div></div><div class="m-step"><div class="m-step-num">6</div><div class="m-step-body"><strong>Routing and scheduling</strong><p>High-score candidates receive Calendly interview link via AI-personalized email. Low-score candidates receive automated rejection. All outcomes are logged.</p></div></div><div class="m-code">Error handling + redundancy:
-• Retry on API timeout (3 attempts, exponential backoff: 2s → 4s → 8s)
-• Dual-path: Primary n8n webhook → Failover Zapier webhook (if n8n down)
-• On failure after 3 retries: Log to Supabase error table, send to dead letter queue, alert via Email
-• Idempotency: tx_hash stored in Supabase; duplicate webhook requests rejected
-• Checkpoint recovery: Resume from last successful step on workflow crash
-• LinkedIn Zapier bridge: idempotent webhook endpoint, fires once per lead</div></div>
-    <div class="msec"><div class="msec-tag">Tech Stack Breakdown</div><h2>Categorized by layer</h2><div class="m2col"><div class="mpanel"><h3>Orchestration</h3><div class="m-stack"><span class="m-tech-pill">n8n</span><span class="m-tech-pill">Zapier/n8n (API Integrations)</span></div></div><div class="mpanel"><h3>AI / LLMs</h3><div class="m-stack"><span class="m-tech-pill">OpenAI GPT-4</span><span class="m-tech-pill">AI email generation</span><span class="m-tech-pill">Scoring logic</span></div></div><div class="mpanel"><h3>CRM / Tools</h3><div class="m-stack"><span class="m-tech-pill">Zoho CRM</span><span class="m-tech-pill">Calendly</span><span class="m-tech-pill">Sapphire Check</span></div></div><div class="mpanel"><h3>Data Layer</h3><div class="m-stack"><span class="m-tech-pill">Supabase</span><span class="m-tech-pill">Audit trail</span><span class="m-tech-pill">Deduplication engine</span></div></div><div class="mpanel"><h3>Communication</h3><div class="m-stack"><span class="m-tech-pill">AI email outreach</span><span class="m-tech-pill">Calendar invites</span><span class="m-tech-pill">Status notifications</span></div></div><div class="mpanel"><h3>Social Sourcing</h3><div class="m-stack"><span class="m-tech-pill">Facebook Lead Ads</span><span class="m-tech-pill">Instagram</span><span class="m-tech-pill">LinkedIn</span><span class="m-tech-pill">Indeed</span></div></div></div></div>
-    <div class="msec"><div class="msec-tag">Results / Impact</div><h2>Before vs. after</h2><div class="ba-grid"><div class="ba-panel before"><div class="ba-panel-label">Before</div><ul><li>40+ hours/week on manual recruiting tasks</li><li>6+ fragmented platforms with no single source of truth</li><li>Duplicate candidate records across systems</li><li>Slow time-to-hire due to manual screening</li><li>No applicant history or interaction tracking</li><li>LinkedIn leads manually entered</li></ul></div><div class="ba-panel after"><div class="ba-panel-label">After</div><ul><li>~10 hours/week, 75% reduction in admin time</li><li>Unified pipeline across 8+ integrated platforms</li><li>Automated deduplication with 99%+ accuracy</li><li>AI screening running 24/7, ~40% faster to interview</li><li>Full applicant timeline and history in CRM</li><li>LinkedIn leads auto-captured via Zapier + n8n</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Resiliency Architecture</div><h2>Redundancy methods + full audit trail</h2><div class="m2col"><div class="mpanel"><h3>🔄 Redundancy &amp; fault tolerance</h3><div class="m-feature-list"><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Exponential backoff retry</strong>3 attempts with 2s, 4s, 8s delays before failure declaration</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Dual-path failover</strong>Primary webhook with automatic secondary endpoint trigger on timeout</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Idempotent processing</strong>Every webhook uses a unique transaction ID and duplicate requests are ignored</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Dead letter queue</strong>Failed messages are stored with full payload and can be replayed safely</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>State checkpointing</strong>Workflow state is saved after each major step and resumes from the last checkpoint on crash</p></div></div></div><div class="mpanel"><h3>📋 Observability &amp; audit</h3><div class="m-feature-list"><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Every state change logged</strong>Supabase audit table captures timestamps, actor, and before or after values</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Execution traceability</strong>n8n execution IDs are linked to business transaction IDs for end-to-end debugging</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Proactive alerting</strong>Slack webhook triggers on repeated failures and error table monitoring runs every 5 minutes</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Retry analytics</strong>Dashboard tracks retry success rate, average retry count, and common failure patterns</p></div></div></div></div><div class="m-code" style="margin-top:1rem;"><strong>Redundancy in action:</strong>
-• Webhook timeout (5s) → triggers failover endpoint
-• Retry 1 (2s) → fail → Retry 2 (4s) → fail → Retry 3 (8s) → fail → Dead letter queue
-• Idempotency key: tx_{timestamp}_{uuid} prevents double processing on replay
-• Checkpoint saved after: lead capture, deduplication, CRM write, scheduling</div></div>
-    <div class="msec"><div class="msec-tag">System Highlights</div><h2>What makes this system defensible</h2><div class="m-highlights"><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Multi-layer redundancy</strong> — auto-retry with exponential backoff + failover paths + dead letter queue + idempotent processing ensures zero data loss even under API failures.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Event-driven architecture</strong> — every trigger fires downstream actions automatically without polling.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Zero manual handoffs</strong> — from lead capture through interview booking, no recruiter action required.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Hybrid Zapier + n8n design</strong> solves LinkedIn's API gap without custom LinkedIn integration.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Fail-safe retry logic</strong> with exponential backoff prevents data loss on transient API failures.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Centralized data</strong> in Zoho CRM + Supabase builds a reusable talent database for future pipelines.</p></div></div></div>
-  </div>
-</div>
-</div>
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mx', `${x}px`);
+        card.style.setProperty('--my', `${y}px`);
+        const rx = ((y / rect.height) - .5) * -5;
+        const ry = ((x / rect.width) - .5) * 5;
+        card.style.transform = `translateY(-8px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
 
-<!-- Modal: Monday -->
-<div class="modal-backdrop" id="modal-monday" role="dialog" aria-modal="true" aria-label="Enterprise Operations Workspace case study">
-<div class="modal-panel" id="modal-monday-panel">
-  <div class="modal-header"><div class="modal-header-left"><div><div class="modal-eyebrow">PMO · SSOT · Monday.com</div><div class="modal-title">Enterprise Operations Workspace</div></div></div><button class="modal-close" onclick="closeModal('monday')" aria-label="Close">✕</button></div>
-  <div class="modal-scroll-bar"><div class="modal-scroll-fill" id="fill-monday"></div></div>
-  <div class="modal-body" id="body-monday">
-    <div class="modal-hero"><div class="modal-hero-badge">Monday.com Standard · n8n Orchestration · Zero automation credits</div><h1>Enterprise Operations Workspace</h1><p>A centralized operational backbone built on monday.com Standard tier, consolidating portfolio governance, task execution, escalation management, and departmental visibility into a Single Source of Truth. All heavy automation logic is handled by n8n, consuming zero monday.com automation credits.</p></div>
-    <div class="modal-stats"><div class="mstat"><span class="mstat-val">4</span><span class="mstat-label">Master boards</span></div><div class="mstat"><span class="mstat-val">~860</span><span class="mstat-label">Monthly n8n runs</span></div><div class="mstat"><span class="mstat-val">0</span><span class="mstat-label">Automation credits</span></div><div class="mstat"><span class="mstat-val">15-min</span><span class="mstat-label">Sync cadence</span></div></div>
-    <div class="msec"><div class="msec-tag">Problem Statement</div><h2>Departmental silos were creating operational debt</h2><p>The organization managed projects across a fragmented collection of individual boards, spreadsheets, and departmental workspaces. Each project had its own task board with no relational link to the portfolio. Leadership had no unified view of project health. Overdue tasks went undetected until manually reviewed. Risk escalations were informal and inconsistent.</p><p>The high automation credit consumption from monday.com's native automations created cost pressure. The goal: consolidate everything into a governed SSOT architecture with no per-credit automation overhead.</p><div class="m2col"><div class="mpanel"><h3>Key challenges</h3><ul><li>Separate boards per department and project</li><li>Duplicated task data across locations</li><li>No single source of truth for portfolio health</li><li>Manual overdue tracking and escalation</li><li>Inconsistent reporting for leadership</li><li>High automation credit consumption</li></ul></div><div class="mpanel"><h3>Business impact</h3><ul><li>Delayed risk identification</li><li>Inconsistent project governance</li><li>Leadership lacked real-time visibility</li><li>Unable to scale operations efficiently</li><li>High maintenance overhead for duplicated boards</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">System Architecture</div><h2>Monday as UI + database · n8n as orchestration engine</h2><div class="architecture-flow"><div class="flow-title">Master Operations Workflow, SSOT with n8n orchestration</div><canvas class="flow-canvas" id="flow-monday" width="1000" height="280"></canvas></div><div class="m2col"><div class="mpanel"><h3>Monday Native (UI + DB)</h3><ul><li>Department mirror column, lookup from Projects</li><li>Status formatting and dashboard views</li><li>Manual data entry for project managers</li><li>Board relations: Projects ↔ Tasks ↔ Escalations</li><li>SharePoint links stored in file columns</li></ul></div><div class="mpanel"><h3>n8n Workflow Engine</h3><ul><li>Overdue calculation: Yes / On time</li><li>Days remaining: computed daily delta</li><li>Auto-creates escalation for overdue tasks</li><li>Rate limited: 0.5s between API mutations</li><li>Schedule: every 15 min, weekdays 8AM-6PM ET</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Board Architecture</div><h2>Four boards · Zero duplication</h2><div class="m2col"><div class="mpanel"><h3>Master Projects</h3><ul><li>Department: dropdown_mm3jy0qd</li><li>In-Charge, Status, Health, Priority, Due Date</li><li>Linked Tasks mirror column</li><li>Portfolio-level governance view</li></ul></div><div class="mpanel"><h3>Master Tasks</h3><ul><li>Project connection: board_relation_mm3jp2t3</li><li>Department mirror: lookup_mm3jpvfa</li><li>Overdue: color_mm3j6cqf</li><li>Days Remaining: numeric_mm3j1175</li><li>Due Date: date_mm3jwed7</li></ul></div><div class="mpanel"><h3>Escalations</h3><ul><li>Related Task: board_relation_mm3jt0yj</li><li>Severity: color_mm3j24e1 (auto = High)</li><li>Status: color_mm3jdh0j (auto = Pending)</li><li>No duplicate escalations per task</li></ul></div><div class="mpanel"><h3>Project Requests</h3><ul><li>Intake pipeline for new project submissions</li><li>Department reference data maintained as lookup source</li><li>Approval workflow planned for Phase 2</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Automation Logic</div><h2>Sample layer: n8n overdue and escalation handling</h2><div class="m-code">Schedule: Every 15 min, Mon-Fri, 8AM-6PM ET (skips weekends)
-Monthly executions: ~860 (well within n8n free tier 2,500 limit)
 
-Workflow steps:
-1. Query Master Tasks, filter: due date not empty, status not Completed/Cancelled/Archived
-2. For each task: calculate Overdue (Yes if dueDate < today)
-3. Calculate Days Remaining (dueDate - today, can be negative)
-4. Update monday columns via GraphQL API mutation
-5. If Overdue = Yes AND no open escalation for task:
-   → Create Escalation record (Severity = High, Status = Pending, Date = Today)
-6. If escalation already exists: skip (no duplicates)
+    let activeModal = null;
+    window.openModal = function(id) {
+      if (typeof event !== 'undefined' && event.currentTarget && event.currentTarget.classList && event.currentTarget.classList.contains('case-card')) event.stopPropagation();
+      if (activeModal) closeModal(activeModal);
+      const modal = document.getElementById(`modal-${id}`);
+      if (!modal) return;
+      modal.classList.add('open');
+      document.body.classList.add('modal-open');
+      activeModal = id;
+      modal.scrollTop = 0;
+    };
+    window.closeModal = function(id) {
+      const modal = document.getElementById(`modal-${id}`);
+      if (!modal) return;
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      activeModal = null;
+    };
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+      modal.addEventListener('mousedown', e => {
+        if (e.target === modal) closeModal(modal.id.replace('modal-', ''));
+      });
+    });
+    document.querySelectorAll('.case-card').forEach(card => {
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(card.dataset.modal);
+        }
+      });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && activeModal) closeModal(activeModal);
+    });
 
-Rate limiting: 0.5s delay between mutations to respect monday.com API limits</div></div>
-    <div class="msec"><div class="msec-tag">Tech Stack Breakdown</div><h2>Categorized by layer</h2><div class="m2col"><div class="mpanel"><h3>Orchestration</h3><div class="m-stack"><span class="m-tech-pill">n8n (self-hosted)</span><span class="m-tech-pill">GraphQL API</span></div></div><div class="mpanel"><h3>Project Management</h3><div class="m-stack"><span class="m-tech-pill">Monday.com Standard</span><span class="m-tech-pill">Board relations</span><span class="m-tech-pill">Mirror columns</span></div></div><div class="mpanel"><h3>File Management</h3><div class="m-stack"><span class="m-tech-pill">Microsoft SharePoint</span><span class="m-tech-pill">Links-only in monday</span></div></div><div class="mpanel"><h3>Planned integrations</h3><div class="m-stack"><span class="m-tech-pill">Outlook calendar sync</span><span class="m-tech-pill">Email notifications</span><span class="m-tech-pill">SharePoint doc sync</span></div></div></div></div>
-    <div class="msec"><div class="msec-tag">Results / Impact</div><h2>Before vs. after</h2><div class="ba-grid"><div class="ba-panel before"><div class="ba-panel-label">Before</div><ul><li>Separate boards per department and project</li><li>No centralized portfolio health view</li><li>Manual overdue tracking and escalation</li><li>High automation credit consumption</li><li>Inconsistent governance and reporting</li><li>Leadership lacked real-time visibility</li></ul></div><div class="ba-panel after"><div class="ba-panel-label">After</div><ul><li>4 master boards with zero duplication</li><li>Real-time portfolio dashboard for leadership</li><li>Auto-generated escalations within 15 min of due date</li><li>Zero automation credits consumed, all logic in n8n</li><li>Consistent governance with role-based dashboards</li><li>Validated at scale: 50+ tasks bulk-imported via CSV</li></ul></div></div></div>
-    <div class="msec"><div class="msec-tag">Resiliency Architecture</div><h2>Redundancy methods + full audit trail</h2><div class="m2col"><div class="mpanel"><h3>🔄 Redundancy &amp; fault tolerance</h3><div class="m-feature-list"><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Exponential backoff retry</strong>3 attempts with 2s, 4s, 8s delays before failure declaration</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Dual-path failover</strong>Primary webhook with automatic secondary endpoint trigger on timeout</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Idempotent processing</strong>Every webhook uses a unique transaction ID and duplicate requests are ignored</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Dead letter queue</strong>Failed messages are stored with full payload and can be replayed safely</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>State checkpointing</strong>Workflow state is saved after each major step and resumes from the last checkpoint on crash</p></div></div></div><div class="mpanel"><h3>📋 Observability &amp; audit</h3><div class="m-feature-list"><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Every state change logged</strong>Supabase audit table captures timestamps, actor, and before or after values</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Execution traceability</strong>n8n execution IDs are linked to business transaction IDs for end-to-end debugging</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Proactive alerting</strong>Slack webhook triggers on repeated failures and error table monitoring runs every 5 minutes</p></div><div class="m-feature"><span class="m-feature-check">✓</span><p><strong>Retry analytics</strong>Dashboard tracks retry success rate, average retry count, and common failure patterns</p></div></div></div></div><div class="m-code" style="margin-top:1rem;"><strong>Redundancy in action:</strong>
-• Webhook timeout (5s) → triggers failover endpoint
-• Retry 1 (2s) → fail → Retry 2 (4s) → fail → Retry 3 (8s) → fail → Dead letter queue
-• Idempotency key: tx_{timestamp}_{uuid} prevents double processing on replay
-• Checkpoint saved after: lead capture, deduplication, CRM write, scheduling</div></div>
-    <div class="msec"><div class="msec-tag">System Highlights</div><h2>What makes this architecture defensible</h2><div class="m-highlights"><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Multi-layer redundancy</strong> — auto-retry with exponential backoff + failover paths + dead letter queue + idempotent processing ensures zero data loss even under API failures.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>True SSOT</strong> — all dashboards read from master boards, zero data duplication across views or departments.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>n8n-first approach</strong> keeps Monday as a pure UI and database layer, eliminating per-credit automation cost entirely.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Escalation deduplication</strong> prevents repeated escalation records for the same task.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Rate-limited API mutations</strong> ensure stability within monday.com API constraints at scale.</p></div><div class="m-highlight"><div class="m-highlight-dot"></div><p><strong>Stress-tested architecture</strong> with a 50+ task CSV bulk import and no manual intervention.</p></div></div></div>
-  </div>
-</div>
-</div>
-
-<script>
-(function(){
-var cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring'),mx=window.innerWidth/2,my=window.innerHeight/2,cx=mx,cy=my,rx=mx,ry=my;
-if(cur&&ring&&window.matchMedia('(pointer:fine)').matches){
-  document.addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;document.body.classList.add('cursor-ready');},{passive:true});
-  document.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-ready','cursor-hover');},{passive:true});
-  (function animCursor(){
-    cx+=(mx-cx)*.35;cy+=(my-cy)*.35;rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
-    cur.style.left=cx.toFixed(2)+'px';cur.style.top=cy.toFixed(2)+'px';
-    ring.style.left=rx.toFixed(2)+'px';ring.style.top=ry.toFixed(2)+'px';
-    requestAnimationFrame(animCursor);
-  })();
-  document.querySelectorAll('a,button,.pcard,.stack-item,.mcard,.tcard,.sol-card,.jphase,.modal-close').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});});
-}
-
-var nav=document.getElementById('main-nav'),prog=document.getElementById('progress'),bt=document.getElementById('back-top');
-window.addEventListener('scroll',function(){var s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;if(prog)prog.style.transform='scaleX('+(h>0?s/h:0)+')';if(bt)bt.classList.toggle('show',s>500);if(nav)nav.classList.toggle('scrolled',s>60);},{passive:true});
-
-var revEls=document.querySelectorAll('.reveal');
-var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
-revEls.forEach(function(el){ro.observe(el);});
-
-var isMobile=window.innerWidth<768;
-document.querySelectorAll('.pcard').forEach(function(card){
-  var isHovered=false,tiltX=0,tiltY=0,targetX=0,targetY=0,animId=null;
-  function lerpTilt(){
-    tiltX+=(targetX-tiltX)*.12;tiltY+=(targetY-tiltY)*.12;
-    if(!isMobile){card.style.transform='perspective(900px) rotateX('+tiltY+'deg) rotateY('+tiltX+'deg) translateZ(8px) scale(1.015)';}
-    if(isHovered){animId=requestAnimationFrame(lerpTilt);}
-    else{tiltX+=(0-tiltX)*.18;tiltY+=(0-tiltY)*.18;if(Math.abs(tiltX)>.01||Math.abs(tiltY)>.01){if(!isMobile){card.style.transform='perspective(900px) rotateX('+tiltY+'deg) rotateY('+tiltX+'deg) translateZ(0px) scale(1)';}animId=requestAnimationFrame(lerpTilt);}else if(!isMobile){card.style.transform='perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0) scale(1)';}}
-  }
-  card.addEventListener('mousemove',function(e){if(isMobile)return;var rect=card.getBoundingClientRect(),cx=(e.clientX-rect.left)/rect.width,cy=(e.clientY-rect.top)/rect.height;targetX=(cx-.5)*10;targetY=-(cy-.5)*8;card.style.setProperty('--gx',(cx*100).toFixed(1)+'%');card.style.setProperty('--gy',(cy*100).toFixed(1)+'%');});
-  card.addEventListener('mouseenter',function(){isHovered=true;if(animId)cancelAnimationFrame(animId);animId=requestAnimationFrame(lerpTilt);});
-  card.addEventListener('mouseleave',function(){isHovered=false;targetX=0;targetY=0;if(animId)cancelAnimationFrame(animId);animId=requestAnimationFrame(lerpTilt);});
-});
-
-document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var id=this.getAttribute('href').slice(1);if(!id)return;var el=document.getElementById(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}});});
-
-var phases=document.querySelectorAll('.jphase');
-var po=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var idx=Array.from(phases).indexOf(e.target);e.target.style.transitionDelay=(idx*.08)+'s';e.target.style.opacity='1';e.target.style.transform='translateY(0)';po.unobserve(e.target);}});},{threshold:.1});
-phases.forEach(function(p){p.style.opacity='0';p.style.transform='translateY(18px)';p.style.transition='opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1)';po.observe(p);});
-var sItems=document.querySelectorAll('.stack-item');
-var so=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var idx=Array.from(sItems).indexOf(e.target);setTimeout(function(){e.target.style.opacity='1';e.target.style.transform='translateY(0) scale(1)';},idx*14);so.unobserve(e.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
-sItems.forEach(function(s){s.style.opacity='0';s.style.transform='translateY(12px) scale(.97)';s.style.transition='opacity .45s ease,transform .45s ease';so.observe(s);});
-
-/* Hero orchestration canvas */
-var canvas=document.getElementById('orch-canvas');
-if(canvas){
-  var ctx=canvas.getContext('2d'),W,H,nodes=[],ambientParticles=[],connections=[],mouse={x:-999,y:-999},dpr=Math.min(window.devicePixelRatio||1,2);
-  function resizeHero(){var hero=document.getElementById('hero');W=hero.offsetWidth;H=hero.offsetHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);buildNodes();}
-  function buildNodes(){nodes=[];connections=[];var isM=W<768,n1=isM?5:7,n2=isM?6:12,r1=isM?W*.18:W*.16,r2=isM?W*.35:W*.30;nodes.push({x:W*.5,y:H*.5,r:4,type:'hub',ox:0,oy:0,mx:0,my:0});for(var i=0;i<n1;i++){var a=(i/n1*Math.PI*2)+Math.PI/8;nodes.push({x:W*.5+Math.cos(a)*r1,y:H*.5+Math.sin(a)*r1*.65,r:2.5,pulse:Math.random()*Math.PI*2,pulseDir:1,type:'mid',offset:{x:(Math.random()-.5)*20,y:(Math.random()-.5)*20},ox:0,oy:0,mx:0,my:0});}for(var j=0;j<n2;j++){var a2=(j/n2*Math.PI*2)+Math.PI/14;nodes.push({x:W*.5+Math.cos(a2)*r2,y:H*.5+Math.sin(a2)*r2*.6,r:1.8,pulse:Math.random()*Math.PI*2,pulseDir:Math.random()>.5?1:-1,type:'outer',offset:{x:(Math.random()-.5)*30,y:(Math.random()-.5)*30},ox:0,oy:0,mx:0,my:0});}var hub=nodes[0],ring1=nodes.slice(1,1+n1),ring2=nodes.slice(1+n1);ring1.forEach(function(n){connections.push({a:hub,b:n,prog:Math.random(),speed:.003+Math.random()*.002,active:true,col:'pu'});});ring2.forEach(function(n,i){connections.push({a:ring1[i%ring1.length],b:n,prog:Math.random(),speed:.002+Math.random()*.002,active:Math.random()>.3,col:Math.random()>.5?'cy':'pu'});});ambientParticles=[];for(var ap=0;ap<25;ap++)ambientParticles.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.15,size:Math.random()*1.5+.3,life:Math.random(),decay:.001+Math.random()*.001});}
-  var t=0;
-  function drawHero(){ctx.clearRect(0,0,W,H);t+=.008;nodes.forEach(function(n,i){if(n.type==='hub')return;n.pulse+=.025*n.pulseDir;n.ox=n.offset.x*Math.sin(n.pulse*.4+i)*.3;n.oy=n.offset.y*Math.cos(n.pulse*.3+i)*.3;var dx=mouse.x-(n.x+n.ox),dy=mouse.y-(n.y+n.oy),dist=Math.sqrt(dx*dx+dy*dy),infl=Math.max(0,1-dist/180);n.mx=(dx/Math.max(dist,1))*infl*-8;n.my=(dy/Math.max(dist,1))*infl*-8;});connections.forEach(function(c){if(!c.active)return;var ax=c.a.x+(c.a.ox||0)+(c.a.mx||0),ay=c.a.y+(c.a.oy||0)+(c.a.my||0),bx=c.b.x+(c.b.ox||0)+(c.b.mx||0),by=c.b.y+(c.b.oy||0)+(c.b.my||0);ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.strokeStyle=c.col==='cy'?'rgba(79,209,197,.12)':'rgba(139,92,246,.1)';ctx.lineWidth=.7;ctx.stroke();c.prog+=c.speed;if(c.prog>1)c.prog=0;var px=ax+(bx-ax)*c.prog,py=ay+(by-ay)*c.prog;ctx.beginPath();ctx.arc(px,py,1.8,0,Math.PI*2);ctx.fillStyle=c.col==='cy'?'rgba(79,209,197,.9)':'rgba(167,139,250,.9)';ctx.fill();});nodes.forEach(function(n,i){var nx=n.x+(n.ox||0)+(n.mx||0),ny=n.y+(n.oy||0)+(n.my||0),pv=Math.sin(t*1.2+i*.7)*.5+.5;if(n.type==='hub'){[40,28,18].forEach(function(r,ri){ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.strokeStyle='rgba(139,92,246,'+(.04-ri*.01)*pv+')';ctx.lineWidth=1;ctx.stroke();});ctx.beginPath();ctx.arc(nx,ny,5,0,Math.PI*2);ctx.fillStyle='rgba(139,92,246,.8)';ctx.fill();ctx.beginPath();ctx.arc(nx,ny,3,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,.95)';ctx.fill();}else{var r=n.r*(1+pv*.25),col=n.type==='mid'?'rgba(139,92,246,':'rgba(79,209,197,';ctx.beginPath();ctx.arc(nx,ny,r+4,0,Math.PI*2);ctx.fillStyle=col+(.08*(pv+.3))+')';ctx.fill();ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.fillStyle=col+(.7+pv*.3)+')';ctx.fill();}});ambientParticles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;if(p.life<=0){p.x=Math.random()*W;p.y=Math.random()*H;p.life=Math.random();}ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle='rgba(139,92,246,'+(p.life*.15)+')';ctx.fill();});requestAnimationFrame(drawHero);}
-  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
-  window.addEventListener('resize',function(){isMobile=window.innerWidth<768;resizeHero();},{passive:true});
-  resizeHero();drawHero();
-}
-
-if(!CanvasRenderingContext2D.prototype.roundRect){
-  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){if(w<2*r)r=w/2;if(h<2*r)r=h/2;this.moveTo(x+r,y);this.lineTo(x+w-r,y);this.quadraticCurveTo(x+w,y,x+w,y+r);this.lineTo(x+w,y+h-r);this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);this.lineTo(x+r,y+h);this.quadraticCurveTo(x,y+h,x,y+h-r);this.lineTo(x,y+r);this.quadraticCurveTo(x,y,x+r,y);return this;};
-}
-
-var FLOW_DEFS={
-  healthcare:{
-    height:240,
-    nodes:[{name:'Social Sourcing',sub:'FB/IG/Indeed',x:.07,y:.5},{name:'Zapier / n8n',sub:'API Integrations',x:.25,y:.5},{name:'Verification',sub:'Sapphire Check',x:.43,y:.5},{name:'AI Screening',sub:'OpenAI',x:.61,y:.5},{name:'Zoho CRM',sub:'Central DB',x:.79,y:.5},{name:'Interview',sub:'Calendly',x:.94,y:.5}],
-    connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3},{from:4,to:5,colorIdx:4}],
-    colors:['#a855f7','#f97316','#06b6d4','#ec4899','#10b981','#eab308']
-  },
-  monday:{
-    height:280,
-    nodes:[{name:'Master Projects',sub:'Portfolio',x:.08,y:.5},{name:'Master Tasks',sub:'Execution',x:.28,y:.5},{name:'n8n Engine',sub:'Automation/Calc',x:.5,y:.5},{name:'Escalations',sub:'Auto-create',x:.72,y:.5},{name:'Dashboards',sub:'Leadership/Dept',x:.9,y:.5}],
-    connections:[{from:0,to:1,colorIdx:0},{from:1,to:2,colorIdx:1},{from:2,to:3,colorIdx:2},{from:3,to:4,colorIdx:3}],
-    colors:['#a855f7','#06b6d4','#f97316','#10b981','#ec4899']
-  }
-};
-function FlowDiagram(canvasEl,id){
-  this.canvas=canvasEl;this.ctx=canvasEl.getContext('2d');this.def=FLOW_DEFS[id];this.particles=[];this.animId=null;this.running=false;this.isMobile=false;this.width=0;this.height=0;this.resize();this.initParticles();
-}
-FlowDiagram.prototype.getPos=function(node){var nodeW=this.isMobile?118:112,nodeH=42,padX=nodeW/2+10,padY=nodeH/2+8,idx=this.def.nodes.indexOf(node),count=this.def.nodes.length;if(this.isMobile&&node.mobileY!==undefined)return{x:this.width/2,y:Math.max(padY,Math.min(this.height-padY,node.mobileY*this.height))};var step=count>1?(this.width-padX*2)/(count-1):0;return{x:padX+(idx*step),y:Math.max(padY,Math.min(this.height-padY,node.y*this.height))};};
-FlowDiagram.prototype.resize=function(){var container=this.canvas.parentElement;this.isMobile=window.innerWidth<768;var nodes=this.def.nodes;if(this.isMobile&&nodes[0].mobileY===undefined){nodes.forEach(function(node,idx){node.mobileY=.1+(idx/(nodes.length-1))*.8;});}var targetWidth=Math.min(1000,container.clientWidth-32);if(targetWidth<360)targetWidth=360;this.width=targetWidth;this.height=this.isMobile?Math.max(280,nodes.length*62):this.def.height;this.canvas.width=this.width;this.canvas.height=this.height;this.canvas.style.width=this.width+'px';this.canvas.style.height=this.height+'px';};
-FlowDiagram.prototype.initParticles=function(){var self=this;this.particles=[];this.def.connections.forEach(function(_,idx){self.particles.push({connIdx:idx,progress:Math.random(),speed:.0025+Math.random()*.0025});});};
-FlowDiagram.prototype.drawNode=function(node,pos,color){var ctx=this.ctx,w=this.isMobile?118:112,h=42;ctx.shadowBlur=4;ctx.shadowColor=color;ctx.fillStyle='#16161c';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(pos.x-w/2,pos.y-h/2,w,h,10);ctx.fill();ctx.stroke();ctx.shadowBlur=0;var fontSize=this.isMobile?9:Math.max(9,Math.min(11,this.width/80));ctx.font='600 '+fontSize+'px "Inter", sans-serif';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillStyle='#fff';ctx.fillText(node.name,pos.x-w/2+10,pos.y-4);ctx.font=(fontSize-2)+'px "Inter", sans-serif';ctx.fillStyle='#a1a1aa';ctx.fillText(node.sub||'',pos.x-w/2+10,pos.y+12);};
-FlowDiagram.prototype.drawConnection=function(fromPos,toPos,color,progress){var ctx=this.ctx,cp1x,cp1y,cp2x,cp2y;if(this.isMobile){cp1x=fromPos.x;cp1y=fromPos.y+(toPos.y-fromPos.y)*.3;cp2x=toPos.x;cp2y=toPos.y-(toPos.y-fromPos.y)*.3;}else{cp1x=fromPos.x+(toPos.x-fromPos.x)*.35;cp1y=fromPos.y-8;cp2x=toPos.x-(toPos.x-fromPos.x)*.35;cp2y=toPos.y+8;}if(progress===null||progress===undefined){ctx.beginPath();ctx.moveTo(fromPos.x,fromPos.y);ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,toPos.x,toPos.y);ctx.strokeStyle=color+'cc';ctx.lineWidth=1.4;ctx.stroke();return;}var t=progress,x=Math.pow(1-t,3)*fromPos.x+3*Math.pow(1-t,2)*t*cp1x+3*(1-t)*Math.pow(t,2)*cp2x+Math.pow(t,3)*toPos.x,y=Math.pow(1-t,3)*fromPos.y+3*Math.pow(1-t,2)*t*cp1y+3*(1-t)*Math.pow(t,2)*cp2y+Math.pow(t,3)*toPos.y;ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.beginPath();ctx.arc(x,y,1.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();};
-FlowDiagram.prototype.draw=function(){var self=this,ctx=this.ctx;ctx.clearRect(0,0,this.width,this.height);this.def.connections.forEach(function(conn,idx){var fromPos=self.getPos(self.def.nodes[conn.from]),toPos=self.getPos(self.def.nodes[conn.to]),color=self.def.colors[conn.colorIdx%self.def.colors.length];self.drawConnection(fromPos,toPos,color,null,conn.dashed);self.particles.filter(function(p){return p.connIdx===idx;}).forEach(function(p){p.progress+=p.speed;if(p.progress>1)p.progress=0;self.drawConnection(fromPos,toPos,color,p.progress,conn.dashed);});});this.def.nodes.forEach(function(node,i){self.drawNode(node,self.getPos(node),self.def.colors[i%self.def.colors.length]);});};
-FlowDiagram.prototype.start=function(){if(this.running)return;this.running=true;var self=this;function loop(){if(!self.running)return;self.draw();self.animId=requestAnimationFrame(loop);}loop();};
-FlowDiagram.prototype.stop=function(){this.running=false;if(this.animId)cancelAnimationFrame(this.animId);};
-var flowInstances={};
-function initFlow(id){var canvasEl=document.getElementById('flow-'+id);if(!canvasEl)return;if(flowInstances[id]){flowInstances[id].resize();flowInstances[id].start();return;}flowInstances[id]=new FlowDiagram(canvasEl,id);flowInstances[id].start();}
-function stopFlow(id){if(flowInstances[id])flowInstances[id].stop();}
-window.addEventListener('resize',function(){isMobile=window.innerWidth<768;Object.keys(flowInstances).forEach(function(id){flowInstances[id].resize();});},{passive:true});
-
-var activeModal=null;
-window.openModal=function(id){
-  if(activeModal)window.closeModal(activeModal);
-  var backdrop=document.getElementById('modal-'+id);if(!backdrop)return;
-  document.body.style.overflow='hidden';backdrop.classList.add('open');activeModal=id;backdrop.scrollTop=0;
-  setTimeout(function(){initFlow(id);},120);
-  updateModalScroll(id,backdrop);
-};
-window.closeModal=function(id){
-  var backdrop=document.getElementById('modal-'+id);if(!backdrop)return;
-  backdrop.classList.remove('open');document.body.style.overflow='';activeModal=null;stopFlow(id);
-};
-function updateModalScroll(id,backdrop){var fill=document.getElementById('fill-'+id);if(!fill)return;var total=backdrop.scrollHeight-backdrop.clientHeight;fill.style.width=(total>0?(backdrop.scrollTop/total*100):0)+'%';}
-document.querySelectorAll('.modal-backdrop').forEach(function(backdrop){backdrop.addEventListener('scroll',function(){var id=backdrop.id.replace('modal-','');updateModalScroll(id,backdrop);},{passive:true});backdrop.addEventListener('mousedown',function(e){if(e.target===backdrop)window.closeModal(backdrop.id.replace('modal-',''));});});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&activeModal)window.closeModal(activeModal);});
-})();
-</script>
+    const scrollTop = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      scrollTop.classList.toggle('show', window.scrollY > 600);
+    }, { passive: true });
+  </script>
 </body>
 </html>
-
