@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -574,7 +574,7 @@
       display: grid;
       grid-template-columns: 1fr auto auto;
       gap: 10px;
-      align-items: end;
+      align-items: stretch;
     }
     .builder-input {
       min-height: 48px;
@@ -591,13 +591,18 @@
     .builder-input:focus { border-color: rgba(113,244,211,.45); box-shadow: 0 0 0 3px rgba(113,244,211,.10); }
     .builder-action {
       min-height: 48px;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: 1px solid var(--line-strong);
-      border-radius: 999px;
+      border-radius: 18px;
       padding: 0 16px;
       color: var(--text);
       background: rgba(255,255,255,.07);
       cursor: pointer;
       font-weight: 700;
+      white-space: nowrap;
     }
     .builder-action.primary {
       border-color: rgba(113,244,211,.45);
@@ -1319,41 +1324,8 @@
 
       addBuilderMessage(message, 'user');
       builderInput.value = '';
-
-      const normalizedMessage = message.toLowerCase();
-      if (!shouldCallExtractor(message)) {
-        addLightweightPrompt();
-        updateProposalButtonState(false);
-        return;
-      }
-
-      if (normalizedMessage === lastMeaningfulMessage && !isConfirmationMessage(message)) {
-        addBuilderMessage('I already have that note. What happens before or after that step?');
-        updateProposalButtonState(false);
-        return;
-      }
-      lastMeaningfulMessage = normalizedMessage;
-
-      setBuilderLoading(true);
-      setStatus('extracting');
-      try {
-        const data = await postJson('/chat', { structuredContext, message, sessionId: builderSessionId });
-        setStatus('mapping');
-        structuredContext = normalizeContext(data);
-        if ((structuredContext.tools_detected || []).length) setStatus('detecting');
-        renderContextPanel();
-        const nextAction = getNextAction(data);
-        cachedSolutionPlan = data.solution_plan || (nextAction === 'ready_for_planning' ? cachedSolutionPlan : null);
-        if (nextAction === 'confirm') setStatus('confirming');
-        addBuilderMessage(data.consultant_reply || 'I updated the workflow map.');
-        if (nextAction === 'confirm' && !structuredContext.confirmed) addConfirmationOptions();
-        updateProposalButtonState(false);
-      } catch (error) {
-        addBuilderMessage(`I could not reach the AI backend yet. Start FastAPI on localhost:8000, then try again.\n\n${error.message}`);
-      } finally {
-        setBuilderLoading(false);
-        setStatus(null);
-      }
+      addBuilderMessage('Thank you for your message. Dee AI Chat is coming soon, and the developer is currently in the process of deploying this feature. For immediate inquiries, please contact Danica Marie Boton directly through the email link on this portfolio.');
+      updateProposalButtonState(false);
     }
 
     async function generateProposal() {
@@ -1461,7 +1433,6 @@
   </script>
 </body>
 </html>
-
 
 
 
