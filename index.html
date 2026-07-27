@@ -196,14 +196,12 @@
       overflow: hidden;
       transform: rotateX(4deg) rotateY(-5deg);
       animation: floatPanel 6s ease-in-out infinite;
-      cursor: pointer;
       transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
     }
-    .console:hover, .console:focus-visible {
+    .console:hover {
       border-color: rgba(113,244,211,.42);
       box-shadow: var(--shadow), 0 0 48px rgba(113,244,211,.18);
       transform: rotateX(2deg) rotateY(-3deg) scale(1.015);
-      outline: none;
     }
     @keyframes floatPanel { 50% { transform: rotateX(1deg) rotateY(-2deg) translateY(-12px); } }
     .console::before {
@@ -217,7 +215,7 @@
     .traffic { display:flex; gap:8px; }
     .traffic i { width:11px; height:11px; border-radius:999px; background:rgba(255,255,255,.24); }
     .console-title { font-family:"JetBrains Mono", monospace; color:var(--muted); font-size:12px; }
-    .agent { position: relative; padding: 28px; display: grid; gap: 20px; cursor: pointer; }
+    .agent { position: relative; padding: 28px; display: grid; gap: 20px; }
     .avatar {
       height: 235px;
       border-radius: 28px;
@@ -586,7 +584,6 @@
       background: rgba(0,0,0,.20);
       color: var(--text);
       font: inherit;
-      outline: none;
     }
     .builder-input:focus { border-color: rgba(113,244,211,.45); box-shadow: 0 0 0 3px rgba(113,244,211,.10); }
     .builder-action {
@@ -720,7 +717,7 @@
         </div>
       </div>
       <div class="console-wrap reveal">
-        <div class="console" id="hero-ai-console" role="button" tabindex="0" aria-label="Open AI Proposal Builder">
+        <div class="console" id="hero-ai-console">
           <div class="console-top"><div class="traffic"><i></i><i></i><i></i></div><span class="console-title">Dee AI automation workspace</span></div>
           <div class="agent">
             <div class="avatar">
@@ -743,24 +740,24 @@
     <section class="container reveal" id="work">
       <div class="section-head">
         <div><div class="section-tag">DCode Flagship Systems</div><h2>Automation systems with Dee inside</h2></div>
-        <p>Production systems and workflow backbones by DCode. Click any project to open its detail card.</p>
+        <p>Production systems and workflow backbones by DCode.</p>
       </div>
       <div class="grid two">
-        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('healthcare')" data-modal="healthcare">
+        <article class="card tilt-card">
           <span class="pill">Healthcare - AI + CRM Sync</span>
           <h3>Smart Recruitment Management</h3>
           <p>End-to-end recruitment pipeline: social sourcing, verification, AI screening, centralized database, interview scheduling, and automated outreach with zero manual handoffs.</p>
           <div class="motion-diagram"><div class="flow-track"><span class="flow-step">FB / IG / LinkedIn / Indeed</span><span class="arrow">-></span><span class="flow-step">Zapier Bridge</span><span class="arrow">-></span><span class="flow-step">n8n Engine</span><span class="arrow">-></span><span class="flow-step">Sapphire Check</span><span class="arrow">-></span><span class="flow-step">OpenAI Screening</span><span class="arrow">-></span><span class="flow-step">Zoho + Supabase</span><span class="arrow">-></span><span class="flow-step">Calendly</span></div></div>
           <div class="stack"><span class="chip">n8n</span><span class="chip">Zapier</span><span class="chip">OpenAI</span><span class="chip">Zoho CRM</span><span class="chip">Supabase</span><span class="chip">Calendly</span></div>
-          <div class="impact">down 75% manual reduction - 8+ integrations - 24/7 AI screening</div><div class="open-hint">Open project details -></div>
+          <div class="impact">down 75% manual reduction - 8+ integrations - 24/7 AI screening</div>
         </article>
-        <article class="card tilt-card case-card" role="button" tabindex="0" onclick="openModal('monday')" data-modal="monday">
+        <article class="card tilt-card">
           <span class="pill">PMO - SSOT - n8n Orchestration</span>
           <h3>Enterprise Operations Workspace</h3>
           <p>Centralized governance on monday.com: master projects, tasks, escalations, and leadership dashboards with n8n handling automation logic to avoid monday automation credits.</p>
           <div class="motion-diagram"><div class="flow-track"><span class="flow-step">Master Projects</span><span class="arrow">-></span><span class="flow-step">Board Relation</span><span class="arrow">-></span><span class="flow-step">Master Tasks</span><span class="arrow">-></span><span class="flow-step">n8n every 15 min</span><span class="arrow">-></span><span class="flow-step">Overdue Logic</span><span class="arrow">-></span><span class="flow-step">Escalations</span><span class="arrow">-></span><span class="flow-step">Dashboards</span></div></div>
           <div class="stack"><span class="chip">Monday.com</span><span class="chip">n8n</span><span class="chip">SharePoint</span><span class="chip">Dashboards</span></div>
-          <div class="impact">Single Source of Truth - 0 automation credits - 15-min sync</div><div class="open-hint">Open project details -></div>
+          <div class="impact">Single Source of Truth - 0 automation credits - 15-min sync</div>
         </article>
       </div>
     </section>
@@ -1368,13 +1365,6 @@
       }
     }
 
-    heroAiConsole.addEventListener('click', openBuilder);
-    heroAiConsole.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openBuilder();
-      }
-    });
     builderClose.addEventListener('click', closeBuilder);
     builderModal.addEventListener('mousedown', e => {
       if (e.target === builderModal) closeBuilder();
