@@ -1164,6 +1164,7 @@ body:not(.demo-body) .whimsical-map{min-height:500px;padding:28px;background:#10
 .case-laptop-top a{color:#fff;border:1px solid #424b57;border-radius:6px;padding:5px 7px;background:#1b2027}
 .case-laptop-display{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#fff;border-radius:10px;box-shadow:inset 0 0 0 2px #080b0f}
 .case-live-preview{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff;max-width:none}
+.case-laptop:fullscreen{width:100vw;height:100vh;max-width:none;border:0;border-radius:0;padding:0;background:#101419;display:flex;flex-direction:column}.case-laptop:fullscreen .case-laptop-top{flex:0 0 42px;padding-inline:16px}.case-laptop:fullscreen .case-laptop-display{flex:1;aspect-ratio:auto;border:0;border-radius:0}.case-laptop:fullscreen .case-live-preview{position:absolute!important;left:0!important;top:0!important;width:100%!important;height:100%!important;transform:none!important}
 .case-development{margin:34px auto 0}
 
 /* shared visible n8n handoff affordance */

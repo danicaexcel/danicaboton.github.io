@@ -101,7 +101,7 @@ DCODE_PROJECTS.forEach(p=>{
   const previewHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}&embed=1`;
   const workflowAction=hasN8n?`<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>`:'';
   const actions=hasDemo
-    ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><a class="btn primary" href="${demoHref}">Open demo ↗</a>${workflowAction}`
+    ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><button class="btn primary fullscreen-btn" type="button" data-target="${screenId}">Open demo ↗</button>${workflowAction}`
     : `<a class="btn primary" href="case-study.html?id=${p.id}">View ongoing case study</a><span class="demo-pending">Public demo in development</span>`;
   const visual=hasDemo
     ? `<div class="laptop-wrap">
@@ -117,14 +117,14 @@ DCODE_PROJECTS.forEach(p=>{
   root.appendChild(el)
 });
 
-const PREVIEW_W=1440, PREVIEW_H=810;
+const PREVIEW_W=1600, PREVIEW_H=900;
 function fitPreview(iframe){
   const display=iframe.closest('.laptop-display');
   if(!display) return;
   const apply=()=>{
     const screen=iframe.closest('.laptop-screen');
     if(document.fullscreenElement===screen){iframe.style.cssText='';return;}
-    const scale=Math.max(display.clientWidth/PREVIEW_W,display.clientHeight/PREVIEW_H);
+    const scale=Math.min(display.clientWidth/PREVIEW_W,display.clientHeight/PREVIEW_H);
     iframe.style.width=`${PREVIEW_W}px`;
     iframe.style.height=`${PREVIEW_H}px`;
     iframe.style.transform=`scale(${scale})`;
@@ -150,10 +150,7 @@ document.addEventListener('click', async (event)=>{
   try{
     if(document.fullscreenElement) await document.exitFullscreen();
     else await target.requestFullscreen();
-  }catch(err){
-    const iframe=target.querySelector('iframe');
-    if(iframe) window.open(iframe.src.replace('&embed=1',''),'_blank','noopener');
-  }
+  }catch(err){ target.scrollIntoView({behavior:'smooth',block:'center'}); }
 });
 </script>
 <script src="contact-workflow.js"></script>
