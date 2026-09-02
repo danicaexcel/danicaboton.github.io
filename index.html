@@ -96,10 +96,12 @@ DCODE_PROJECTS.forEach(p=>{
   const el=document.createElement('article');el.className='project';el.dataset.id=p.id;
   const screenId=`preview-${p.id}`;
   const hasDemo=p.demoAvailable!==false;
+  const hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
   const demoHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}`;
   const previewHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}&embed=1`;
+  const workflowAction=hasN8n?`<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>`:'';
   const actions=hasDemo
-    ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><a class="btn primary" href="${demoHref}">Open demo ↗</a>`
+    ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><a class="btn primary" href="${demoHref}">Open demo ↗</a>${workflowAction}`
     : `<a class="btn primary" href="case-study.html?id=${p.id}">View ongoing case study</a><span class="demo-pending">Public demo in development</span>`;
   const visual=hasDemo
     ? `<div class="laptop-wrap">

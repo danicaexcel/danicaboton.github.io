@@ -54,6 +54,62 @@
     return /\bn8n\b/i.test(label);
   }
 
+  function prepareWorkflowActions(root = document) {
+    root.querySelectorAll?.('a,button').forEach(action => {
+      if (!isN8nAction(action)) return;
+      action.setAttribute('data-workflow-contact', '');
+      const visibleLabel = action.textContent.trim();
+      if (visibleLabel.length > 2 && /(connect|open|view)\b/i.test(visibleLabel)) {
+        action.textContent = 'View n8n workflow';
+      }
+    });
+  }
+
+  function projectUsesN8n(project) {
+    return project?.stack?.some(item => /\bn8n\b/i.test(item));
+  }
+
+  function addWorkflowButton(container) {
+    if (!container || container.querySelector('[data-workflow-contact]')) return;
+    const button = document.createElement('button');
+    button.className = 'btn';
+    button.type = 'button';
+    button.setAttribute('data-workflow-contact', '');
+    button.textContent = 'View n8n workflow';
+    container.appendChild(button);
+  }
+
+  function enrichProjectActions() {
+    if (!Array.isArray(window.DCODE_PROJECTS)) return;
+    document.querySelectorAll('.project').forEach((card, index) => {
+      const project = card.dataset.id
+        ? window.DCODE_PROJECTS.find(item => item.id === card.dataset.id)
+        : window.DCODE_PROJECTS[index];
+      if (projectUsesN8n(project)) addWorkflowButton(card.querySelector('.projectactions'));
+    });
+
+    const caseId = new URLSearchParams(location.search).get('id');
+    const caseProject = window.DCODE_PROJECTS.find(item => item.id === caseId);
+    if (projectUsesN8n(caseProject)) {
+      addWorkflowButton(document.querySelector('.casehero .actions'));
+      addWorkflowButton(document.querySelector('.demo-cta .actions'));
+    }
+  }
+
+  function keepPortalInLab() {
+    document.querySelectorAll('a[href*="demo.html?id=portal"],iframe[src*="demo.html?id=portal"]').forEach(element => {
+      const attribute = element.tagName === 'IFRAME' ? 'src' : 'href';
+      element.setAttribute(attribute, 'secure-candidate-review.html');
+    });
+  }
+
+  enrichProjectActions();
+  keepPortalInLab();
+  prepareWorkflowActions();
+  new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
+    if (node.nodeType === 1) prepareWorkflowActions(node);
+  }))).observe(document.body, {childList:true, subtree:true});
+
   document.querySelectorAll('#openCase,#caseLink,a[href*="case-study.html"]').forEach(link => {
     link.setAttribute('target', '_top');
   });

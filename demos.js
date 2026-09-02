@@ -25,7 +25,8 @@ document.title = `${project.title} — Interactive Demo`;
 n8nConnect.hidden = !window.DCodeN8n?.supported(project.id);
 if (!n8nConnect.hidden) {
   const cfg = window.DCodeN8n.config(project.id);
-  n8nConnect.textContent = cfg.live ? 'n8n connected' : 'Connect n8n';
+  n8nConnect.textContent = 'View n8n workflow';
+  n8nConnect.setAttribute('data-workflow-contact','');
   n8nConnect.classList.toggle('is-live', cfg.live);
   n8nConnect.onclick = () => window.DCodeN8n.openSettings(project.id);
 }
