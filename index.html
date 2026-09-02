@@ -106,7 +106,7 @@ DCODE_PROJECTS.forEach(p=>{
   const visual=hasDemo
     ? `<div class="laptop-wrap">
         <div class="laptop-screen" id="${screenId}">
-          <div class="laptop-bezel"><span class="camera-dot"></span><span class="screen-title">${p.title}</span><div class="screen-controls"><button type="button" class="screen-btn fullscreen-btn" data-target="${screenId}" aria-label="View ${p.title} demo fullscreen">⛶</button><a class="screen-btn" href="${demoHref}" target="_blank" rel="noopener" aria-label="Open ${p.title} demo in a new tab">↗</a></div></div>
+          <div class="laptop-bezel"><span class="camera-dot"></span><span class="screen-title">${p.title}</span><div class="screen-controls"><button type="button" class="screen-btn fullscreen-btn" data-target="${screenId}" aria-label="View ${p.title} demo fullscreen">⛶</button></div></div>
           <div class="laptop-display"><iframe class="live-demo-preview" src="${previewHref}" title="Interactive reconstructed ${p.title} preview" loading="lazy" allowfullscreen></iframe></div>
         </div>
         <div class="laptop-base"><span></span></div>
