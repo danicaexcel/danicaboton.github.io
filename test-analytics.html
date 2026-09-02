@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DCode Interactive Demo</title><link rel="stylesheet" href="styles.css"></head>
+<body class="demo-body">
+<nav class="nav"><div class="demo-wrap navin"><a class="brand" href="index.html"><span class="brandmark">DC</span><span>DCode<small>Reconstruction Lab</small></span></a><div class="navlinks"><a id="caseLink" href="#">Case study</a><a href="index.html#work">All systems</a></div></div></nav>
+<main class="demo-wrap"><div class="demo-banner"><div><strong id="demoTitle"></strong><br><span>Interactive reconstruction · synthetic data · no client credentials or production records</span></div><div class="actions"><select class="ui-btn" id="projectSelect"></select><a class="ui-btn" id="openCase" href="#">Read case study</a></div></div><section class="demo-shell" id="demoRoot"></section></main><div class="toast" id="toast"></div>
+<script src="data.js"></script><script src="recruitment-v5.js"></script><script src="demos.js"></script>
+<script>
+setTimeout(()=>{ const b=document.querySelector('.z5-toptools [title="Settings"]'); if(b)b.click(); },150);
+setTimeout(()=>{ const b=[...document.querySelectorAll('[data-z5-setup]')].find(x=>x.dataset.z5Setup==='functions'); if(b)b.click(); },350);
+setTimeout(()=>{ const b=document.getElementById('z5FunctionAnalytics'); if(b)b.click(); },600);
+</script></body></html>

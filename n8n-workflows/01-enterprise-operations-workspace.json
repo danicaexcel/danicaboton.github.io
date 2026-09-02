@@ -1,0 +1,13 @@
+{
+  "name": "Portfolio - Enterprise Operations Workspace",
+  "nodes": [
+    {"parameters":{"httpMethod":"POST","path":"portfolio-enterprise-operations","responseMode":"responseNode","options":{}},"id":"monday-webhook","name":"Portfolio Webhook","type":"n8n-nodes-base.webhook","typeVersion":2,"position":[-620,0],"webhookId":"portfolio-enterprise-operations"},
+    {"parameters":{"jsCode":"const b=$json.body??$json; if(!b.action) throw new Error('action is required'); const allowed=['health.check','task.sync','project.sync','approval.update','escalation.create','dashboard.refresh']; if(!allowed.includes(b.action)) throw new Error(`Unsupported action: ${b.action}`); return [{json:{...b,requestId:b.requestId||$execution.id,receivedAt:new Date().toISOString(),payload:b.payload||{}}}];"},"id":"monday-validate","name":"Validate Request","type":"n8n-nodes-base.code","typeVersion":2,"position":[-380,0]},
+    {"parameters":{"jsCode":"const b=$json; const p=b.payload; const result={operation:b.action,sourceBoard:p.sourceBoard||null,targetBoard:p.targetBoard||null,itemId:p.itemId||null,projectId:p.projectId||null,deduplicationKey:`${b.action}:${p.itemId||p.projectId||b.requestId}`,logRecord:{executionId:$execution.id,status:'Successful',workflow:'Enterprise Operations Workspace',requestId:b.requestId}}; return [{json:{...b,result}}];"},"id":"monday-route","name":"Build Cross-board Operation","type":"n8n-nodes-base.code","typeVersion":2,"position":[-130,0]},
+    {"parameters":{"jsCode":"return [{json:{ok:true,executionId:$execution.id,action:$json.action,status:'accepted',message:'Validated. Add Monday.com nodes here for production cross-board writes and execution-log creation.',result:$json.result}}];"},"id":"monday-result","name":"Create Execution Result","type":"n8n-nodes-base.code","typeVersion":2,"position":[120,0]},
+    {"parameters":{"respondWith":"json","responseBody":"={{ $json }}","options":{"responseCode":200}},"id":"monday-respond","name":"Respond to Portfolio","type":"n8n-nodes-base.respondToWebhook","typeVersion":1.4,"position":[370,0]}
+  ],
+  "connections":{"Portfolio Webhook":{"main":[[{"node":"Validate Request","type":"main","index":0}]]},"Validate Request":{"main":[[{"node":"Build Cross-board Operation","type":"main","index":0}]]},"Build Cross-board Operation":{"main":[[{"node":"Create Execution Result","type":"main","index":0}]]},"Create Execution Result":{"main":[[{"node":"Respond to Portfolio","type":"main","index":0}]]}},
+  "pinData":{},"settings":{"executionOrder":"v1","saveManualExecutions":true,"saveDataErrorExecution":"all","saveDataSuccessExecution":"all"},"active":false,"versionId":"9be116e8-96d5-4c95-8940-c430c3de1001","meta":{"templateCredsSetupCompleted":false},"tags":[]
+}
+

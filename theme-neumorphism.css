@@ -1,0 +1,77 @@
+/* Charcoal neumorphism theme — portfolio and case studies only. */
+:root{
+  --ink:#f4f1ed;--ink-2:#dedbd6;--muted:#b7b6b3;
+  --paper:#2d3238;--surface:#2d3238;--surface-2:#343a41;
+  --line:rgba(255,255,255,.075);--line-dark:rgba(255,255,255,.12);
+  --blue:#f2b77e;--blue-soft:#4a4037;--orange:#f2b77e;
+  --neo-shadow:14px 14px 30px #20242a,-12px -12px 26px #3a4047;
+  --neo-soft:8px 8px 18px #22262b,-7px -7px 16px #393f46;
+  --neo-inset:inset 5px 5px 11px #23272c,inset -5px -5px 11px #3a4047;
+  color-scheme:dark;
+}
+body{background:#2d3238;color:#f4f1ed}
+body::before{opacity:.045;filter:none}
+.nav{background:rgba(45,50,56,.93);border-color:rgba(255,255,255,.055);box-shadow:0 10px 24px rgba(20,23,27,.2)}
+.brandmark{background:#30363c;color:#f2b77e;border:0;box-shadow:5px 5px 11px #20242a,-4px -4px 10px #41474e}
+.brand small,.navlinks a,.eyebrow{color:#cbc9c5}.navlinks a:hover,.kicker,.num{color:#f2b77e}
+.eyebrow:before{background:#f2b77e}.hero h1 em{color:#f2b77e}
+.hero p,.sectionhead p,.project p,.casesub,.case-content p{color:#c7c5c1}
+.hero-roleline span,.chip{background:#2d3238;color:#d4d1cc;border-color:rgba(255,255,255,.075);box-shadow:4px 4px 9px #22262b,-3px -3px 8px #3a4047}
+.btn{background:#2d3238;color:#eeebe6;border-color:rgba(255,255,255,.09);box-shadow:var(--neo-soft)}
+.btn:hover{border-color:rgba(242,183,126,.55);box-shadow:10px 10px 20px #20242a,-8px -8px 18px #3c4249;transform:translateY(-1px)}
+.btn:active{box-shadow:var(--neo-inset);transform:translateY(0)}
+.btn.primary,.btn.blue,.projectactions .btn.primary,.casehero .btn.primary,.contact .btn.primary,.demo-cta .btn.primary{background:#f2b77e;color:#2c2f33!important;border-color:#f2b77e;box-shadow:7px 7px 16px #20242a,-6px -6px 14px #41474e,0 0 18px rgba(242,183,126,.15);text-shadow:none}
+.proofrail,.capability-list,.stackgroups{background:#2d3238;border:0;border-radius:20px;box-shadow:var(--neo-shadow);overflow:hidden}
+.proof,.caprow,.stackgroup{background:#2d3238;border-color:rgba(255,255,255,.07);box-shadow:none}
+.proof strong,.caprow h3,.stackgroup span{color:#f4f1ed}
+.proof span,.caprow p,.caprow>span,.stackgroup strong,.mini span,.statbox span,.case-aside p,.footer,.status{color:#aaa9a6}
+.project,.decision-grid article,.method-grid>div,.evidence-key>div{background:#2d3238;border-color:rgba(255,255,255,.075);box-shadow:var(--neo-shadow)}
+.project{--accent:#f2b77e!important;margin-block:8px}.project:hover{border-color:rgba(242,183,126,.3);box-shadow:18px 18px 38px #1f2328,-14px -14px 30px #3c4249}
+.decision-grid{gap:28px}.decision-grid article.featured{background:#2b3036;border-color:rgba(242,183,126,.28)}
+.decision-grid article>span,.decision-grid .featured b{color:#f2b77e}.decision-grid p,.method-grid p,.evidence-key span{color:#b9b8b5}
+.method-grid{gap:18px;background:transparent;border:0;overflow:visible}.method-grid>div{border-radius:16px}
+.evidence-key{gap:14px;background:transparent;border:0;overflow:visible}.evidence-key>div{border:0;border-radius:14px}
+.implementation-note{background:#2b3036;border:0;border-left:3px solid #f2b77e;box-shadow:var(--neo-soft)}.implementation-note p{color:#c3c1bd}
+.contact,.demo-cta{background:#2b3036;border:1px solid rgba(255,255,255,.07);box-shadow:var(--neo-shadow)}.contact:after{border-color:rgba(242,183,126,.12)}
+.back,.casebar span{color:#b8b6b2}.casebar,.stats4{border-color:rgba(255,255,255,.1)}.case-content li{color:#d1cec9}
+.arch{gap:20px}.archstep{background:#2d3238;color:#e8e4df;border:0;box-shadow:var(--neo-soft)}.archstep:before{color:#f2b77e}
+.archstep:not(:last-child):after{background:#2d3238;color:#f2b77e;border-radius:50%;box-shadow:3px 3px 7px #22262b,-3px -3px 7px #3b4148}
+.notice{color:#c0beba}.notice strong{color:#f4f1ed}.case-hero-shot{background:#292e34;box-shadow:var(--neo-shadow)}
+.data-architecture,.erd-shell{background:#2b3036;border-color:rgba(255,255,255,.075);box-shadow:var(--neo-shadow)}
+.data-architecture-head,.data-architecture-foot,.erd-toolbar,.erd-caption{background:#30363c;border-color:rgba(255,255,255,.075)}
+.data-architecture-canvas,.erd-canvas{background-color:#282d33;background-image:radial-gradient(#444b53 1px,transparent 1px)}
+.data-module,.data-layer,.erd-entity{background:#30363c;border-color:#454c54;box-shadow:7px 7px 15px #1f2328,-5px -5px 12px #3b4148}
+.data-module b,.data-layer b{color:#f0ece7}.data-module small,.data-layer small{color:#aaa8a4}
+.data-module>span,.data-layer>span{background:#373d44;color:#d2cec8}.data-module.source>span,.data-module.surface>span{background:#4a4037;color:#f2b77e}
+.data-core{background:#292e34;border-color:#f2b77e;box-shadow:var(--neo-soft)}.data-core>span{color:#f2b77e}
+.erd-entity header{background:#343a41;border-color:#484f57}.erd-entity header i,.erd-fields b.pk{color:#f2b77e}
+.erd-edge.sync-edge{stroke:#f2b77e}.erd-legend i.sync{background:#f2b77e}
+:focus-visible{outline:3px solid #f2b77e;outline-offset:4px}
+@media(max-width:700px){.decision-grid{gap:20px}.proofrail,.capability-list,.stackgroups{border-radius:15px}.method-grid,.evidence-key{gap:14px}}
+@media(prefers-reduced-transparency:reduce){.nav{background:#2d3238;backdrop-filter:none}}
+
+/* Match the specificity of the legacy portfolio theme layers. */
+body.portfolio-theme{background:#2d3238;color:#f4f1ed}
+body.portfolio-theme::before{opacity:.045;filter:none}
+body.portfolio-theme .nav{background:rgba(45,50,56,.93);border-color:rgba(255,255,255,.055);box-shadow:0 10px 24px rgba(20,23,27,.2)}
+body.portfolio-theme .brandmark{background:#30363c;color:#f2b77e;box-shadow:5px 5px 11px #20242a,-4px -4px 10px #41474e}
+body.portfolio-theme .hero h1 em,body.portfolio-theme .kicker,body.portfolio-theme .num{color:#f2b77e}
+body.portfolio-theme .hero-roleline span,body.portfolio-theme .chip{background:#2d3238;color:#d4d1cc;border-color:rgba(255,255,255,.075);box-shadow:4px 4px 9px #22262b,-3px -3px 8px #3a4047}
+body.portfolio-theme .btn{background:#2d3238;color:#eeebe6;border-color:rgba(255,255,255,.09);box-shadow:var(--neo-soft)}
+body.portfolio-theme .btn.primary,body.portfolio-theme .btn.blue,body.portfolio-theme .projectactions .btn.primary,body.portfolio-theme .casehero .btn.primary,body.portfolio-theme .contact .btn.primary,body.portfolio-theme .demo-cta .btn.primary{background:#f2b77e;color:#2c2f33!important;border-color:#f2b77e;box-shadow:7px 7px 16px #20242a,-6px -6px 14px #41474e}
+body.portfolio-theme .hero .btn.primary{background:#f2b77e!important;background-image:none!important;color:#2c2f33!important;border-color:#f2b77e!important}
+body.portfolio-theme .proofrail,body.portfolio-theme .capability-list,body.portfolio-theme .stackgroups{background:#2d3238;border:0;box-shadow:var(--neo-shadow)}
+body.portfolio-theme .proof,body.portfolio-theme .caprow,body.portfolio-theme .stackgroup{background:#2d3238;border-color:rgba(255,255,255,.07);box-shadow:none}
+body.portfolio-theme .project,body.portfolio-theme .decision-grid article,body.portfolio-theme .method-grid>div,body.portfolio-theme .evidence-key>div{background:#2d3238;border-color:rgba(255,255,255,.075);box-shadow:var(--neo-shadow)}
+body.portfolio-theme .project{--accent:#f2b77e!important}
+body.portfolio-theme .decision-grid article.featured{background:#2b3036;border-color:rgba(242,183,126,.28)}
+body.portfolio-theme .implementation-note{background:#2b3036;border-left-color:#f2b77e;box-shadow:var(--neo-soft)}
+body.portfolio-theme .contact,body.portfolio-theme .demo-cta{background:#2b3036;border-color:rgba(255,255,255,.07);box-shadow:var(--neo-shadow)}
+body.portfolio-theme .archstep{background:#2d3238;color:#e8e4df;border:0;box-shadow:var(--neo-soft)}
+body.portfolio-theme .archstep:not(:last-child):after{background:#2d3238;color:#f2b77e;box-shadow:3px 3px 7px #22262b,-3px -3px 7px #3b4148}
+body.portfolio-theme .case-hero-shot{background:#292e34;box-shadow:var(--neo-shadow)}
+body.portfolio-theme .data-architecture,body.portfolio-theme .erd-shell{background:#2b3036;border-color:rgba(255,255,255,.075);box-shadow:var(--neo-shadow)}
+body.portfolio-theme .data-architecture-head,body.portfolio-theme .data-architecture-foot,body.portfolio-theme .erd-toolbar,body.portfolio-theme .erd-caption{background:#30363c;border-color:rgba(255,255,255,.075)}
+body.portfolio-theme .data-architecture-canvas,body.portfolio-theme .erd-canvas{background-color:#282d33;background-image:radial-gradient(#444b53 1px,transparent 1px)}
+body.portfolio-theme .data-module,body.portfolio-theme .data-layer,body.portfolio-theme .erd-entity{background:#30363c;border-color:#454c54;box-shadow:7px 7px 15px #1f2328,-5px -5px 12px #3b4148}
+body.portfolio-theme .data-core{background:#292e34;border-color:#f2b77e;box-shadow:var(--neo-soft)}
