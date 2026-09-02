@@ -20,6 +20,7 @@ DCODE_PROJECTS.forEach(p => {
 });
 select.onchange = () => location.href = `demo.html?id=${select.value}`;
 openCase.href = caseLink.href = `case-study.html?id=${project.id}`;
+openCase.target = caseLink.target = '_top';
 title.textContent = project.title;
 document.title = `${project.title} — Interactive Demo`;
 n8nConnect.hidden = !window.DCodeN8n?.supported(project.id);
@@ -863,5 +864,9 @@ function dashboardV2() {
   document.querySelectorAll('[data-ops-view]').forEach(b=>b.onclick=()=>{view=b.dataset.opsView;draw()});document.getElementById('opsCreate').onclick=create;document.getElementById('opsSettings').onclick=()=>window.DCodeN8n.openSettings('ops-dashboard');draw();
 }
 
-const renderers={recruitment:recruitmentV5,portal,monday,ocr,'zoho-migration':migration,sheets:sheetsV2,'ops-dashboard':dashboardV2};
+function portalV5() {
+  root.innerHTML = `<div class="portal-v5-lab"><iframe src="secure-candidate-review.html?embed=1" title="Secure Hiring Manager Client Portal updated interactive demo" loading="eager"></iframe></div>`;
+}
+
+const renderers={recruitment:recruitmentV5,portal:portalV5,monday,ocr,'zoho-migration':migration,sheets:sheetsV2,'ops-dashboard':dashboardV2};
 (renderers[project.id]||recruitment)();

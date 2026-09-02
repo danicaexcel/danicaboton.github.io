@@ -97,8 +97,8 @@ DCODE_PROJECTS.forEach(p=>{
   const screenId=`preview-${p.id}`;
   const hasDemo=p.demoAvailable!==false;
   const hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
-  const demoHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}`;
-  const previewHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}&embed=1`;
+  const demoHref=`demo.html?id=${p.id}`;
+  const previewHref=`demo.html?id=${p.id}&embed=1`;
   const workflowAction=hasN8n?`<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>`:'';
   const actions=hasDemo
     ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><a class="btn primary" href="${demoHref}">Open demo ↗</a>${workflowAction}`

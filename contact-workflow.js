@@ -96,15 +96,7 @@
     }
   }
 
-  function keepPortalInLab() {
-    document.querySelectorAll('a[href*="demo.html?id=portal"],iframe[src*="demo.html?id=portal"]').forEach(element => {
-      const attribute = element.tagName === 'IFRAME' ? 'src' : 'href';
-      element.setAttribute(attribute, 'secure-candidate-review.html');
-    });
-  }
-
   enrichProjectActions();
-  keepPortalInLab();
   prepareWorkflowActions();
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
     if (node.nodeType === 1) prepareWorkflowActions(node);
