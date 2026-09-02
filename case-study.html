@@ -125,4 +125,4 @@ function drawRelationshipLines(){
 requestAnimationFrame(drawRelationshipLines);window.addEventListener('resize',drawRelationshipLines);
 const CASE_W=1600,CASE_H=900;
 function fitCasePreview(){const f=document.querySelector('.case-live-preview'),d=document.querySelector('.case-laptop-display');if(!f||!d)return;const apply=()=>{const sc=Math.min(d.clientWidth/CASE_W,d.clientHeight/CASE_H);f.style.width=CASE_W+'px';f.style.height=CASE_H+'px';f.style.transform=`scale(${sc})`;f.style.left=Math.max(0,(d.clientWidth-CASE_W*sc)/2)+'px';f.style.top=Math.max(0,(d.clientHeight-CASE_H*sc)/2)+'px'};new ResizeObserver(apply).observe(d);f.addEventListener('load',apply);apply()};fitCasePreview();
-</script></body></html>
+</script><script src="contact-workflow.js"></script></body></html>
