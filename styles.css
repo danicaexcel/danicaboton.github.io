@@ -1320,7 +1320,7 @@ body:not(.demo-body) .demo-cta .btn.primary{color:#0d1117!important;text-shadow:
 body:not(.demo-body) .laptop-screen,
 body:not(.demo-body) .case-laptop{box-shadow:0 18px 38px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.82)}
 /* Portfolio positioning refresh: authentic n8n hero + architecture decision layer */
-.hero{grid-template-columns:minmax(0,.92fr) minmax(540px,1.08fr);gap:52px}
+.hero{grid-template-columns:minmax(0,1fr) 704px;gap:40px}
 .hero h1{font-size:clamp(54px,6.5vw,88px)}
 .hero-roleline{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
 .hero-roleline span{border:1px solid var(--line-dark);border-radius:999px;background:rgba(255,255,255,.58);padding:7px 10px;color:#56606c;font:600 9px/1 "IBM Plex Mono",monospace}
@@ -1355,6 +1355,8 @@ body:not(.demo-body) .case-laptop{box-shadow:0 18px 38px rgba(0,0,0,.34),inset 0
 .data-layer{min-height:70px;padding:10px 12px}.data-layer.orchestration{width:182px;border-color:#93a4ff}.data-layer.orchestration>span{background:#315cff;color:#fff}.data-layer.intelligence{width:174px;border-color:#c3afea}.data-layer.intelligence>span{background:#7254bd;color:#fff}
 .data-architecture-foot{min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 20px;border-top:1px solid #e0e4e9;background:#fff;color:#6c7681;font-size:8px;line-height:1.45}.data-architecture-foot>div{display:flex;align-items:center;gap:7px;font:600 7px/1 "IBM Plex Mono";text-transform:uppercase}.data-architecture-foot i{width:5px;height:5px;border-radius:50%;background:#315cff}
 @media(max-width:700px){.data-architecture-head{height:60px;padding:0 14px}.data-architecture-head>div strong{font-size:13px}.architecture-state{display:none}.data-architecture-canvas{height:350px;overflow:hidden}.data-map-stage{top:31px;transform:translateX(-50%) scale(.54);transform-origin:top center}.data-architecture-foot{display:block;padding:12px 14px}.data-architecture-foot>div{margin-top:8px}}
+@media(min-width:1201px){.data-architecture{width:704px;justify-self:end}}
+@media(min-width:1051px) and (max-width:1200px){.hero{grid-template-columns:1fr}.data-architecture{width:100%;justify-self:stretch}}
 
 /* Case-study data relationship map */
 .relationship-section{background:#0f1115;color:#f4f5f7;border-block:1px solid #252932}.relationship-head{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:end;margin-bottom:34px}.relationship-head h2{font:600 clamp(38px,4.7vw,64px)/.98 "Bricolage Grotesque";letter-spacing:-.055em;margin:0}.relationship-head p{margin:0;color:#9aa2ae;font-size:13px;line-height:1.75}.relationship-section .kicker{color:#8ca0ff}
