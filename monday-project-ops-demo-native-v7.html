@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monday.com Project Operations Control Center — DCode</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#native{display:block;width:100%;height:100%;border:0;background:#fff}</style>
+</head>
+<body>
+<iframe id="native" src="monday-project-ops-demo-native-v6.html?v=20260903-clientreq1" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
+<script>
+(function(){
+  const outer=document.getElementById('native');
+  function deepestDoc(){
+    try{
+      let doc=outer.contentDocument;if(!doc)return null;
+      for(let i=0;i<12;i++){
+        const frame=doc.querySelector('iframe');
+        if(!frame||!frame.contentDocument)break;
+        doc=frame.contentDocument;
+      }
+      return doc;
+    }catch(e){return null}
+  }
+  function install(){
+    const doc=deepestDoc();
+    if(!doc||!doc.getElementById('screen'))return false;
+    if(!doc.getElementById('project09-client-req-style')){
+      const style=doc.createElement('style');
+      style.id='project09-client-req-style';
+      style.textContent=`
+        .project-connect-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:4px;background:#e6f4ff;color:#0060b9;font-weight:500;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .project-connect-chip:before{content:'↗';font-size:11px}.dashboard .client-req-widget{min-height:150px}.dashboard .client-req-widget .mini-table td,.dashboard .client-req-widget .mini-table th{font-size:11px}.dashboard .client-req-widget .mini-table td:nth-child(2){font-weight:500}.dashboard .client-req-widget .pill{min-width:62px}
+      `;
+      doc.head.appendChild(style);
+    }
+    if(!doc.getElementById('project09-client-req-script')){
+      const script=doc.createElement('script');
+      script.id='project09-client-req-script';
+      script.textContent=`
+        (function(){
+          if(window.__project09ClientReqApplied)return;
+          window.__project09ClientReqApplied=true;
+          tone.Escalated='red';tone.Clear='green';tone.Scheduled='blue';
+          const projectExtras={
+            'PRJ-001':{collaborators:'John Reyes, Ana Cruz',informed:'Carlo Mendoza',sharepoint:'SharePoint / Website Redesign 2026',chat:'Project Updates · access scoped'},
+            'PRJ-002':{collaborators:'John Reyes, Maria Santos',informed:'Ana Cruz',sharepoint:'SharePoint / Mobile App v2 Launch',chat:'Project Updates · access scoped'},
+            'PRJ-003':{collaborators:'Carlo Mendoza, John Reyes',informed:'Ana Cruz',sharepoint:'SharePoint / ERP System Integration',chat:'Project Updates · access scoped'},
+            'PRJ-004':{collaborators:'John Reyes',informed:'Maria Santos',sharepoint:'SharePoint / Brand Identity Refresh',chat:'Project Updates · access scoped'},
+            'PRJ-005':{collaborators:'Maria Santos',informed:'Carlo Mendoza',sharepoint:'SharePoint / Q2 Marketing Campaign',chat:'Project Updates · access scoped'}
+          };
+          projects.forEach(p=>Object.assign(p,projectExtras[p.id]||{}));
+          const taskExtras={
+            'TSK-001':{scheduled:'Sep 3, 2026 · 15:10',escalatedTo:'Maria Santos',escalationNote:'Vendor dependency is blocking payment API validation.',escalationStatus:'Escalated',attachments:'2 working files'},
+            'TSK-002':{scheduled:'Sep 4, 2026 · 09:00',escalatedTo:'',escalationNote:'',escalationStatus:'Clear',attachments:'3 working files'},
+            'TSK-003':{scheduled:'Sep 3, 2026 · 13:00',escalatedTo:'',escalationNote:'',escalationStatus:'Clear',attachments:'1 working file'},
+            'TSK-004':{scheduled:'Sep 4, 2026 · 14:00',escalatedTo:'Carlo Mendoza',escalationNote:'Final UAT decision required before launch readiness review.',escalationStatus:'Escalated',attachments:'4 working files'},
+            'TSK-005':{scheduled:'Apr 24, 2026 · 10:00',escalatedTo:'',escalationNote:'',escalationStatus:'Clear',attachments:'5 working files'}
+          };
+          tasks.forEach(t=>Object.assign(t,taskExtras[t.id]||{}));
+
+          schemas.projects.tabs=['Main table','Project View','Project Calendar','Active Projects','Portfolio Timeline','At Risk Projects','Completed Projects'];
+          schemas.projects.columns=[
+            ['Item','item'],['Project ID','id'],['Client','client'],['Project Owner (1)','owner','person'],['Collaborators','collaborators'],['Informed','informed'],['Department','dept'],['Project Status','status','pill'],['Start Date','start'],['Due Date','deadline'],['Timeline','timeline','timeline'],['SharePoint Folder','sharepoint'],['Project Chat / Updates','chat'],['Planned Hours','planned'],['Approved Budget','budget','money'],['Actual Hours','actual'],['Approved Hours','approved'],['Rework Hours','rework'],['Labor Cost','labor','money'],['Rework Cost','reworkCost','money'],['Cost Variance','variance','money'],['Progress %','progress','percent'],['Project Health','health','pill'],['Linked Tasks','linked'],['Overdue Tasks','overdue'],['Completed Tasks','completed'],['Open Tasks','open'],['Last Updated','updated'],['Notes','notes']
+          ];
+          schemas.tasks.tabs=['Main table','My Tasks','Tasks by Project','Due Dates','Task Calendar','Kanban Board','Overdue Tasks','Escalations','For Review','Revision Tasks','Task Timeline'];
+          schemas.tasks.columns=[
+            ['Item','item'],['Connected Project','project'],['Task ID','id'],['Responsible (1)','person','person'],['Task Collaborators','collab'],['Task Status','status','pill'],['Priority','priority','pill'],['Start Date','start'],['Due Date','deadline'],['Scheduled Work','scheduled'],['Timeline','timeline','timeline'],['Escalated To','escalatedTo','person'],['Escalation Note','escalationNote'],['Escalation Status','escalationStatus','pill'],['Working Attachments','attachments'],['Planned Hours','planned'],['Recorded Hours','recorded'],['Approved Hours','approved'],['Remaining Hours','remaining'],['Progress %','progress','percent'],['Revision Count','revisions'],['Rework Hours','rework'],['Rework Cost','reworkCost','money'],['Approval Required','approval','check'],['Task Type','type'],['Last Activity','last'],['Notes','notes']
+          ];
+
+          const originalDashboard=dashboard;
+          dashboard=function(){
+            originalDashboard();
+            const grid=screen.querySelector('.dash-grid');
+            if(!grid)return;
+            const escalated=tasks.filter(t=>t.escalationStatus==='Escalated');
+            const overdue=tasks.filter(t=>['TSK-001','TSK-002'].includes(t.id));
+            if(!grid.querySelector('[data-client-widget="escalations"]')){
+              grid.insertAdjacentHTML('beforeend',
+                '<section class="card client-req-widget" data-client-widget="escalations"><div class="panel-title">Open Escalations</div><table class="mini-table"><thead><tr><th>Task</th><th>Project</th><th>Escalated To</th><th>Note</th></tr></thead><tbody>'+escalated.map(t=>'<tr><td>'+t.item+'</td><td>'+t.project+'</td><td>'+person(t.escalatedTo)+'</td><td>'+t.escalationNote+'</td></tr>').join('')+'</tbody></table></section>'
+              );
+            }
+            if(!grid.querySelector('[data-client-widget="overdue"]')){
+              grid.insertAdjacentHTML('beforeend',
+                '<section class="card client-req-widget" data-client-widget="overdue"><div class="panel-title">Overdue Tasks & Projects</div><table class="mini-table"><thead><tr><th>Task</th><th>Project</th><th>Responsible</th><th>Due</th><th>Status</th></tr></thead><tbody>'+overdue.map(t=>'<tr><td>'+t.item+'</td><td>'+t.project+'</td><td>'+person(t.person)+'</td><td>'+t.deadline+'</td><td>'+P(t.status)+'</td></tr>').join('')+'</tbody></table></section>'
+              );
+            }
+          };
+
+          function decorateConnectedProjects(){
+            if(state.key!=='tasks')return;
+            screen.querySelectorAll('.board-table').forEach(table=>{
+              const heads=[...table.querySelectorAll('thead th')];
+              const index=heads.findIndex(h=>h.textContent.trim()==='Connected Project');
+              if(index<0)return;
+              table.querySelectorAll('tbody tr').forEach(row=>{
+                const cell=row.children[index];if(!cell||cell.querySelector('.project-connect-chip'))return;
+                const text=cell.textContent.trim();cell.innerHTML='<span class="project-connect-chip">'+text+'</span>';
+              });
+            });
+          }
+          new MutationObserver(()=>requestAnimationFrame(decorateConnectedProjects)).observe(screen,{childList:true,subtree:true});
+          render();
+          setTimeout(decorateConnectedProjects,50);
+        })();
+      `;
+      doc.body.appendChild(script);
+    }
+    return true;
+  }
+  function start(){
+    let attempts=0;
+    const timer=setInterval(()=>{attempts++;if(install()||attempts>180)clearInterval(timer)},100);
+  }
+  outer.addEventListener('load',start);start();
+})();
+</script>
+</body>
+</html>
