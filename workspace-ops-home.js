@@ -17,4 +17,16 @@
     if(frame&&typeof window.fitPreview==='function') window.fitPreview(frame);
   }
   projects.forEach(add);
+
+  window.DCODE_PROJECTS.forEach(project=>{
+    const card=root.querySelector(`.project[data-id="${project.id}"]`);
+    const label=card?.querySelector('.projecttop .num');
+    if(label) label.textContent=`${project.order} / ${project.category}`;
+  });
+
+  [...root.querySelectorAll('.project')].sort((a,b)=>{
+    const pa=window.DCODE_PROJECTS.find(project=>project.id===a.dataset.id);
+    const pb=window.DCODE_PROJECTS.find(project=>project.id===b.dataset.id);
+    return Number(pa?.order||99)-Number(pb?.order||99);
+  }).forEach(card=>root.appendChild(card));
 })();
