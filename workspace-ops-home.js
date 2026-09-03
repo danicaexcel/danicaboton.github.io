@@ -1,7 +1,9 @@
 (function(){
   const root=document.getElementById('projectCards');
   if(!root||!Array.isArray(window.DCODE_PROJECTS)) return;
-  const projects=['workspace-ops','ops-dashboard'].map(id=>window.DCODE_PROJECTS.find(p=>p.id===id)).filter(Boolean);
+  const hidden=new Set(['sheets','ops-dashboard']);
+  root.querySelectorAll('.project').forEach(card=>{if(hidden.has(card.dataset.id))card.remove();});
+  const projects=['workspace-ops'].map(id=>window.DCODE_PROJECTS.find(p=>p.id===id)).filter(Boolean);
   function add(p){
     if(root.querySelector(`.project[data-id="${p.id}"]`)) return;
     const el=document.createElement('article');el.className='project';el.dataset.id=p.id;
@@ -24,7 +26,7 @@
     if(label) label.textContent=`${project.order} / ${project.category}`;
   });
 
-  [...root.querySelectorAll('.project')].sort((a,b)=>{
+  [...root.querySelectorAll('.project')].filter(card=>!hidden.has(card.dataset.id)).sort((a,b)=>{
     const pa=window.DCODE_PROJECTS.find(project=>project.id===a.dataset.id);
     const pb=window.DCODE_PROJECTS.find(project=>project.id===b.dataset.id);
     return Number(pa?.order||99)-Number(pb?.order||99);
