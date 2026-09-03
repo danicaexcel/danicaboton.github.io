@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monday.com Project Operations Control Center — DCode</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#demo{display:block;width:100%;height:100%;border:0;background:#fff}
+</style>
+</head>
+<body>
+<iframe id="demo" src="monday-project-ops-demo.html?v=20260903-native-shell2" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
+<script>
+(function(){
+  const frame=document.getElementById('demo');
+  frame.addEventListener('load',()=>{
+    const doc=frame.contentDocument;
+    if(!doc||doc.getElementById('monday-native-shell-style')) return;
+    const style=doc.createElement('style');
+    style.id='monday-native-shell-style';
+    style.textContent=`
+      :root{--monday-rail:#f6f7fb;--monday-top:#f6f7fb;--monday-ink:#323338;--monday-muted:#676879;--monday-divider:#d0d4e4}
+      .app{grid-template-columns:70px 230px minmax(0,1fr)!important;background:#fff}
+      .rail{width:70px!important;background:var(--monday-rail)!important;border-right:1px solid #e6e9ef!important;padding:8px 5px 10px!important;gap:0!important;align-items:stretch!important;overflow:hidden!important;z-index:30}
+      .monday-mark{height:39px;display:flex;align-items:center;justify-content:center;gap:3px;border-bottom:1px solid #eceef3;margin-bottom:5px}
+      .monday-mark i{display:block;width:6px;height:18px;border-radius:5px;transform:rotate(34deg)}
+      .monday-mark i:nth-child(1){background:#f62b54}.monday-mark i:nth-child(2){background:#ffcc00}.monday-mark i:nth-child(3){background:#00c875;height:9px;transform:rotate(0deg);border-radius:50%;width:9px;margin-left:2px}
+      .native-rail-item{appearance:none;border:0;background:transparent;color:#53576a;min-height:57px;padding:5px 1px;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:default;font-size:10px;line-height:1.05;white-space:nowrap}
+      .native-rail-item .ri{font-size:18px;line-height:18px;color:#4e5366;font-weight:400}
+      .native-rail-item.active{background:#cce5ff;color:#323338}.native-rail-item.active .ri{color:#323338}
+      .native-rail-divider{height:1px;background:#d8dbe5;margin:4px 12px}
+      .native-rail-spacer{flex:1;min-height:28px}
+      .native-credits{border-top:1px solid #d8dbe5;padding-top:9px;margin-top:4px;position:relative}.native-credits .ri{width:29px;height:29px;border:1px solid #d8dbe5;border-radius:50%;display:grid;place-items:center;background:#fff;font-size:15px}.native-credits:after{content:"";position:absolute;top:8px;right:14px;width:10px;height:4px;border-radius:4px;background:#00c875}
+      .global{position:fixed!important;top:0!important;left:70px!important;right:0!important;width:auto!important;height:48px!important;z-index:25!important;background:var(--monday-top)!important;border-bottom:1px solid #e4e6ed!important;padding:0 17px!important;gap:14px!important;box-shadow:none!important}
+      .native-upgrade{display:inline-flex;align-items:center;gap:8px;color:#0073ea;font-size:14px;font-weight:500;white-space:nowrap}.native-upgrade .diamond{font-size:17px;color:#0073ea}.native-top-search{position:absolute;left:50%;transform:translateX(-50%);width:min(360px,31vw);height:29px;border:0;border-radius:16px;background:#e8e9ed;color:#676879;padding:0 34px 0 14px;outline:none;font-size:13px}.native-search-icon{position:absolute;left:calc(50% + min(180px,15.5vw) - 25px);color:#676879;font-size:13px;pointer-events:none}
+      .native-top-right{margin-left:auto;display:flex;align-items:center;gap:9px;color:#323338}.native-top-icon{position:relative;min-width:24px;height:30px;display:grid;place-items:center;font-size:17px;color:#323338}.native-top-icon .count{position:absolute;top:-5px;right:-5px;font-size:10px;background:#fff;color:#323338;line-height:12px}.native-top-icon .red-dot{position:absolute;top:1px;right:0;width:6px;height:6px;border-radius:50%;background:#d83a52}.native-appgrid{display:grid;grid-template-columns:repeat(3,3px);grid-template-rows:repeat(3,3px);gap:2px;width:14px;height:14px}.native-appgrid i{width:3px;height:3px;background:#323338;border-radius:50%}.native-avatar{width:34px;height:34px!important;border-radius:50%;background:#f62b54;color:#fff!important;font-weight:700;font-size:12px;display:grid;place-items:center;margin-left:3px}
+      .sidebar{margin-top:48px!important;height:calc(100vh - 48px)!important;padding-top:12px!important}
+      .main{padding-top:48px!important;height:100vh!important}
+      .screen{height:calc(100vh - 48px)!important;flex:1!important}
+      .head{top:0!important}.toolbar{top:93px!important}
+
+      .native-team-workload{grid-column:1/-1!important;overflow:hidden;min-height:420px;background:#fff!important;border:1px solid #d0d4e4!important;border-radius:8px!important}
+      .native-wl-head{height:48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #d0d4e4;padding:0 14px 0 22px;color:#323338}
+      .native-wl-title{display:flex;align-items:center;gap:18px;font-size:17px;font-weight:500}.native-wl-title .wl-filter{font-size:15px;color:#676879;transform:rotate(180deg)}.native-wl-title .wl-people{width:18px;height:18px;border:1.5px solid #676879;border-radius:50%;display:grid;place-items:center;font-size:10px;color:#676879}
+      .native-wl-controls{display:flex;align-items:center;gap:8px}.native-wl-btn{height:32px;border:1px solid #c3c7d5;background:#fff;border-radius:4px;padding:0 11px;color:#4a4d57;font-size:13px}.native-wl-select{min-width:88px;display:flex;align-items:center;justify-content:space-between;gap:18px}.native-wl-more{border:0;background:transparent;font-size:18px;color:#323338;padding:0 5px}
+      .native-wl-scroll{overflow-x:auto;overflow-y:hidden;background:#fff}.native-wl-board{min-width:920px;position:relative}
+      .native-wl-month{display:grid;grid-template-columns:235px repeat(6,minmax(108px,1fr));height:30px;border-bottom:1px solid #d0d4e4}.native-wl-month-side{border-right:1px solid #d0d4e4;position:relative}.native-wl-pin{position:absolute;left:15px;top:6px;width:16px;height:16px;border-radius:4px;background:#d0d4e4;color:#676879;font-size:10px;display:grid;place-items:center}.native-wl-prev{position:absolute;right:8px;top:3px;width:25px;height:25px;border:1px solid #d0d4e4;border-radius:50%;background:#fff;color:#676879;font-size:18px;line-height:20px}.native-wl-month-label{grid-column:2/8;display:flex;align-items:center;justify-content:center;font-size:13px;color:#323338}
+      .native-wl-weeks{display:grid;grid-template-columns:235px repeat(6,minmax(108px,1fr));height:28px;border-bottom:1px solid #d0d4e4;background:#fff}.native-wl-weeks>div{border-right:1px solid #d0d4e4;padding:7px 10px;font-size:10px;color:#53576a}.native-wl-weeks>div:first-child{background:#fbfbfd}
+      .native-wl-row{display:grid;grid-template-columns:235px repeat(6,minmax(108px,1fr));height:118px;border-bottom:1px solid #d0d4e4}.native-wl-user{border-right:1px solid #d0d4e4;display:flex;align-items:center;padding:0 36px;gap:10px;font-size:13px;color:#323338;background:#fff}.native-wl-avatar{width:26px;height:26px;border-radius:50%;background:#bfe1f7;color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700}
+      .native-wl-cell{border-right:1px solid #d0d4e4;position:relative;display:flex;align-items:flex-start;justify-content:center;padding-top:10px}.native-wl-bubble{width:var(--outer);height:var(--outer);border-radius:50%;background:#b9ddff;display:grid;place-items:center}.native-wl-bubble i{display:block;width:var(--inner);height:var(--inner);border-radius:50%;background:#0073ea}.native-wl-value{position:absolute;right:4px;bottom:6px;font-size:10px;color:#676879}
+      .native-wl-blank{height:240px;display:grid;grid-template-columns:235px repeat(6,minmax(108px,1fr));background:#fff}.native-wl-blank>div{border-right:1px solid #e1e4eb}.native-wl-blank>div:first-child{background:#fff;box-shadow:2px 0 5px rgba(50,51,56,.08);z-index:1}
+      .native-wl-bottom{height:48px;border-top:1px solid #f0f1f5;background:#fff;position:relative;display:flex;align-items:center;justify-content:center}.native-wl-scrollbar{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:90px;height:9px;border-radius:7px;background:#666879}.native-wl-legend{display:flex;align-items:center;gap:27px;font-size:12px;color:#4f515b}.native-wl-legend span{display:flex;align-items:center;gap:7px}.native-wl-legend i{width:11px;height:11px;border-radius:50%;display:block}.native-wl-legend .blocked{background:#e2445c}.native-wl-legend .completed{background:#00c875}.native-wl-legend .working{background:#fdab3d}
+      @media(max-width:720px){.app{grid-template-columns:60px minmax(0,1fr)!important}.rail{width:60px!important}.global{left:60px!important}.native-rail-item{font-size:9px}.native-top-search{width:min(280px,42vw)}.sidebar{display:none!important}.native-team-workload{min-height:360px}.native-wl-head{padding-left:14px}.native-wl-title{font-size:14px}}
+    `;
+    doc.head.appendChild(style);
+
+    const rail=doc.querySelector('.rail');
+    if(rail){
+      rail.innerHTML=`
+        <div class="monday-mark" aria-label="monday.com"><i></i><i></i><i></i></div>
+        <button class="native-rail-item active"><span class="ri">▦</span><span>Workspace</span></button>
+        <button class="native-rail-item"><span class="ri">✧</span><span>Sidekick</span></button>
+        <button class="native-rail-item"><span class="ri">♧</span><span>Agents</span></button>
+        <div class="native-rail-divider"></div>
+        <button class="native-rail-item"><span class="ri">♡</span><span>Vibe</span></button>
+        <button class="native-rail-item"><span class="ri">◇</span><span>Workflows</span></button>
+        <button class="native-rail-item"><span class="ri">▥</span><span>Notetaker</span></button>
+        <div class="native-rail-divider"></div>
+        <button class="native-rail-item"><span class="ri">☆</span><span>Favorites</span></button>
+        <button class="native-rail-item"><span class="ri">▧</span><span>Docs hub</span></button>
+        <button class="native-rail-item"><span class="ri">•••</span><span>More</span></button>
+        <div class="native-rail-spacer"></div>
+        <button class="native-rail-item native-credits"><span class="ri">◉</span><span>AI credits</span></button>`;
+    }
+    const global=doc.querySelector('.global');
+    if(global){
+      global.innerHTML=`
+        <div class="native-upgrade"><span class="diamond">♢</span><span>Upgrade</span></div>
+        <input class="native-top-search" aria-label="Search" placeholder="Search for anything...">
+        <span class="native-search-icon">⌕</span>
+        <div class="native-top-right">
+          <span class="native-top-icon" title="Notifications">♧</span>
+          <span class="native-top-icon" title="Inbox">⌂<span class="count">28</span></span>
+          <span class="native-top-icon" title="Invite">♙+</span>
+          <span class="native-top-icon" title="Apps">✿<span class="red-dot"></span></span>
+          <span class="native-top-icon" title="Help">?</span>
+          <span class="native-top-icon" title="Products"><span class="native-appgrid">${'<i></i>'.repeat(9)}</span></span>
+          <span class="native-avatar">T&</span>
+        </div>`;
+    }
+
+    function ensureNativeWorkload(){
+      const grid=doc.querySelector('.dashboard .dash-grid');
+      if(!grid||grid.querySelector('.native-team-workload')) return;
+      const widget=doc.createElement('section');
+      widget.className='card native-team-workload';
+      widget.innerHTML=`
+        <div class="native-wl-head">
+          <div class="native-wl-title"><span>Team Workload</span><span class="wl-filter">⌄</span><span class="wl-people">○</span></div>
+          <div class="native-wl-controls"><button class="native-wl-btn">Today</button><button class="native-wl-btn native-wl-select"><span>Weeks</span><span>⌄</span></button><button class="native-wl-more">...</button></div>
+        </div>
+        <div class="native-wl-scroll"><div class="native-wl-board">
+          <div class="native-wl-month"><div class="native-wl-month-side"><span class="native-wl-pin">↕</span><button class="native-wl-prev">‹</button></div><div class="native-wl-month-label">June 2026</div></div>
+          <div class="native-wl-weeks"><div></div><div>W23 1 - 7</div><div>W24 8 - 14</div><div>W25 15 - 21</div><div>W26 22 - 28</div><div>W27 Jun 29 - 5</div><div>W28 6 - 12</div></div>
+          <div class="native-wl-row">
+            <div class="native-wl-user"><span class="native-wl-avatar">DB</span><span>Danica Boton</span></div>
+            <div class="native-wl-cell"><span class="native-wl-bubble" style="--outer:52px;--inner:18px"><i></i></span><span class="native-wl-value">13.5</span></div>
+            <div class="native-wl-cell"><span class="native-wl-bubble" style="--outer:49px;--inner:12px"><i></i></span><span class="native-wl-value">9.3</span></div>
+            <div class="native-wl-cell"><span class="native-wl-bubble" style="--outer:47px;--inner:9px"><i></i></span><span class="native-wl-value">7.2</span></div>
+            <div class="native-wl-cell"><span class="native-wl-bubble" style="--outer:54px;--inner:38px"><i></i></span><span class="native-wl-value">28.94</span></div>
+            <div class="native-wl-cell"><span class="native-wl-bubble" style="--outer:52px;--inner:34px"><i></i></span><span class="native-wl-value">26.06</span></div>
+            <div class="native-wl-cell"><span class="native-wl-bubble" style="--outer:49px;--inner:29px"><i></i></span><span class="native-wl-value">20.5</span></div>
+          </div>
+          <div class="native-wl-blank"><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="native-wl-bottom"><span class="native-wl-scrollbar"></span><div class="native-wl-legend"><span><i class="blocked"></i>Blocked</span><span><i class="completed"></i>Completed</span><span><i class="working"></i>Working on it</span></div></div>
+        </div></div>`;
+      grid.appendChild(widget);
+    }
+    ensureNativeWorkload();
+    const screen=doc.getElementById('screen');
+    if(screen){new MutationObserver(()=>requestAnimationFrame(ensureNativeWorkload)).observe(screen,{childList:true,subtree:true})}
+  });
+})();
+</script>
+</body>
+</html>
