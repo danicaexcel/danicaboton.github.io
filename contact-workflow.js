@@ -122,10 +122,24 @@
     });
   }
 
+  function loadSpxEnhancement() {
+    const currentId = new URLSearchParams(location.search).get('id');
+    let src = '';
+    if (document.querySelector('.project[data-id="ocr"]')) src = 'spx-index.js?v=20260903-spx-ops1';
+    else if (currentId === 'ocr' && /case-study\.html$/.test(location.pathname)) src = 'spx-case-study.js?v=20260903-spx-ops1';
+    else if (currentId === 'ocr' && /demo\.html$/.test(location.pathname)) src = 'spx-operations-demo.js?v=20260903-spx-ops1';
+    if (!src || document.querySelector(`script[data-spx-enhancement="${src}"]`)) return;
+    const script = document.createElement('script');
+    script.src = src;
+    script.dataset.spxEnhancement = src;
+    document.body.appendChild(script);
+  }
+
   removeRetiredProjects();
   enrichProjectActions();
   keepPortalInLab();
   useDedicatedMigrationDemo();
+  loadSpxEnhancement();
   prepareWorkflowActions();
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
     if (node.nodeType !== 1) return;
