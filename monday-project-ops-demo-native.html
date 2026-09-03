@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monday.com Project Operations Control Center — DCode</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#demo{display:block;width:100%;height:100%;border:0;background:#fff}
+</style>
+</head>
+<body>
+<iframe id="demo" src="monday-project-ops-demo.html?v=20260903-native-shell1" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
+<script>
+(function(){
+  const frame=document.getElementById('demo');
+  frame.addEventListener('load',()=>{
+    const doc=frame.contentDocument;
+    if(!doc||doc.getElementById('monday-native-shell-style')) return;
+    const style=doc.createElement('style');
+    style.id='monday-native-shell-style';
+    style.textContent=`
+      :root{--monday-rail:#f6f7fb;--monday-top:#f6f7fb;--monday-ink:#323338;--monday-muted:#676879;--monday-divider:#d0d4e4}
+      .app{grid-template-columns:70px 230px minmax(0,1fr)!important;background:#fff}
+      .rail{width:70px!important;background:var(--monday-rail)!important;border-right:1px solid #e6e9ef!important;padding:8px 5px 10px!important;gap:0!important;align-items:stretch!important;overflow:hidden!important;z-index:30}
+      .monday-mark{height:39px;display:flex;align-items:center;justify-content:center;gap:3px;border-bottom:1px solid #eceef3;margin-bottom:5px}
+      .monday-mark i{display:block;width:6px;height:18px;border-radius:5px;transform:rotate(34deg)}
+      .monday-mark i:nth-child(1){background:#f62b54}.monday-mark i:nth-child(2){background:#ffcc00}.monday-mark i:nth-child(3){background:#00c875;height:9px;transform:rotate(0deg);border-radius:50%;width:9px;margin-left:2px}
+      .native-rail-item{appearance:none;border:0;background:transparent;color:#53576a;min-height:57px;padding:5px 1px;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:default;font-size:10px;line-height:1.05;white-space:nowrap}
+      .native-rail-item .ri{font-size:18px;line-height:18px;color:#4e5366;font-weight:400}
+      .native-rail-item.active{background:#cce5ff;color:#323338}.native-rail-item.active .ri{color:#323338}
+      .native-rail-divider{height:1px;background:#d8dbe5;margin:4px 12px}
+      .native-rail-spacer{flex:1;min-height:28px}
+      .native-credits{border-top:1px solid #d8dbe5;padding-top:9px;margin-top:4px;position:relative}.native-credits .ri{width:29px;height:29px;border:1px solid #d8dbe5;border-radius:50%;display:grid;place-items:center;background:#fff;font-size:15px}.native-credits:after{content:"";position:absolute;top:8px;right:14px;width:10px;height:4px;border-radius:4px;background:#00c875}
+      .global{position:fixed!important;top:0!important;left:70px!important;right:0!important;width:auto!important;height:48px!important;z-index:25!important;background:var(--monday-top)!important;border-bottom:1px solid #e4e6ed!important;padding:0 17px!important;gap:14px!important;box-shadow:none!important}
+      .native-upgrade{display:inline-flex;align-items:center;gap:8px;color:#0073ea;font-size:14px;font-weight:500;white-space:nowrap}.native-upgrade .diamond{font-size:17px;color:#0073ea}.native-top-search{position:absolute;left:50%;transform:translateX(-50%);width:min(360px,31vw);height:29px;border:0;border-radius:16px;background:#e8e9ed;color:#676879;padding:0 34px 0 14px;outline:none;font-size:13px}.native-search-icon{position:absolute;left:calc(50% + min(180px,15.5vw) - 25px);color:#676879;font-size:13px;pointer-events:none}
+      .native-top-right{margin-left:auto;display:flex;align-items:center;gap:9px;color:#323338}.native-top-icon{position:relative;min-width:24px;height:30px;display:grid;place-items:center;font-size:17px;color:#323338}.native-top-icon .count{position:absolute;top:-5px;right:-5px;font-size:10px;background:#fff;color:#323338;line-height:12px}.native-top-icon .red-dot{position:absolute;top:1px;right:0;width:6px;height:6px;border-radius:50%;background:#d83a52}.native-appgrid{display:grid;grid-template-columns:repeat(3,3px);grid-template-rows:repeat(3,3px);gap:2px;width:14px;height:14px}.native-appgrid i{width:3px;height:3px;background:#323338;border-radius:50%}.native-avatar{width:34px;height:34px!important;border-radius:50%;background:#f62b54;color:#fff!important;font-weight:700;font-size:12px;display:grid;place-items:center;margin-left:3px}
+      .sidebar{margin-top:48px!important;height:calc(100vh - 48px)!important;padding-top:12px!important}
+      .main{padding-top:48px!important;height:100vh!important}
+      .screen{height:calc(100vh - 48px)!important;flex:1!important}
+      .head{top:0!important}.toolbar{top:93px!important}
+      @media(max-width:720px){.app{grid-template-columns:60px minmax(0,1fr)!important}.rail{width:60px!important}.global{left:60px!important}.native-rail-item{font-size:9px}.native-top-search{width:min(280px,42vw)}.sidebar{display:none!important}}
+    `;
+    doc.head.appendChild(style);
+    const rail=doc.querySelector('.rail');
+    if(rail){
+      rail.innerHTML=`
+        <div class="monday-mark" aria-label="monday.com"><i></i><i></i><i></i></div>
+        <button class="native-rail-item active"><span class="ri">▦</span><span>Workspace</span></button>
+        <button class="native-rail-item"><span class="ri">✧</span><span>Sidekick</span></button>
+        <button class="native-rail-item"><span class="ri">♧</span><span>Agents</span></button>
+        <div class="native-rail-divider"></div>
+        <button class="native-rail-item"><span class="ri">♡</span><span>Vibe</span></button>
+        <button class="native-rail-item"><span class="ri">◇</span><span>Workflows</span></button>
+        <button class="native-rail-item"><span class="ri">▥</span><span>Notetaker</span></button>
+        <div class="native-rail-divider"></div>
+        <button class="native-rail-item"><span class="ri">☆</span><span>Favorites</span></button>
+        <button class="native-rail-item"><span class="ri">▧</span><span>Docs hub</span></button>
+        <button class="native-rail-item"><span class="ri">•••</span><span>More</span></button>
+        <div class="native-rail-spacer"></div>
+        <button class="native-rail-item native-credits"><span class="ri">◉</span><span>AI credits</span></button>`;
+    }
+    const global=doc.querySelector('.global');
+    if(global){
+      global.innerHTML=`
+        <div class="native-upgrade"><span class="diamond">♢</span><span>Upgrade</span></div>
+        <input class="native-top-search" aria-label="Search" placeholder="Search for anything...">
+        <span class="native-search-icon">⌕</span>
+        <div class="native-top-right">
+          <span class="native-top-icon" title="Notifications">♧</span>
+          <span class="native-top-icon" title="Inbox">⌂<span class="count">28</span></span>
+          <span class="native-top-icon" title="Invite">♙+</span>
+          <span class="native-top-icon" title="Apps">✿<span class="red-dot"></span></span>
+          <span class="native-top-icon" title="Help">?</span>
+          <span class="native-top-icon" title="Products"><span class="native-appgrid">${'<i></i>'.repeat(9)}</span></span>
+          <span class="native-avatar">T&</span>
+        </div>`;
+    }
+  });
+})();
+</script>
+</body>
+</html>
