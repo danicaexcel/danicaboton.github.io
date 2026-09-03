@@ -6,23 +6,23 @@
     const num=top.querySelector('.num');
     const status=top.querySelector('.status');
     if(num) num.textContent='04 / SPX · LOGISTICS OPS · N8N · WHATSAPP · OCR';
-    if(status) status.textContent='Production operations automation · OCR intake phase reconstructed';
+    if(status) status.textContent='Production operations automation · reconstructed unified workspace';
   }
   const title=card.querySelector('h3');
   const copy=card.querySelector('.projectcopy > p');
   if(title) title.textContent='SPX Logistics Operations & Automated Encoding System';
-  if(copy) copy.textContent='A first-mile logistics operations system that normalizes SPX activity, automates late-driver follow-up and escalation, generates hourly owner visibility, and isolates screenshot OCR as the next intake layer where direct SPX API access is unavailable.';
+  if(copy) copy.textContent='A first-mile operations workspace preserving the client’s familiar daily logs and summaries while adding route progress, attendance, trip handover + pay, closing-time risk, owner visibility, WhatsApp escalation, and screenshot OCR intake.';
   const chips=card.querySelector('.chips');
   if(chips) chips.innerHTML=['Self-hosted n8n','Google Sheets','Microsoft Excel','WhatsApp','SPX Mobile App'].map(x=>`<span class="chip">${x}</span>`).join('');
   const metrics=card.querySelector('.metricline');
-  if(metrics) metrics.innerHTML='<div class="mini"><strong>5 min</strong><span>driver compliance monitoring cadence</span></div><div class="mini"><strong>3 attempts</strong><span>automated follow-ups before admin escalation</span></div>';
-  const caseLink=card.querySelector('a[href*="case-study.html"]');
-  if(caseLink) caseLink.href='spx-case-study.html?v=20260903-spx-ops1';
+  if(metrics) metrics.innerHTML='<div class="mini"><strong>5 min</strong><span>driver compliance monitoring cadence</span></div><div class="mini"><strong>$0.03</strong><span>per handed-over parcel pay basis</span></div>';
+  const caseLink=card.querySelector('a[href*="case-study.html"],a[href*="spx-case-study.html"]');
+  if(caseLink) caseLink.href='spx-case-study.html?v=20260903-spx-ops2';
   const screenTitle=card.querySelector('.screen-title');
   if(screenTitle) screenTitle.textContent='SPX Logistics Operations & Automated Encoding System';
   const frame=card.querySelector('iframe.live-demo-preview');
   if(frame){
-    frame.title='Interactive reconstructed SPX logistics operations and automated encoding preview';
-    frame.src='demo.html?id=ocr&embed=1&v=20260903-spx-ops1';
+    frame.title='Interactive reconstructed SPX logistics operations workspace';
+    frame.src='demo.html?id=ocr&embed=1&v=20260903-spx-ops2';
   }
 })();
