@@ -16,6 +16,8 @@
   if(chips) chips.innerHTML=['Self-hosted n8n','Google Sheets','Microsoft Excel','WhatsApp','SPX Mobile App'].map(x=>`<span class="chip">${x}</span>`).join('');
   const metrics=card.querySelector('.metricline');
   if(metrics) metrics.innerHTML='<div class="mini"><strong>5 min</strong><span>driver compliance monitoring cadence</span></div><div class="mini"><strong>3 attempts</strong><span>automated follow-ups before admin escalation</span></div>';
+  const caseLink=card.querySelector('a[href*="case-study.html"]');
+  if(caseLink) caseLink.href='spx-case-study.html?v=20260903-spx-ops1';
   const screenTitle=card.querySelector('.screen-title');
   if(screenTitle) screenTitle.textContent='SPX Logistics Operations & Automated Encoding System';
   const frame=card.querySelector('iframe.live-demo-preview');
