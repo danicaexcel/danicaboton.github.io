@@ -1,6 +1,7 @@
 (() => {
   const EMAIL = 'boton.danicamarie@gmail.com';
   const RETIRED_PROJECTS = new Set();
+  const HIDDEN_PROJECTS = new Set(['sheets','ops-dashboard']);
 
   function removeRetiredProjects() {
     const currentId = new URLSearchParams(location.search).get('id');
@@ -10,6 +11,12 @@
     }
     if (!RETIRED_PROJECTS.size) return;
     const selector = [...RETIRED_PROJECTS].flatMap(id => [`.project[data-id="${id}"]`, `option[value="${id}"]`]).join(',');
+    document.querySelectorAll(selector).forEach(element => element.remove());
+  }
+
+  function removeHiddenProjects() {
+    if (!HIDDEN_PROJECTS.size) return;
+    const selector = [...HIDDEN_PROJECTS].flatMap(id => [`.project[data-id="${id}"]`, `option[value="${id}"]`]).join(',');
     document.querySelectorAll(selector).forEach(element => element.remove());
   }
 
@@ -142,7 +149,7 @@
       const currentId = new URLSearchParams(location.search).get('id');
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260903-workspace-ops2';
+        home.src = 'workspace-ops-home.js?v=20260903-workspace-ops3';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
@@ -154,19 +161,21 @@
         const option = document.querySelector(`option[value="${currentId}"]`);
         if (option) option.textContent = option.textContent.replace(/^\d+\s+/, `${currentProject.order} `);
       }
+      removeHiddenProjects();
     };
     if (window.DCODE_PROJECTS?.some(p => p.id === 'workspace-ops')) { finish(); return; }
     if (!window.DCODE_PROJECTS) return;
     const existing = document.querySelector('script[data-workspace-project]');
     if (existing) { existing.addEventListener('load', finish, {once:true}); return; }
     const projectScript = document.createElement('script');
-    projectScript.src = 'workspace-ops-project.js?v=20260903-workspace-ops2';
+    projectScript.src = 'workspace-ops-project.js?v=20260903-workspace-ops3';
     projectScript.dataset.workspaceProject = '1';
     projectScript.addEventListener('load', finish, {once:true});
     document.body.appendChild(projectScript);
   }
 
   removeRetiredProjects();
+  removeHiddenProjects();
   enrichProjectActions();
   keepPortalInLab();
   useDedicatedMigrationDemo();
@@ -176,6 +185,7 @@
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
     if (node.nodeType !== 1) return;
     removeRetiredProjects();
+    removeHiddenProjects();
     prepareWorkflowActions(node);
     keepPortalInLab();
     useDedicatedMigrationDemo();
