@@ -81,6 +81,18 @@ body.portfolio-theme .data-core{background:#292e34;border-color:#f2b77e;box-shad
    stage by 17px on desktop to center the actual diagram inside its canvas. */
 @media(min-width:701px){body.portfolio-theme .data-map-stage{inset-inline-start:calc(50% + 17px)}}
 
+/* Mobile architecture diagram: center the scaled stage both horizontally and
+   vertically within the available canvas. A small optical shift keeps the visible
+   node group centered rather than just the raw 680px coordinate box. */
+@media(max-width:700px){
+  body.portfolio-theme .data-map-stage{
+    inset-block-start:50%;
+    inset-inline-start:calc(50% + 9px);
+    transform:translate(-50%,-50%) scale(.54);
+    transform-origin:center center;
+  }
+}
+
 /* Google Workspace case-study hero preview: fill the laptop viewport instead of
    inheriting the browser default 300×150 iframe size. */
 .case-live-preview[src*="workspace-ops-demo-v2"]{width:100%!important;height:100%!important;transform:none!important}
