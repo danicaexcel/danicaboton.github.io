@@ -125,11 +125,13 @@ function fitPreview(iframe){
     const screen=iframe.closest('.laptop-screen');
     if(document.fullscreenElement===screen){iframe.style.cssText='';return;}
     const scale=Math.min(display.clientWidth/PREVIEW_W,display.clientHeight/PREVIEW_H);
+    const scaledWidth=PREVIEW_W*scale;
+    const scaledHeight=PREVIEW_H*scale;
     iframe.style.width=`${PREVIEW_W}px`;
     iframe.style.height=`${PREVIEW_H}px`;
     iframe.style.transform=`scale(${scale})`;
-    iframe.style.left='0px';
-    iframe.style.top='0px';
+    iframe.style.left=`${Math.max(0,(display.clientWidth-scaledWidth)/2)}px`;
+    iframe.style.top=`${Math.max(0,(display.clientHeight-scaledHeight)/2)}px`;
   };
   new ResizeObserver(apply).observe(display);
   iframe.addEventListener('load',apply);
