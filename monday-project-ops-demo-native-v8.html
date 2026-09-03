@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monday.com Project Operations Control Center — DCode</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#native{display:block;width:100%;height:100%;border:0;background:#fff}</style>
+</head>
+<body>
+<iframe id="native" src="monday-project-ops-demo-native-v7.html?v=20260903-topnav1" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
+<script>
+(function(){
+  const outer=document.getElementById('native');
+  const svg=(body)=>`<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${body}</svg>`;
+  const icons={
+    bell:svg('<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>'),
+    inbox:svg('<path d="M4 5h16l-1.4 11H5.4L4 5Z"/><path d="M4.8 12h4l1.6 2h3.2l1.6-2h4"/>'),
+    user:svg('<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.4-3.2 2.3-5 5.5-5s5.1 1.8 5.5 5"/><path d="M18 8v6M15 11h6"/>'),
+    puzzle:svg('<path d="M8.5 4H4v5.1a2.5 2.5 0 1 1 0 4.8V20h5.1a2.5 2.5 0 1 0 4.8 0H20v-5.1a2.5 2.5 0 1 0 0-4.8V4h-5.1a2.5 2.5 0 1 1-4.8 0H8.5Z"/>')
+  };
+  function deepestDoc(){
+    try{
+      let doc=outer.contentDocument;if(!doc)return null;
+      for(let i=0;i<16;i++){
+        const frame=doc.querySelector('iframe');
+        if(!frame||!frame.contentDocument)break;
+        doc=frame.contentDocument;
+      }
+      return doc;
+    }catch(e){return null}
+  }
+  function install(){
+    const doc=deepestDoc();if(!doc||!doc.getElementById('screen'))return false;
+    if(!doc.getElementById('project09-current-topnav-style')){
+      const style=doc.createElement('style');
+      style.id='project09-current-topnav-style';
+      style.textContent=`
+        .native-top-right{margin-left:auto!important;display:flex!important;align-items:center!important;gap:8px!important;height:48px!important;color:#323338!important}
+        .native-top-icon.current-nav-icon{width:27px!important;min-width:27px!important;height:32px!important;display:grid!important;place-items:center!important;position:relative!important;color:#323338!important}
+        .native-top-icon.current-nav-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;display:block}
+        .native-top-icon.current-nav-icon .count{position:absolute!important;top:-5px!important;right:-3px!important;font-size:10px!important;line-height:12px!important;color:#323338!important;background:#f6f7fb!important;padding:0 1px!important;font-weight:400!important}
+        .native-top-icon.current-nav-icon .red-dot{position:absolute!important;top:2px!important;right:-1px!important;width:6px!important;height:6px!important;border-radius:50%!important;background:#e2445c!important}
+        .native-top-question{width:26px;height:32px;display:grid;place-items:center;font-size:17px;color:#323338}
+        .native-top-divider{width:1px;height:22px;background:#d0d4e4;margin:0 3px}
+        .native-appgrid.current-appgrid{display:grid!important;grid-template-columns:repeat(3,4px)!important;grid-template-rows:repeat(3,4px)!important;gap:3px!important;width:18px!important;height:18px!important}
+        .native-appgrid.current-appgrid i{width:4px!important;height:4px!important;background:#323338!important;border-radius:50%!important}
+        .native-avatar.current-avatar{width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important;background:#f62b54!important;color:#fff!important;font-weight:700!important;font-size:12px!important;display:grid!important;place-items:center!important;margin-left:2px!important}
+        .native-quality-chart{padding:18px 18px 15px!important;background:#fff!important}
+        .native-quality-chart .barrow{grid-template-columns:92px 1fr 48px!important;margin:18px 0!important}
+        .native-quality-chart .bars{gap:0!important}
+        .native-quality-chart .bar{height:22px!important;border-radius:2px!important}
+        .native-quality-chart .bar.utilization{background:#579bfc!important}
+        .native-quality-chart .bar.rework-rate{background:#ffc800!important}
+        .native-quality-chart .legend span:before{background:#579bfc!important}.native-quality-chart .legend span+span:before{background:#ffc800!important}
+      `;
+      doc.head.appendChild(style);
+    }
+    const global=doc.querySelector('.global');
+    if(global){
+      let right=global.querySelector('.native-top-right');
+      if(!right){right=doc.createElement('div');right.className='native-top-right';global.appendChild(right)}
+      if(right.dataset.currentMondayTopnav!=='1'){
+        right.dataset.currentMondayTopnav='1';
+        right.innerHTML=`
+          <span class="native-top-icon current-nav-icon" title="Notifications">${icons.bell}</span>
+          <span class="native-top-icon current-nav-icon" title="Inbox">${icons.inbox}<span class="count">28</span></span>
+          <span class="native-top-icon current-nav-icon" title="Invite members">${icons.user}</span>
+          <span class="native-top-icon current-nav-icon" title="Apps">${icons.puzzle}<span class="red-dot"></span></span>
+          <span class="native-top-question" title="Help">?</span>
+          <span class="native-top-divider" aria-hidden="true"></span>
+          <span class="native-top-icon current-nav-icon" title="Products"><span class="native-appgrid current-appgrid">${'<i></i>'.repeat(9)}</span></span>
+          <span class="native-avatar current-avatar">T&</span>`;
+      }
+    }
+    const dashboard=doc.querySelector('.dashboard');
+    if(dashboard){
+      const quality=[...dashboard.querySelectorAll('section.card')].find(card=>/Effort Quality/i.test(card.textContent));
+      if(quality&&quality.dataset.currentQualityChart!=='1'){
+        const vals=[...quality.textContent.matchAll(/(\d+(?:\.\d+)?)%/g)].map(m=>Number(m[1]));
+        const util=Number.isFinite(vals[0])?vals[0]:72;
+        const rework=Number.isFinite(vals[1])?vals[1]:8;
+        quality.dataset.currentQualityChart='1';
+        quality.innerHTML=`
+          <div class="monday-dw-head"><span>Effort Quality — Utilization vs Rework</span><div class="monday-dw-tools"><span title="Filter">▽</span><span class="monday-dw-more">...</span></div></div>
+          <div class="chart native-quality-chart">
+            <div class="barrow"><span>Utilization</span><div class="bars"><i class="bar utilization" style="width:${Math.max(0,Math.min(100,util))}%"></i></div><b>${util}%</b></div>
+            <div class="barrow"><span>Rework rate</span><div class="bars"><i class="bar rework-rate" style="width:${Math.max(0,Math.min(100,rework))}%"></i></div><b>${rework}%</b></div>
+            <div class="legend"><span>Utilization</span><span>Rework rate</span></div>
+          </div>`;
+      }
+    }
+    return true;
+  }
+  function start(){
+    let attempts=0;
+    const timer=setInterval(()=>{attempts++;install();if(attempts>220)clearInterval(timer)},100);
+    const observerTimer=setInterval(()=>{
+      const doc=deepestDoc();const screen=doc&&doc.getElementById('screen');
+      if(screen&&!screen.dataset.project09TopnavObserved){
+        screen.dataset.project09TopnavObserved='1';
+        new MutationObserver(()=>requestAnimationFrame(install)).observe(screen,{childList:true,subtree:true});
+        clearInterval(observerTimer);
+      }
+    },200);
+    setTimeout(()=>clearInterval(observerTimer),25000);
+  }
+  outer.addEventListener('load',start);start();
+})();
+</script>
+</body>
+</html>
