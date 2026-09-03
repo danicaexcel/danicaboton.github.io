@@ -1,5 +1,15 @@
 (() => {
   const EMAIL = 'boton.danicamarie@gmail.com';
+  const RETIRED_PROJECTS = new Set(['ops-dashboard']);
+
+  function removeRetiredProjects() {
+    const currentId = new URLSearchParams(location.search).get('id');
+    if (RETIRED_PROJECTS.has(currentId) && !/index\.html$/.test(location.pathname)) {
+      location.replace('index.html#work');
+      return;
+    }
+    document.querySelectorAll('.project[data-id="ops-dashboard"], option[value="ops-dashboard"]').forEach(element => element.remove());
+  }
 
   function ensureDialog() {
     let dialog = document.getElementById('workflowContactDialog');
@@ -112,12 +122,14 @@
     });
   }
 
+  removeRetiredProjects();
   enrichProjectActions();
   keepPortalInLab();
   useDedicatedMigrationDemo();
   prepareWorkflowActions();
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
     if (node.nodeType !== 1) return;
+    removeRetiredProjects();
     prepareWorkflowActions(node);
     keepPortalInLab();
     useDedicatedMigrationDemo();
