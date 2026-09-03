@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DCode AI Solutions Architect</title>
+<meta name="description" content="Interactive AI Solutions Architect by Danica Marie Boton for automation, systems design, workflow audits, and portfolio project matching.">
+<link rel="stylesheet" href="ai-architect.css?v=20260903">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brandmark">DC</span><span><b>DCode</b><small>Danica Marie Boton</small></span></a>
+  <a class="back" href="index.html">← Back to portfolio</a>
+</header>
+<main class="shell">
+  <section class="intro">
+    <div>
+      <span class="eyebrow">Interactive portfolio agent</span>
+      <h1>DCode AI <em>Solutions Architect</em></h1>
+      <p>Describe a process, system bottleneck, or AI use case. I’ll translate it into a practical architecture, identify where automation or AI adds value, and point you to relevant DCode case studies.</p>
+    </div>
+    <div class="status-card"><span class="live-dot"></span><div><b>Architecture mode</b><small id="runtimeStatus">Demo intelligence active · n8n connection ready</small></div></div>
+  </section>
+
+  <section class="workspace">
+    <aside class="sidebar">
+      <div class="side-title">Choose a mode</div>
+      <button class="mode active" data-mode="design"><span>01</span><div><b>Design an automation</b><small>Turn a business problem into a solution architecture.</small></div></button>
+      <button class="mode" data-mode="audit"><span>02</span><div><b>Audit a workflow</b><small>Find bottlenecks, risks, and unnecessary handoffs.</small></div></button>
+      <button class="mode" data-mode="match"><span>03</span><div><b>Find a DCode project</b><small>Match your requirement to relevant portfolio work.</small></div></button>
+      <div class="side-note"><b>What this demonstrates</b><p>AI reasoning, structured outputs, portfolio knowledge, architecture generation, and a clean handoff to n8n for live execution.</p></div>
+    </aside>
+
+    <section class="agent-panel">
+      <div class="conversation" id="conversation">
+        <article class="message agent">
+          <div class="avatar">AI</div>
+          <div class="bubble"><b>Hi, I’m DCode Architect.</b><p>Tell me what you’re trying to automate, improve, migrate, or connect. I’ll propose a system design instead of just recommending tools.</p></div>
+        </article>
+      </div>
+
+      <div class="quick-prompts" id="quickPrompts">
+        <button>We manually process 500 resumes every week</button>
+        <button>Our CRM, forms and spreadsheets do not stay in sync</button>
+        <button>We need AI to extract and validate uploaded documents</button>
+      </div>
+
+      <form class="composer" id="architectForm">
+        <textarea id="architectInput" rows="3" maxlength="4000" placeholder="Describe the process, tools, volume, and what you want to improve..."></textarea>
+        <div class="composer-foot"><span id="modeLabel">Design an automation</span><button class="send" type="submit">Analyze →</button></div>
+      </form>
+    </section>
+  </section>
+
+  <section class="result-panel hidden" id="resultPanel" aria-live="polite">
+    <div class="result-head"><div><span class="eyebrow">Generated solution</span><h2 id="resultTitle">Recommended architecture</h2></div><span class="complexity" id="complexityBadge">Moderate</span></div>
+    <div class="result-grid">
+      <article class="result-card wide"><span class="card-label">Executive summary</span><p id="resultSummary"></p></article>
+      <article class="result-card wide"><span class="card-label">Architecture</span><div class="architecture-flow" id="architectureFlow"></div></article>
+      <article class="result-card"><span class="card-label">Recommendations</span><ul id="recommendationList"></ul></article>
+      <article class="result-card"><span class="card-label">Controls & reliability</span><ul id="controlList"></ul></article>
+      <article class="result-card wide"><span class="card-label">Relevant DCode work</span><div class="project-matches" id="projectMatches"></div></article>
+      <article class="result-card wide"><span class="card-label">Questions I would ask before implementation</span><div class="followups" id="followupQuestions"></div></article>
+    </div>
+  </section>
+</main>
+<script src="ai-architect-config.js?v=20260903"></script>
+<script src="ai-architect.js?v=20260903"></script>
+</body>
+</html>
