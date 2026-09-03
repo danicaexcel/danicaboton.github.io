@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Google Workspace Project Operations System — Interactive Demo</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef3ef}iframe{display:block;width:100%;height:100%;border:0;background:#eef3ef}</style>
+</head>
+<body>
+<iframe id="workspaceOpsFrame" title="Google Workspace Project Operations System"></iframe>
+<script>
+const params=new URLSearchParams(location.search);
+const frame=document.getElementById('workspaceOpsFrame');
+frame.src=`workspace-ops-demo.html${params.get('embed')==='1'?'?embed=1':''}`;
+frame.addEventListener('load',()=>{
+  const doc=frame.contentDocument;
+  if(!doc||doc.querySelector('script[data-workspace-ops-v2]')) return;
+  const script=doc.createElement('script');
+  script.src='workspace-ops-v2.js?v=20260903-workspace-ops2';
+  script.dataset.workspaceOpsV2='1';
+  doc.body.appendChild(script);
+});
+</script>
+</body>
+</html>
