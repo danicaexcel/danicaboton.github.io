@@ -149,7 +149,7 @@
       const currentId = new URLSearchParams(location.search).get('id');
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260903-workspace-ops3';
+        home.src = 'workspace-ops-home.js?v=20260903-monday-nativewidgets2';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
