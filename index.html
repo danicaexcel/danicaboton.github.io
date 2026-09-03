@@ -74,7 +74,7 @@
   <div class="capability-list">
     <div class="caprow"><h3>Systems architecture</h3><p>Requirements discovery, process mapping, system boundaries, data flow, platform selection, and solution design.</p><span>Business process → working system</span></div>
     <div class="caprow"><h3>Automation &amp; orchestration</h3><p>Multi-step workflows, branching, schedules, retries, queues, reconciliation, and operational monitoring.</p><span>n8n primary / Make secondary</span></div>
-    <div class="caprow"><h3>Zoho-native engineering</h3><p>Modules, fields, Blueprints, workflow rules, schedules, custom Deluge functions, migrations, reports, and analytics.</p><span>Zoho CRM / Recruit / Deluge</span></div>
+    <div class="caprow"><h3>Zoho-native engineering</h3><p>Modules, fields, Blueprints, workflow rules, schedules, reports, and custom Deluge functions keep CRM logic close to the system of record.</p><span>Zoho CRM / Recruit / Deluge</span></div>
     <div class="caprow"><h3>AI & agentic systems</h3><p>Structured LLM workflows, model routing, persistent agents, permissions, approvals, memory, and audit.</p><span>OpenAI / Anthropic / Gemini</span></div>
     <div class="caprow"><h3>Custom client portals</h3><p>Secure external workspaces around internal systems, with role-based access, activity history, and controlled actions.</p><span>React / TypeScript / Cloudflare</span></div>
     <div class="caprow"><h3>Integration engineering</h3><p>REST APIs, webhooks, OAuth2, data contracts, idempotency, external actions, and reliable write-back.</p><span>API / OAuth / JSON</span></div>
@@ -97,8 +97,8 @@ DCODE_PROJECTS.filter(p=>p.id!=='ops-dashboard').forEach(p=>{
   const screenId=`preview-${p.id}`;
   const hasDemo=p.demoAvailable!==false;
   const hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
-  const demoHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?v=20260903-fullheight-2':`demo.html?id=${p.id}`;
-  const previewHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?embed=1&v=20260903-fullheight-2':`demo.html?id=${p.id}&embed=1`;
+  const demoHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?v=20260903-restored-compliance-1':`demo.html?id=${p.id}`;
+  const previewHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?embed=1&v=20260903-restored-compliance-1':`demo.html?id=${p.id}&embed=1`;
   const workflowAction=hasN8n?`<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>`:'';
   const actions=hasDemo
     ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><button class="btn primary fullscreen-btn" type="button" data-target="${screenId}">Open demo ↗</button>${workflowAction}`
