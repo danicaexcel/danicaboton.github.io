@@ -1,0 +1,78 @@
+/* Portfolio demo viewport fixes — 2026-09-03 */
+
+/* Remove the visible white remainder at the bottom of embedded demos.
+   The iframe is a 1600x900 viewport; the reconstructed app inside it must
+   stretch to that viewport instead of stopping at its legacy min-height. */
+.embed-mode,
+.embed-mode body,
+.embed-mode main.demo-wrap,
+.embed-mode .demo-shell {
+  height: 100vh !important;
+  min-height: 100vh !important;
+}
+
+.embed-mode main.demo-wrap {
+  overflow: hidden !important;
+}
+
+.embed-mode .demo-shell {
+  display: block !important;
+  overflow: hidden !important;
+  background: #252a30 !important;
+}
+
+/* Generic reconstructed products (OCR, Zoho migration, Sheets, Ops, etc.). */
+.embed-mode .demo-shell > .demo-product,
+.embed-mode .demo-shell > .ocr-console,
+.embed-mode .demo-shell > .ocr-console > .demo-product {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.embed-mode .demo-product {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+.embed-mode .demo-product > .demo-top {
+  flex: 0 0 54px !important;
+}
+
+.embed-mode .demo-product > .demo-app {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+/* OCR mounts a wrapper before the generic product shell. */
+.embed-mode .ocr-console {
+  display: flex !important;
+  flex-direction: column !important;
+  background: #252a30 !important;
+}
+
+.embed-mode .ocr-console > .demo-product {
+  flex: 1 1 auto !important;
+}
+
+/* In fullscreen, keep the iframe pinned exactly to the usable display. */
+.laptop-screen:fullscreen .laptop-display {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.laptop-screen:fullscreen .live-demo-preview {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* Requested square app viewport corners for these two portfolio projects.
+   Keep the silver laptop hardware itself unchanged. */
+.project[data-id="sheets"] .laptop-display,
+.project[data-id="ops-dashboard"] .laptop-display {
+  border-radius: 0 !important;
+}
