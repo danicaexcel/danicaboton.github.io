@@ -205,3 +205,12 @@
     else dialog.setAttribute('open', '');
   }, true);
 })();
+
+(() => {
+  if (!/monday-project-ops-case-study\.html$/.test(location.pathname)) return;
+  if (document.querySelector('script[data-m09-case-erd]')) return;
+  const script = document.createElement('script');
+  script.src = 'monday-project-ops-case-study-erd.js?v=20260903-erd1';
+  script.dataset.m09CaseErd = '1';
+  document.body.appendChild(script);
+})();
