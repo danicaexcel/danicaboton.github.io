@@ -8,7 +8,7 @@
 const id=new URLSearchParams(location.search).get('id')||'recruitment';const p=getDcodeProject(id);if(!p)location.href='index.html';document.title=`${p.title} — DCode`;
 const main=document.getElementById('case');const hasDemo=p.demoAvailable!==false;if(!hasDemo){const demoNav=document.querySelector('.navlinks a[href="#demo"]');if(demoNav)demoNav.textContent='Development state';}
 const implementation=id==='recruitment'
-  ? {label:'Zoho CRM-native platform + isolated n8n resume analysis',copy:'Zoho CRM is the system of record and the complete recruiter operating surface. Workflow rules and Deluge functions handle operational automation natively inside Zoho CRM. n8n is limited to resume extraction, structured AI analysis, validation, retry handling, logging, and verified write-back to the applicant record.'}
+  ? {label:'Zoho CRM platform + isolated n8n resume analysis',copy:'Zoho CRM is the system of record and the complete recruiter operating surface. Workflow rules and Deluge functions handle operational automation inside Zoho CRM. n8n is limited to resume extraction, structured AI analysis, validation, retry handling, logging, and verified write-back to the applicant record.'}
   : id==='zoho-migration'
   ? {label:'Zoho-native implementation',copy:'The core automation lives inside Zoho through platform configuration, workflow rules, schedules, reports, and custom Deluge functions. External APIs are used only where the system boundary requires them.'}
   : id==='portal'
@@ -17,13 +17,13 @@ const implementation=id==='recruitment'
       ? {label:'Agent-runtime engineering',copy:'DEE is a private, ongoing software and R&D project. The case study focuses on architecture, governance, implementation progress, and validated test evidence.'}
       : {label:'n8n orchestration',copy:'n8n coordinates the cross-system workflow, while each connected platform remains responsible for its own business interface and system-of-record responsibilities.'};
 const relationshipModels={
-  recruitment:{summary:'Zoho CRM owns applicant and employee records, job openings, facilities, recruiter work queues, tasks, meetings, reports, dashboards, and operational state. Native workflow rules trigger Deluge functions for all recruitment automation. n8n is used only for resume extraction and AI analysis, then writes the validated result back to the Zoho CRM applicant record.',entities:[
+  recruitment:{summary:'Zoho CRM owns applicant and employee records, job openings, facilities, recruiter work queues, tasks, meetings, reports, dashboards, and operational state. Zoho CRM workflow rules trigger Deluge functions for all recruitment automation. n8n is used only for resume extraction and AI analysis, then writes the validated result back to the Zoho CRM applicant record.',entities:[
     {name:'Applicant',type:'Zoho CRM Leads module',fields:[['PK','Applicant_ID'],['FK','Job_Opening_ID'],['FK','Facility_ID'],['','Applicant_Status'],['','Processing_Status']]},
     {name:'Employee',type:'Zoho CRM Contacts module',fields:[['PK','Employee_ID'],['','Employee_Name'],['FK','Facility_ID'],['','Employee_Status'],['','Owner']]},
     {name:'Job_Opening',type:'Zoho CRM custom module',fields:[['PK','Job_Opening_ID'],['FK','Facility_ID'],['','Position'],['','Job_Requirements'],['','Opening_Status']]},
     {name:'Facility',type:'Zoho CRM Accounts module',fields:[['PK','Facility_ID'],['','Facility_Name'],['','Facility_Code'],['','Active']]},
     {name:'Recruitment_History',type:'Zoho CRM subform',fields:[['PK','History_ID'],['FK','Applicant_ID'],['','Previous_Stage'],['','New_Stage'],['','Changed_On']]},
-    {name:'Workflow_Rule',type:'Native Zoho CRM automation',fields:[['PK','Rule_ID'],['','Module'],['','Execute_On'],['','Status'],['','Function_Action']]},
+    {name:'Workflow_Rule',type:'Zoho CRM automation',fields:[['PK','Rule_ID'],['','Module'],['','Execute_On'],['','Status'],['','Function_Action']]},
     {name:'Deluge_Function',type:'Zoho CRM business logic',fields:[['PK','Function_ID'],['FK','Rule_ID'],['','Function_Name'],['','Write_Status'],['','Verified_On']]},
     {name:'n8n_Resume_Analysis',type:'External resume analysis only',fields:[['PK','Execution_ID'],['FK','Applicant_ID'],['','Webhook_Call_ID'],['','Duration_Sec'],['','Run_Status']]},
     {name:'AI_Evaluation',type:'Structured model output',fields:[['PK','Evaluation_ID'],['FK','Applicant_ID'],['','AI_Score'],['','Fit_Level'],['','Recommendation']]},
