@@ -16,8 +16,15 @@ frame.addEventListener('load',()=>{
   const doc=frame.contentDocument;
   if(!doc||doc.querySelector('script[data-workspace-ops-v2]')) return;
   const script=doc.createElement('script');
-  script.src='workspace-ops-v2.js?v=20260903-workspace-ops2';
+  script.src='workspace-ops-v2.js?v=20260903-workspace-ops3';
   script.dataset.workspaceOpsV2='1';
+  script.addEventListener('load',()=>{
+    if(doc.querySelector('script[data-workspace-ops-timeline]'))return;
+    const timelineScript=doc.createElement('script');
+    timelineScript.src='workspace-ops-timeline.js?v=20260903-workspace-ops3';
+    timelineScript.dataset.workspaceOpsTimeline='1';
+    doc.body.appendChild(timelineScript);
+  });
   doc.body.appendChild(script);
 });
 </script>
