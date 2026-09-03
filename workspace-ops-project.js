@@ -3,8 +3,8 @@
   const orderMap={
     recruitment:'01',
     'workspace-ops':'02',
-    portal:'03',
-    monday:'04',
+    monday:'03',
+    portal:'04',
     ocr:'05',
     'zoho-migration':'06',
     sheets:'07',
