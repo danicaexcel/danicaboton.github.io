@@ -1,6 +1,6 @@
 (() => {
   const EMAIL = 'boton.danicamarie@gmail.com';
-  const RETIRED_PROJECTS = new Set(['ops-dashboard']);
+  const RETIRED_PROJECTS = new Set();
 
   function removeRetiredProjects() {
     const currentId = new URLSearchParams(location.search).get('id');
@@ -8,7 +8,9 @@
       location.replace('index.html#work');
       return;
     }
-    document.querySelectorAll('.project[data-id="ops-dashboard"], option[value="ops-dashboard"]').forEach(element => element.remove());
+    if (!RETIRED_PROJECTS.size) return;
+    const selector = [...RETIRED_PROJECTS].flatMap(id => [`.project[data-id="${id}"]`, `option[value="${id}"]`]).join(',');
+    document.querySelectorAll(selector).forEach(element => element.remove());
   }
 
   function ensureDialog() {
@@ -135,11 +137,38 @@
     document.body.appendChild(script);
   }
 
+  function loadWorkspaceOpsEnhancement() {
+    const finish = () => {
+      const currentId = new URLSearchParams(location.search).get('id');
+      if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
+        const home = document.createElement('script');
+        home.src = 'workspace-ops-home.js?v=20260903-workspace-ops1';
+        home.dataset.workspaceHome = '1';
+        document.body.appendChild(home);
+      }
+      if (currentId === 'ops-dashboard') {
+        document.querySelectorAll('.casehero .kicker').forEach(el => { el.textContent = el.textContent.replace(/^07\s*\//, '08 /'); });
+        const option = document.querySelector('option[value="ops-dashboard"]');
+        if (option) option.textContent = option.textContent.replace(/^07\s+/, '08 ');
+      }
+    };
+    if (window.DCODE_PROJECTS?.some(p => p.id === 'workspace-ops')) { finish(); return; }
+    if (!window.DCODE_PROJECTS) return;
+    const existing = document.querySelector('script[data-workspace-project]');
+    if (existing) { existing.addEventListener('load', finish, {once:true}); return; }
+    const projectScript = document.createElement('script');
+    projectScript.src = 'workspace-ops-project.js?v=20260903-workspace-ops1';
+    projectScript.dataset.workspaceProject = '1';
+    projectScript.addEventListener('load', finish, {once:true});
+    document.body.appendChild(projectScript);
+  }
+
   removeRetiredProjects();
   enrichProjectActions();
   keepPortalInLab();
   useDedicatedMigrationDemo();
   loadSpxEnhancement();
+  loadWorkspaceOpsEnhancement();
   prepareWorkflowActions();
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
     if (node.nodeType !== 1) return;
