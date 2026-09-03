@@ -89,10 +89,10 @@
 <section class="wrap section" id="contact"><div class="contact"><div class="kicker">Work with me</div><h2>Show me the broken handoff.</h2><p>I can map the process, identify where data or decisions are getting stuck, design the architecture, and build the automation or client-facing layer around it.</p><div class="actions"><a class="btn primary" href="mailto:boton.danicamarie@gmail.com">boton.danicamarie@gmail.com</a></div></div></section>
 </main>
 <footer class="wrap footer">DCode · Danica Marie Boton · Systems Architect · Automation &amp; Integration Engineer</footer>
-<script src="data.js"></script>
+<script src="data.js?v=20260903-remove-ops"></script>
 <script>
 const root=document.getElementById('projectCards');
-DCODE_PROJECTS.forEach(p=>{
+DCODE_PROJECTS.filter(p=>p.id!=='ops-dashboard').forEach(p=>{
   const el=document.createElement('article');el.className='project';el.dataset.id=p.id;
   const screenId=`preview-${p.id}`;
   const hasDemo=p.demoAvailable!==false;
@@ -155,5 +155,5 @@ document.addEventListener('click', async (event)=>{
   }catch(err){ target.scrollIntoView({behavior:'smooth',block:'center'}); }
 });
 </script>
-<script src="contact-workflow.js?v=20260903-fullheight-2"></script>
+<script src="contact-workflow.js?v=20260903-remove-ops-3"></script>
 </body></html>
