@@ -142,14 +142,17 @@
       const currentId = new URLSearchParams(location.search).get('id');
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260903-workspace-ops1';
+        home.src = 'workspace-ops-home.js?v=20260903-workspace-ops2';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
-      if (currentId === 'ops-dashboard') {
-        document.querySelectorAll('.casehero .kicker').forEach(el => { el.textContent = el.textContent.replace(/^07\s*\//, '08 /'); });
-        const option = document.querySelector('option[value="ops-dashboard"]');
-        if (option) option.textContent = option.textContent.replace(/^07\s+/, '08 ');
+      const currentProject = window.DCODE_PROJECTS?.find(project => project.id === currentId);
+      if (currentProject) {
+        document.querySelectorAll('.casehero .kicker').forEach(el => {
+          el.textContent = el.textContent.replace(/^\d+\s*\//, `${currentProject.order} /`);
+        });
+        const option = document.querySelector(`option[value="${currentId}"]`);
+        if (option) option.textContent = option.textContent.replace(/^\d+\s+/, `${currentProject.order} `);
       }
     };
     if (window.DCODE_PROJECTS?.some(p => p.id === 'workspace-ops')) { finish(); return; }
@@ -157,7 +160,7 @@
     const existing = document.querySelector('script[data-workspace-project]');
     if (existing) { existing.addEventListener('load', finish, {once:true}); return; }
     const projectScript = document.createElement('script');
-    projectScript.src = 'workspace-ops-project.js?v=20260903-workspace-ops1';
+    projectScript.src = 'workspace-ops-project.js?v=20260903-workspace-ops2';
     projectScript.dataset.workspaceProject = '1';
     projectScript.addEventListener('load', finish, {once:true});
     document.body.appendChild(projectScript);
