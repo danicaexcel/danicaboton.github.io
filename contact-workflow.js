@@ -103,11 +103,24 @@
     });
   }
 
+  function useDedicatedMigrationDemo() {
+    document.querySelectorAll('a[href*="demo.html?id=zoho-migration"],iframe[src*="demo.html?id=zoho-migration"]').forEach(element => {
+      const attribute = element.tagName === 'IFRAME' ? 'src' : 'href';
+      const original = element.getAttribute(attribute) || '';
+      const isEmbed = element.tagName === 'IFRAME' || /[?&]embed=1(?:&|$)/.test(original);
+      element.setAttribute(attribute, `migration-demo.html?${isEmbed ? 'embed=1&' : ''}v=20260903-fullheight-1`);
+    });
+  }
+
   enrichProjectActions();
   keepPortalInLab();
+  useDedicatedMigrationDemo();
   prepareWorkflowActions();
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
-    if (node.nodeType === 1) prepareWorkflowActions(node);
+    if (node.nodeType !== 1) return;
+    prepareWorkflowActions(node);
+    keepPortalInLab();
+    useDedicatedMigrationDemo();
   }))).observe(document.body, {childList:true, subtree:true});
 
   document.querySelectorAll('#openCase,#caseLink,a[href*="case-study.html"]').forEach(link => {
