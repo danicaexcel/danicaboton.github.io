@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DCode Case Study</title><link rel="stylesheet" href="styles.css?v=4"><link rel="stylesheet" href="theme-neumorphism.css?v=3"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DCode Case Study</title><link rel="stylesheet" href="styles.css?v=5"><link rel="stylesheet" href="theme-neumorphism.css?v=3"></head>
 <body class="portfolio-theme">
 <nav class="nav"><div class="wrap navin"><a class="brand" href="index.html"><span class="brandmark">DC</span><span>DCode<small>Case study</small></span></a><div class="navlinks"><a href="index.html#work">All systems</a><a href="#relationships">Data map</a><a href="#architecture">Architecture</a><a href="#demo">Interactive demo</a></div></div></nav>
 <main id="case"></main>
@@ -117,17 +117,45 @@ main.innerHTML=`
 function drawRelationshipLines(){
   const canvas=document.querySelector('.erd-canvas'),svg=canvas?.querySelector('.erd-lines');if(!canvas||!svg)return;
   svg.setAttribute('viewBox',`0 0 ${canvas.clientWidth} ${canvas.clientHeight}`);
-  svg.querySelectorAll('.erd-edge').forEach(edge=>edge.remove());
-  const canvasRect=canvas.getBoundingClientRect(),relations=JSON.parse(canvas.dataset.relations||'[]');
+  svg.querySelectorAll('.erd-edge,.erd-edge-label-group').forEach(edge=>edge.remove());
+  const canvasRect=canvas.getBoundingClientRect(),relations=JSON.parse(canvas.dataset.relations||'[]'),labelBoxes=[];
+  const overlaps=(a,b,padding=5)=>a.x<b.x+b.width+padding&&a.x+a.width+padding>b.x&&a.y<b.y+b.height+padding&&a.y+a.height+padding>b.y;
+  const wrapLabel=value=>{
+    const words=value.replace(/\s*\/\s*/g,' or ').trim().split(/\s+/),lines=[];let line='';
+    words.forEach(word=>{const next=line?`${line} ${word}`:word;if(next.length<=18||!line)line=next;else{lines.push(line);line=word}});if(line)lines.push(line);
+    return lines.slice(0,2);
+  };
+  const placeLabel=(label,segments,index,kind)=>{
+    const lines=wrapLabel(label),longest=segments.reduce((best,segment)=>segment.length>best.length?segment:best,segments[0]);
+    const maxChars=Math.max(...lines.map(line=>line.length)),width=Math.max(58,maxChars*6.15+16),height=lines.length*12+8;
+    const horizontal=longest.y1===longest.y2,baseX=(longest.x1+longest.x2)/2,baseY=(longest.y1+longest.y2)/2;
+    const offsets=horizontal?[[0,-13],[0,15],[0,-30],[0,32],[18,-13],[-18,15]]:[[13,0],[-13,0],[29,0],[-29,0],[13,18],[-13,-18]];
+    let box;
+    for(const [dx,dy] of offsets){
+      const cx=Math.min(canvas.clientWidth-width/2-5,Math.max(width/2+5,baseX+dx));
+      const cy=Math.min(canvas.clientHeight-height/2-5,Math.max(height/2+5,baseY+dy));
+      const candidate={x:cx-width/2,y:cy-height/2,width,height,cx,cy};
+      if(!labelBoxes.some(existing=>overlaps(candidate,existing))){box=candidate;break}
+    }
+    if(!box){const cx=Math.min(canvas.clientWidth-width/2-5,Math.max(width/2+5,baseX));const cy=Math.min(canvas.clientHeight-height/2-5,Math.max(height/2+5,baseY+((index%2?1:-1)*(42+index%3*12))));box={x:cx-width/2,y:cy-height/2,width,height,cx,cy}}
+    labelBoxes.push(box);
+    const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class',`erd-edge-label-group ${kind}`);
+    const background=document.createElementNS('http://www.w3.org/2000/svg','rect');background.setAttribute('class','erd-edge-label-bg');background.setAttribute('x',box.x);background.setAttribute('y',box.y);background.setAttribute('width',box.width);background.setAttribute('height',box.height);background.setAttribute('rx','5');
+    const text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('class','erd-edge-label');text.setAttribute('x',box.cx);text.setAttribute('y',box.cy-(lines.length-1)*6+3);
+    lines.forEach((line,lineIndex)=>{const tspan=document.createElementNS('http://www.w3.org/2000/svg','tspan');tspan.setAttribute('x',box.cx);if(lineIndex)tspan.setAttribute('dy','12');tspan.textContent=lineIndex?line:line.charAt(0).toUpperCase()+line.slice(1);text.append(tspan)});
+    group.append(background,text);svg.append(group);
+  };
   relations.forEach(([from,to,label],index)=>{
     const a=canvas.querySelector(`[data-entity="${from}"]`).getBoundingClientRect(),b=canvas.querySelector(`[data-entity="${to}"]`).getBoundingClientRect();
     const ax=a.left-canvasRect.left+a.width/2,ay=a.top-canvasRect.top+a.height/2,bx=b.left-canvasRect.left+b.width/2,by=b.top-canvasRect.top+b.height/2;
-    const horizontal=Math.abs(bx-ax)>=Math.abs(by-ay),sx=horizontal?(bx>ax?a.right-canvasRect.left:a.left-canvasRect.left):ax,sy=horizontal?ay:(by>ay?a.bottom-canvasRect.top:a.top-canvasRect.top),ex=horizontal?(bx>ax?b.left-canvasRect.left:b.right-canvasRect.left):bx,ey=horizontal?by:(by>ay?b.top-canvasRect.top:b.bottom-canvasRect.top),mid=horizontal?(sx+ex)/2:(sy+ey)/2;
-    const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class',`erd-edge ${/(sync|queue|track|execute|trigger|create|write|evaluate|send)/i.test(label)?'sync-edge':''} ${/AI/i.test(label)?'ai-edge':''}`);path.setAttribute('d',horizontal?`M${sx} ${sy} H${mid} V${ey} H${ex}`:`M${sx} ${sy} V${mid} H${ex} V${ey}`);path.setAttribute('marker-end','url(#erdArrow)');
-    const text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('class','erd-edge-label');text.setAttribute('x',horizontal?mid+5:sx+5);text.setAttribute('y',horizontal?(sy+ey)/2-5:mid-5);text.textContent=label;svg.append(path,text);
+    const horizontal=Math.abs(bx-ax)>=Math.abs(by-ay),sx=horizontal?(bx>ax?a.right-canvasRect.left:a.left-canvasRect.left):ax,sy=horizontal?ay:(by>ay?a.bottom-canvasRect.top:a.top-canvasRect.top),ex=horizontal?(bx>ax?b.left-canvasRect.left:b.right-canvasRect.left):bx,ey=horizontal?by:(by>ay?b.top-canvasRect.top:b.bottom-canvasRect.top),lane=((index%5)-2)*5,mid=(horizontal?(sx+ex)/2:(sy+ey)/2)+lane;
+    const kind=`${/(sync|queue|track|execute|trigger|create|write|evaluate|send|update|function|evidence)/i.test(label)?'sync-label':''} ${/AI/i.test(label)?'ai-label':''}`;
+    const segments=horizontal?[{x1:sx,y1:sy,x2:mid,y2:sy,length:Math.abs(mid-sx)},{x1:mid,y1:sy,x2:mid,y2:ey,length:Math.abs(ey-sy)},{x1:mid,y1:ey,x2:ex,y2:ey,length:Math.abs(ex-mid)}]:[{x1:sx,y1:sy,x2:sx,y2:mid,length:Math.abs(mid-sy)},{x1:sx,y1:mid,x2:ex,y2:mid,length:Math.abs(ex-sx)},{x1:ex,y1:mid,x2:ex,y2:ey,length:Math.abs(ey-mid)}];
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class',`erd-edge ${kind.replace(/label/g,'edge')}`);path.setAttribute('d',horizontal?`M${sx} ${sy} H${mid} V${ey} H${ex}`:`M${sx} ${sy} V${mid} H${ex} V${ey}`);path.setAttribute('marker-end','url(#erdArrow)');svg.append(path);
+    placeLabel(label,segments,index,kind);
   });
 }
-requestAnimationFrame(drawRelationshipLines);window.addEventListener('resize',drawRelationshipLines);
+requestAnimationFrame(drawRelationshipLines);document.fonts?.ready.then(drawRelationshipLines);window.addEventListener('resize',drawRelationshipLines);
 const CASE_W=1600,CASE_H=900;
 function fitCasePreview(){const f=document.querySelector('.case-live-preview'),d=document.querySelector('.case-laptop-display');if(!f||!d)return;const laptop=f.closest('.case-laptop');laptop.id='casePreview';const apply=()=>{if(document.fullscreenElement===laptop){f.style.cssText='';return}const sc=Math.min(d.clientWidth/CASE_W,d.clientHeight/CASE_H);f.style.width=CASE_W+'px';f.style.height=CASE_H+'px';f.style.transform=`scale(${sc})`;f.style.left=Math.max(0,(d.clientWidth-CASE_W*sc)/2)+'px';f.style.top=Math.max(0,(d.clientHeight-CASE_H*sc)/2)+'px'};new ResizeObserver(apply).observe(d);f.addEventListener('load',apply);document.querySelectorAll(`a[href="${demoHref}"]`).forEach(link=>{link.removeAttribute('target');link.setAttribute('role','button');link.addEventListener('click',async event=>{event.preventDefault();try{await laptop.requestFullscreen()}catch(_){laptop.scrollIntoView({behavior:'smooth',block:'center'})}})});document.addEventListener('fullscreenchange',apply);apply()};fitCasePreview();
 </script><script src="contact-workflow.js"></script></body></html>
