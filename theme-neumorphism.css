@@ -75,3 +75,8 @@ body.portfolio-theme .data-architecture-head,body.portfolio-theme .data-architec
 body.portfolio-theme .data-architecture-canvas,body.portfolio-theme .erd-canvas{background-color:#282d33;background-image:radial-gradient(#444b53 1px,transparent 1px)}
 body.portfolio-theme .data-module,body.portfolio-theme .data-layer,body.portfolio-theme .erd-entity{background:#30363c;border-color:#454c54;box-shadow:7px 7px 15px #1f2328,-5px -5px 12px #3b4148}
 body.portfolio-theme .data-core{background:#292e34;border-color:#f2b77e;box-shadow:var(--neo-soft)}
+
+/* Optical centering for the homepage architecture stage. The visible nodes span
+   slightly less of the right side of the 680px coordinate space, so shift the
+   stage by 17px on desktop to center the actual diagram inside its canvas. */
+@media(min-width:701px){body.portfolio-theme .data-map-stage{inset-inline-start:calc(50% + 17px)}}
