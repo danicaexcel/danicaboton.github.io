@@ -1,11 +1,20 @@
 (function(){
   if(!Array.isArray(window.DCODE_PROJECTS)) return;
-  const ops=window.DCODE_PROJECTS.find(p=>p.id==='ops-dashboard');
-  if(ops) ops.order='08';
+  const orderMap={
+    recruitment:'01',
+    'workspace-ops':'02',
+    portal:'03',
+    monday:'04',
+    ocr:'05',
+    'zoho-migration':'06',
+    sheets:'07',
+    'ops-dashboard':'08'
+  };
+  window.DCODE_PROJECTS.forEach(project=>{if(orderMap[project.id]) project.order=orderMap[project.id];});
   if(window.DCODE_PROJECTS.some(p=>p.id==='workspace-ops')) return;
   const project={
     id:'workspace-ops',
-    order:'07',
+    order:'02',
     category:'Google Workspace · Project Operations',
     title:'Google Workspace Project Operations System',
     subtitle:'A Google-powered project management workspace connecting task execution, live work-session tracking, planned-versus-actual man-hours, revisions, approvals, and project labor-cost reporting.',
@@ -31,6 +40,6 @@
     outcome:'The reconstruction demonstrates a Google Workspace project-operations system that keeps planning, task execution, time evidence, rework, approvals, and labor-cost reporting connected. It provides approved work-log based compensation inputs and time-based compensation calculation, but it is not presented as a complete payroll system; taxes, statutory deductions, benefits, payslips, and other payroll functions remain outside the demonstrated scope.',
     demoLabel:'Launch Project Operations Demo'
   };
-  const opsIndex=window.DCODE_PROJECTS.findIndex(p=>p.id==='ops-dashboard');
-  if(opsIndex>=0) window.DCODE_PROJECTS.splice(opsIndex,0,project); else window.DCODE_PROJECTS.push(project);
+  const insertAt=Math.min(1,window.DCODE_PROJECTS.length);
+  window.DCODE_PROJECTS.splice(insertAt,0,project);
 })();
