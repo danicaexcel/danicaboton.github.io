@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monday.com Project Operations Control Center — DCode</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#native{display:block;width:100%;height:100%;border:0;background:#fff}</style>
+</head>
+<body>
+<iframe id="native" src="monday-project-ops-demo-native-v4.html?v=20260903-nativewidgets1" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
+<script>
+(function(){
+  const outer=document.getElementById('native');
+  function deepestDoc(){
+    try{
+      let doc=outer.contentDocument;
+      if(!doc)return null;
+      for(let i=0;i<8;i++){
+        const frame=doc.querySelector('iframe');
+        if(!frame||!frame.contentDocument)break;
+        doc=frame.contentDocument;
+      }
+      return doc;
+    }catch(e){return null}
+  }
+  function install(){
+    const doc=deepestDoc();
+    if(!doc||!doc.getElementById('screen'))return false;
+    if(!doc.getElementById('monday-native-dashboard-widget-style')){
+      const style=doc.createElement('style');
+      style.id='monday-native-dashboard-widget-style';
+      style.textContent=`
+        .dashboard{background:#f6f7fb!important}
+        .dashboard .card:not(.native-team-workload){border:1px solid #d0d4e4!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important;overflow:hidden!important}
+        .native-number-widget{padding:0!important;min-height:116px!important}
+        .native-widget-head{height:40px;border-bottom:1px solid #d0d4e4;display:flex;align-items:center;justify-content:space-between;padding:0 13px 0 17px;background:#fff;color:#323338;font-size:12px;font-weight:500;letter-spacing:.01em}
+        .native-widget-tools{display:flex;align-items:center;gap:11px;color:#676879;font-size:14px;font-weight:400}.native-widget-tools .more{font-size:17px;letter-spacing:1px;line-height:1}
+        .native-number-body{height:75px;display:grid;place-items:center;background:#fff}.native-number-body strong{font-size:29px!important;font-weight:400!important;color:#323338!important;margin:0!important}
+        .dashboard .panel-title.native-widget-head{height:40px!important;padding:0 13px 0 17px!important;border-bottom:1px solid #d0d4e4!important;background:#fff!important;font-size:14px!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
+        .native-battery-body{padding:17px 18px 18px;background:#fff}
+        .native-battery-row{display:grid;grid-template-columns:95px minmax(120px,1fr) 44px;align-items:center;gap:10px;margin:10px 0;color:#53576a;font-size:11px}
+        .native-battery-track{height:28px;border:1px solid #d0d4e4;border-radius:4px;background:#f5f6f8;padding:3px;overflow:hidden;display:flex;align-items:stretch}
+        .native-battery-fill{display:block;height:100%;border-radius:2px;min-width:2px}.native-battery-fill.util{background:#00c875}.native-battery-fill.rework{background:#579bfc}
+        .native-battery-value{text-align:right;color:#323338;font-weight:600;font-size:11px}
+        .native-widget-caption{font-size:10px;color:#676879;padding:0 18px 14px;background:#fff}
+        .dashboard .mini-table{background:#fff}.dashboard .mini-table th{background:#f8f9fb;color:#676879}.dashboard .chart{background:#fff}
+        .dashboard .card:not(.native-team-workload) .panel-title:not(.native-widget-head){border-bottom:1px solid #d0d4e4!important}
+      `;
+      doc.head.appendChild(style);
+    }
+    const dashboard=doc.querySelector('.dashboard');
+    if(!dashboard)return false;
+    dashboard.querySelectorAll('.kpi').forEach(card=>{
+      if(card.dataset.nativeWidget==='1')return;
+      const label=card.querySelector('small')?.textContent.trim()||'NUMBER';
+      const value=card.querySelector('strong')?.textContent.trim()||'—';
+      card.dataset.nativeWidget='1';card.classList.add('native-number-widget');
+      card.innerHTML=`<div class="native-widget-head"><span>${label}</span><span class="native-widget-tools"><span>▽</span><span class="more">...</span></span></div><div class="native-number-body"><strong>${value}</strong></div>`;
+    });
+    dashboard.querySelectorAll('.dash-grid > section.card:not(.native-team-workload)').forEach(card=>{
+      const head=card.querySelector('.panel-title');
+      if(!head||head.dataset.nativeWidgetHead==='1')return;
+      const title=head.textContent.trim();
+      head.dataset.nativeWidgetHead='1';head.classList.add('native-widget-head');
+      head.innerHTML=`<span>${title}</span><span class="native-widget-tools"><span>▽</span><span class="more">...</span></span>`;
+    });
+    const qualityCard=[...dashboard.querySelectorAll('.dash-grid > section.card')].find(card=>/Effort Quality/i.test(card.textContent));
+    if(qualityCard&&qualityCard.dataset.nativeBattery!=='1'){
+      const quality=qualityCard.querySelector('.quality');
+      const head=qualityCard.querySelector('.panel-title');
+      if(quality){
+        const values=[...quality.textContent.matchAll(/(\d+(?:\.\d+)?)%/g)].map(m=>Number(m[1]));
+        const util=Number.isFinite(values[0])?values[0]:72;
+        const rework=Number.isFinite(values[1])?values[1]:8;
+        qualityCard.dataset.nativeBattery='1';
+        if(head){head.innerHTML=`<span>Effort Quality — Utilization vs Rework</span><span class="native-widget-tools"><span>▽</span><span class="more">...</span></span>`;}
+        quality.className='native-battery-body';
+        quality.innerHTML=`
+          <div class="native-battery-row"><span>Utilization</span><div class="native-battery-track"><i class="native-battery-fill util" style="width:${Math.max(0,Math.min(100,util))}%"></i></div><b class="native-battery-value">${util}%</b></div>
+          <div class="native-battery-row"><span>Rework rate</span><div class="native-battery-track"><i class="native-battery-fill rework" style="width:${Math.max(0,Math.min(100,rework))}%"></i></div><b class="native-battery-value">${rework}%</b></div>
+          <div class="native-widget-caption">Battery-style comparison using the dashboard's utilization and rework metrics.</div>`;
+      }
+    }
+    return true;
+  }
+  function wire(){
+    let attempts=0;
+    const timer=setInterval(()=>{attempts++;const ok=install();if(ok&&attempts>10)clearInterval(timer);if(attempts>120)clearInterval(timer)},100);
+    const watch=setInterval(()=>{
+      const doc=deepestDoc();const screen=doc&&doc.getElementById('screen');
+      if(screen&&!screen.dataset.nativeDashboardObserved){
+        screen.dataset.nativeDashboardObserved='1';
+        new MutationObserver(()=>requestAnimationFrame(install)).observe(screen,{childList:true,subtree:true});
+        clearInterval(watch);
+      }
+    },150);
+    setTimeout(()=>clearInterval(watch),15000);
+  }
+  outer.addEventListener('load',wire);wire();
+})();
+</script>
+</body>
+</html>
