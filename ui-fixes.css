@@ -1,6 +1,5 @@
 /* Portfolio demo viewport fixes — 2026-09-03 */
 
-/* Embedded demos occupy the complete 1600x900 iframe viewport. */
 html:has(body.embed-mode),
 body.embed-mode,
 .embed-mode main.demo-wrap,
@@ -20,7 +19,6 @@ body.embed-mode,
   background: #252a30 !important;
 }
 
-/* Generic reconstructed products. */
 .embed-mode .demo-shell > .demo-product,
 .embed-mode .demo-shell > .ocr-console {
   height: 100% !important;
@@ -44,34 +42,52 @@ body.embed-mode,
   min-height: 0 !important;
 }
 
-/* Zoho migration has an extra #migrationMount wrapper between #demoRoot
-   and .demo-product. Make that wrapper participate in the viewport sizing. */
-.embed-mode.project-zoho-migration #migrationMount {
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100% !important;
-  min-height: 0 !important;
+/* Zoho migration: force every layer in the nested reconstruction to fill
+   the iframe, and keep the remaining workspace the same application color. */
+body.embed-mode.project-zoho-migration,
+body.embed-mode.project-zoho-migration main.demo-wrap,
+body.embed-mode.project-zoho-migration .demo-shell,
+body.embed-mode.project-zoho-migration #migrationMount,
+body.embed-mode.project-zoho-migration #migrationMount > .demo-product,
+body.embed-mode.project-zoho-migration #migrationMount .demo-app {
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: none !important;
+}
+
+body.embed-mode.project-zoho-migration .demo-shell,
+body.embed-mode.project-zoho-migration #migrationMount,
+body.embed-mode.project-zoho-migration #migrationMount > .demo-product,
+body.embed-mode.project-zoho-migration #migrationMount .demo-app,
+body.embed-mode.project-zoho-migration #migrationMount .main {
   background: #f3f6fa !important;
 }
 
-.embed-mode.project-zoho-migration #migrationMount > .demo-product {
-  flex: 1 1 0 !important;
-  height: 100% !important;
+body.embed-mode.project-zoho-migration #migrationMount {
+  display: block !important;
+  overflow: hidden !important;
+}
+
+body.embed-mode.project-zoho-migration #migrationMount > .demo-product {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body.embed-mode.project-zoho-migration #migrationMount > .demo-product > .demo-top {
+  flex: 0 0 54px !important;
+}
+
+body.embed-mode.project-zoho-migration #migrationMount > .demo-product > .demo-app {
+  flex: 1 1 auto !important;
   min-height: 0 !important;
 }
 
-.embed-mode.project-zoho-migration #migrationMount .demo-app {
-  flex: 1 1 0 !important;
-  height: auto !important;
-  min-height: 0 !important;
+body.embed-mode.project-zoho-migration #migrationMount .side,
+body.embed-mode.project-zoho-migration #migrationMount .main {
+  min-height: 100% !important;
 }
 
-.embed-mode.project-zoho-migration #migrationMount .side,
-.embed-mode.project-zoho-migration #migrationMount .main {
-  min-height: 0 !important;
-}
-
-/* OCR also mounts a wrapper before the generic product shell. */
+/* OCR wrapper. */
 .embed-mode .ocr-console {
   display: flex !important;
   flex-direction: column !important;
@@ -83,7 +99,7 @@ body.embed-mode,
   height: 100% !important;
 }
 
-/* In fullscreen, keep the iframe pinned exactly to the usable display. */
+/* Fullscreen iframe sizing. */
 .laptop-screen:fullscreen .laptop-display {
   position: relative !important;
   overflow: hidden !important;
@@ -97,8 +113,7 @@ body.embed-mode,
   display: block !important;
 }
 
-/* Requested square app viewport corners for these two portfolio projects.
-   Keep the silver laptop hardware itself unchanged. */
+/* Square inner display corners for requested projects. */
 .project[data-id="sheets"] .laptop-display,
 .project[data-id="ops-dashboard"] .laptop-display {
   border-radius: 0 !important;
