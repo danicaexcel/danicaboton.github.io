@@ -97,8 +97,8 @@ DCODE_PROJECTS.forEach(p=>{
   const screenId=`preview-${p.id}`;
   const hasDemo=p.demoAvailable!==false;
   const hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
-  const demoHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}`;
-  const previewHref=p.id==='portal'?'secure-candidate-review.html':`demo.html?id=${p.id}&embed=1`;
+  const demoHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?v=20260903-fullheight-2':`demo.html?id=${p.id}`;
+  const previewHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?embed=1&v=20260903-fullheight-2':`demo.html?id=${p.id}&embed=1`;
   const workflowAction=hasN8n?`<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>`:'';
   const actions=hasDemo
     ? `<a class="btn" href="case-study.html?id=${p.id}">Read case study</a><button class="btn primary fullscreen-btn" type="button" data-target="${screenId}">Open demo ↗</button>${workflowAction}`
@@ -155,5 +155,5 @@ document.addEventListener('click', async (event)=>{
   }catch(err){ target.scrollIntoView({behavior:'smooth',block:'center'}); }
 });
 </script>
-<script src="contact-workflow.js"></script>
+<script src="contact-workflow.js?v=20260903-fullheight-2"></script>
 </body></html>
