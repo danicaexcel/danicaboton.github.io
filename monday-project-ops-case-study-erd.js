@@ -1,6 +1,19 @@
 (() => {
   if (!/monday-project-ops-case-study\.html$/.test(location.pathname)) return;
 
+  const stripPrefixes = root => {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      if (node.nodeValue && node.nodeValue.includes('[N]')) {
+        node.nodeValue = node.nodeValue.replace(/\[N\]\s*/g, '');
+      }
+    });
+  };
+  stripPrefixes(document.body);
+
   const mount = document.querySelector('#architecture .m09-map');
   if (!mount || mount.dataset.erdUpgraded === '1') return;
   mount.dataset.erdUpgraded = '1';
@@ -45,44 +58,38 @@
           <defs><marker id="m09Arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7f8a96"/></marker></defs>
           <path class="erd-edge" d="M340 157 H390"/>
           <text class="erd-label" x="350" y="145">contains</text>
-
           <path class="erd-edge" d="M690 157 H740"/>
           <text class="erd-label" x="700" y="145">work evidence</text>
-
           <path class="erd-edge" d="M540 266 V325"/>
           <text class="erd-label" x="550" y="298">revision loop</text>
-
           <path class="erd-edge" d="M890 266 V325"/>
           <text class="erd-label" x="900" y="298">aggregates</text>
-
           <path class="erd-edge" d="M890 590 V535"/>
           <text class="erd-label" x="900" y="570">rate lookup</text>
-
           <path class="erd-edge sync" d="M390 205 H365 V700 H340"/>
           <text class="erd-label sync" x="205" y="686">task state → audit</text>
-
           <path class="erd-edge sync" d="M740 205 H715 V735 H340"/>
           <text class="erd-label sync" x="520" y="722">session / approval events → audit</text>
         </svg>
-        ${entity(1, 40, 48, '[N] Master Projects', 'Monday portfolio board', [
+        ${entity(1, 40, 48, 'Master Projects', 'Monday portfolio board', [
           ['PK','Project_ID'],['FK','Owner_User_ID'],['','Project_Status'],['','Start_Date / Due_Date'],['','Collaborators / Informed']
         ])}
-        ${entity(2, 390, 48, '[N] Master Tasks', 'Monday execution board', [
+        ${entity(2, 390, 48, 'Master Tasks', 'Monday execution board', [
           ['PK','Task_ID'],['FK','Project_ID'],['FK','Responsible_User_ID'],['','Task_Status / Priority'],['','Due_Date / Scheduled_Work']
         ])}
-        ${entity(3, 740, 48, '[N] Work Sessions', 'Append-only time evidence', [
+        ${entity(3, 740, 48, 'Work Sessions', 'Append-only time evidence', [
           ['PK','Session_ID'],['FK','Project_ID'],['FK','Task_ID'],['FK','User_ID'],['','Start / End / Duration']
         ])}
-        ${entity(4, 390, 325, '[N] Revisions & Rework', 'Returned-work record', [
+        ${entity(4, 390, 325, 'Revisions & Rework', 'Returned-work record', [
           ['PK','Revision_ID'],['FK','Project_ID'],['FK','Task_ID'],['','Assigned_To / Due_Date'],['','Rework_Hours / Rework_Cost']
         ])}
-        ${entity(5, 740, 325, '[N] Timesheets & Approvals', 'Approval + cost record', [
+        ${entity(5, 740, 325, 'Timesheets & Approvals', 'Approval + cost record', [
           ['PK','Timesheet_ID'],['FK','User_ID'],['','Period_Start / Period_End'],['','Approved_Hours'],['','Gross_Labor_Cost']
         ])}
-        ${entity(6, 740, 590, '[N] Labor Rates', 'Controlled rate reference', [
+        ${entity(6, 740, 590, 'Labor Rates', 'Controlled rate reference', [
           ['PK','Rate_ID'],['FK','User_ID'],['','Role'],['','Hourly_Rate_USD'],['','Effective_From / To']
         ])}
-        ${entity(7, 40, 590, '[N] Activity & Automation Logs', 'Operational audit trail', [
+        ${entity(7, 40, 590, 'Activity & Automation Logs', 'Operational audit trail', [
           ['PK','Log_ID'],['FK','Project_ID'],['FK','Task_ID'],['','Actor / Action'],['','Previous_State / New_State']
         ])}
       </div>
@@ -91,4 +98,5 @@
       <p>Projects are the parent operational record. Every task carries a mandatory project foreign key, work sessions and revisions retain both project and task context, approved timesheets consume session evidence and controlled labor rates, and significant state changes write to the audit log.</p>
       <span class="m09-erd-caption-note">Conceptual data architecture · field names simplified for portfolio clarity</span>
     </div>`;
+  stripPrefixes(document.body);
 })();
