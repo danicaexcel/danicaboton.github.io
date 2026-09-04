@@ -1,6 +1,13 @@
 (() => {
   if (!/monday-project-ops-case-study\.html$/.test(location.pathname)) return;
 
+  if (!document.querySelector('script[data-project02-workflow-proof]')) {
+    const proofScript = document.createElement('script');
+    proofScript.src = 'project02-workflow-proof.js?v=20260904-unified-proof1';
+    proofScript.dataset.project02WorkflowProof = '1';
+    document.body.appendChild(proofScript);
+  }
+
   const stripPrefixes = root => {
     if (!root) return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
