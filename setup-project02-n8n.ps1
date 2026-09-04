@@ -52,6 +52,9 @@ function Find-EnvFile {
 function Get-ErrorBody {
     param($ErrorRecord)
     try {
+        if ($ErrorRecord.ErrorDetails -and $ErrorRecord.ErrorDetails.Message) {
+            return $ErrorRecord.ErrorDetails.Message
+        }
         $response = $ErrorRecord.Exception.Response
         if ($null -eq $response) { return $null }
         $stream = $response.GetResponseStream()
@@ -61,8 +64,26 @@ function Get-ErrorBody {
     } catch { return $null }
 }
 
-Write-Host "Project 02 n8n setup" -ForegroundColor Cyan
-Write-Host "--------------------"
+function Invoke-N8n {
+    param(
+        [Parameter(Mandatory=$true)][string]$Method,
+        [Parameter(Mandatory=$true)][string]$Uri,
+        [object]$Body = $null
+    )
+    $params = @{
+        Method = $Method
+        Uri = $Uri
+        Headers = $script:Headers
+    }
+    if ($null -ne $Body) {
+        $params.ContentType = 'application/json'
+        $params.Body = $Body
+    }
+    Invoke-RestMethod @params
+}
+
+Write-Host "Project 02 n8n deployment" -ForegroundColor Cyan
+Write-Host "-------------------------"
 
 if (-not $env:N8N_API_KEY) {
     if (-not $EnvFile) { $EnvFile = Find-EnvFile }
@@ -76,7 +97,7 @@ $apiKey = $env:N8N_API_KEY
 if (-not $apiKey) { $apiKey = $env:N8N_APIKEY }
 if (-not $apiKey) { $apiKey = $env:N8N_KEY }
 if (-not $apiKey) {
-    throw "No n8n API key found. Add N8N_API_KEY=... to a local .env file or set the N8N_API_KEY environment variable."
+    throw "No n8n API key found. Add N8N_API_KEY=... to a local .env file or set N8N_API_KEY in this PowerShell session."
 }
 
 if (-not $N8nBaseUrl) { $N8nBaseUrl = $env:N8N_BASE_URL }
@@ -84,7 +105,7 @@ if (-not $N8nBaseUrl) { $N8nBaseUrl = $env:N8N_URL }
 if (-not $N8nBaseUrl) { $N8nBaseUrl = 'https://herta-unbedabbled-unsynchronously.ngrok-free.dev' }
 $N8nBaseUrl = $N8nBaseUrl.TrimEnd('/')
 
-$headers = @{
+$script:Headers = @{
     'X-N8N-API-KEY' = $apiKey
     'ngrok-skip-browser-warning' = 'true'
 }
@@ -93,7 +114,7 @@ Write-Host "n8n endpoint: $N8nBaseUrl"
 Write-Host "API key: loaded (value hidden)"
 
 try {
-    $null = Invoke-RestMethod -Method GET -Uri "$N8nBaseUrl/api/v1/workflows?limit=1" -Headers $headers
+    $list = Invoke-N8n -Method GET -Uri "$N8nBaseUrl/api/v1/workflows?limit=100"
     Write-Host "Connection/authentication check: OK" -ForegroundColor Green
 } catch {
     $body = Get-ErrorBody $_
@@ -102,11 +123,10 @@ try {
 }
 
 $workflowUrl = 'https://raw.githubusercontent.com/dbauto/danicaboton.github.io/main/n8n-workflows/01-enterprise-operations-workspace.json'
-Write-Host "Downloading latest Project 02 workflow from GitHub..."
+Write-Host "Downloading latest Project 02 state engine from GitHub..."
 $workflowRaw = (Invoke-WebRequest -UseBasicParsing -Uri $workflowUrl).Content
 $workflow = $workflowRaw | ConvertFrom-Json
 
-# Build an API-safe create payload. Read-only fields from exported n8n workflows are intentionally excluded.
 $payloadObject = [ordered]@{
     name = $workflow.name
     nodes = $workflow.nodes
@@ -115,28 +135,77 @@ $payloadObject = [ordered]@{
 }
 if ($workflow.description) { $payloadObject.description = $workflow.description }
 if ($null -ne $workflow.pinData) { $payloadObject.pinData = $workflow.pinData }
-
 $payload = $payloadObject | ConvertTo-Json -Depth 100
 
-try {
-    $created = Invoke-RestMethod `
-        -Method POST `
-        -Uri "$N8nBaseUrl/api/v1/workflows" `
-        -Headers $headers `
-        -ContentType 'application/json' `
-        -Body $payload
+$all = @()
+if ($list -and $list.data) { $all = @($list.data) }
+elseif ($list) { $all = @($list) }
 
-    Write-Host "" 
-    Write-Host "SUCCESS: Project 02 workflow created in n8n." -ForegroundColor Green
-    Write-Host "Workflow name: $($created.name)"
-    Write-Host "Workflow ID:   $($created.id)"
+$knownNames = @(
+    'Portfolio - Project 02 Operations State Engine',
+    'Portfolio - Monday.com Project Operations Control Center'
+)
+$existing = $all | Where-Object { $knownNames -contains $_.name } | Select-Object -First 1
+
+try {
+    if ($existing) {
+        Write-Host "Existing Project 02 workflow found: $($existing.id)"
+        $deployed = Invoke-N8n -Method PUT -Uri "$N8nBaseUrl/api/v1/workflows/$($existing.id)" -Body $payload
+        $verb = 'updated'
+    } else {
+        $deployed = Invoke-N8n -Method POST -Uri "$N8nBaseUrl/api/v1/workflows" -Body $payload
+        $verb = 'created'
+    }
+
+    Write-Host ""
+    Write-Host "SUCCESS: Project 02 workflow $verb." -ForegroundColor Green
+    Write-Host "Workflow name: $($deployed.name)"
+    Write-Host "Workflow ID:   $($deployed.id)"
     Write-Host "Webhook path:  portfolio-enterprise-operations"
-    Write-Host "" 
-    Write-Host "Next: open n8n, review the created workflow, then we can attach the real Monday.com workflow families and board mappings."
+
+    $published = $false
+    if ($deployed.PSObject.Properties.Name -contains 'activeVersionId') {
+        $published = -not [string]::IsNullOrWhiteSpace([string]$deployed.activeVersionId)
+    } elseif ($deployed.PSObject.Properties.Name -contains 'active') {
+        $published = [bool]$deployed.active
+    }
+
+    if ($published) {
+        Write-Host "Publication status: published" -ForegroundColor Green
+        try {
+            $healthBody = @{
+                action = 'health.check'
+                project = 'monday-project-ops'
+                clientId = 'deployment-health-check'
+                requestId = "deploy-$([Guid]::NewGuid())"
+                payload = @{}
+            } | ConvertTo-Json -Depth 10
+            $health = Invoke-RestMethod -Method POST -Uri "$N8nBaseUrl/webhook/portfolio-enterprise-operations" -ContentType 'application/json' -Body $healthBody
+            if ($health.ok) { Write-Host "Production webhook health check: OK" -ForegroundColor Green }
+        } catch {
+            Write-Host "Workflow is published, but the production webhook health check did not complete. Open the workflow execution log for details." -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "Publication status: draft" -ForegroundColor Yellow
+        Write-Host "n8n's current Public API can create/update this workflow, but publishing is done from the n8n editor. Open this workflow and click Publish once." -ForegroundColor Yellow
+    }
+
+    Write-Host ""
+    Write-Host "Implemented families:"
+    Write-Host "  - Task integrity and source-field sync"
+    Write-Host "  - Append-only Start / Pause / Resume / Stop work sessions"
+    Write-Host "  - Original vs revision/rework effort rollups"
+    Write-Host "  - Revision creation and resolution"
+    Write-Host "  - Timesheet build / submit / return / reject / approve"
+    Write-Host "  - Effective-dated labor rate resolution"
+    Write-Host "  - Locked Approved Work Ledger posting on approval"
+    Write-Host "  - Escalation create / clear and dynamic overdue detection"
+    Write-Host "  - Project/task KPI recalculation"
+    Write-Host "  - Idempotency, audit logs, and 15-minute reconciliation"
 } catch {
     $body = Get-ErrorBody $_
-    Write-Host "" 
-    Write-Host "Workflow creation failed." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Project 02 deployment failed." -ForegroundColor Red
     if ($body) { Write-Host "n8n response: $body" -ForegroundColor Yellow }
     throw
 }
