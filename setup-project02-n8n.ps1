@@ -57,6 +57,19 @@ function Invoke-N8n {
     Invoke-RestMethod @params
 }
 
+function Set-ObjectProperty {
+    param(
+        [Parameter(Mandatory=$true)]$Object,
+        [Parameter(Mandatory=$true)][string]$Name,
+        [Parameter(Mandatory=$true)]$Value
+    )
+    if ($Object.PSObject.Properties.Name -contains $Name) {
+        $Object.$Name = $Value
+    } else {
+        $Object | Add-Member -NotePropertyName $Name -NotePropertyValue $Value -Force
+    }
+}
+
 function New-CodeNode {
     param([string]$Id,[string]$Name,[string]$Code,[int]$X,[int]$Y,[string]$Notes='')
     [PSCustomObject]@{
@@ -84,12 +97,19 @@ function Build-UnifiedWorkflow {
     $scheduled=$Workflow.nodes|Where-Object{$_.name -eq 'Scheduled Reconciliation'}|Select-Object -First 1
     if(-not $webhook -or -not $normalize -or -not $engine -or -not $respond){throw 'Base Project 02 workflow is missing a required core node.'}
 
-    $webhook.position=@(-1900,0);$normalize.position=@(-1660,0)
-    $engine.position=@(560,0);$engine.name='Unified State + Business Rules Engine';$engine.notesInFlow=$true
-    $engine.notes='Authoritative shared state and business-rule engine. Visible domain branches converge here after routing.'
+    $webhook.position=@(-1900,0)
+    $normalize.position=@(-1660,0)
+    $engine.position=@(560,0)
+    $engine.name='Unified State + Business Rules Engine'
+    Set-ObjectProperty $engine 'notesInFlow' $true
+    Set-ObjectProperty $engine 'notes' 'Authoritative shared state and business-rule engine. Visible domain branches converge here after routing.'
     $respond.position=@(840,0)
     if($schedule){$schedule.position=@(-1660,980)}
-    if($scheduled){$scheduled.position=@(-1260,980);$scheduled.notesInFlow=$true;$scheduled.notes='Scheduled reconciliation and integrity repair.'}
+    if($scheduled){
+        $scheduled.position=@(-1260,980)
+        Set-ObjectProperty $scheduled 'notesInFlow' $true
+        Set-ObjectProperty $scheduled 'notes' 'Scheduled reconciliation and integrity repair.'
+    }
 
     $classifierCode=@'
 const a=$json.action;
@@ -208,22 +228,26 @@ Write-Host "n8n endpoint: $script:N8nBaseUrl";Write-Host 'API key: loaded (value
 try{$list=Invoke-N8n GET "$script:N8nBaseUrl/api/v1/workflows?limit=100";Write-Host 'Connection/authentication check: OK' -ForegroundColor Green}catch{$body=Get-ErrorBody $_;if($body){Write-Host "n8n response: $body" -ForegroundColor Red};throw 'Could not authenticate to n8n through the configured tunnel.'}
 $all=if($list.data){@($list.data)}else{@($list)}
 $splitNames=@('Project 02 - 01 Task Integrity & Project Sync','Project 02 - 02 Work Session Lifecycle','Project 02 - 03 Effort Rollup Engine','Project 02 - 04 Revision & Rework Control','Project 02 - 05 Escalation & Overdue Engine','Project 02 - 06 Timesheet Builder & Submission','Project 02 - 07 Timesheet Approval & Ledger Posting','Project 02 - 08 Effective-Dated Rate Resolver','Project 02 - 09 Project KPI & Dashboard Recalculation','Project 02 - 10 Reconciliation & Audit')
-foreach($old in @($all|Where-Object{$splitNames -contains $_.name})){[void](Remove-N8nWorkflow $old)}
+$legacySplit=@($all|Where-Object{$splitNames -contains $_.name})
 
 Write-Host 'Downloading unified Project 02 source...'
 $workflow=((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/dbauto/danicaboton.github.io/main/n8n-workflows/01-enterprise-operations-workspace.json').Content|ConvertFrom-Json)
 $workflow=Build-UnifiedWorkflow $workflow
 $payload=([ordered]@{name=$workflow.name;nodes=$workflow.nodes;connections=$workflow.connections;settings=$workflow.settings}|ConvertTo-Json -Depth 100)
+Write-Host "Unified workflow built locally: $($workflow.nodes.Count) nodes" -ForegroundColor Green
 $known=@('Portfolio - Project 02 Unified Operations Control Center','Portfolio - Project 02 Operations State Engine','Portfolio - Monday.com Project Operations Control Center')
-$refreshed=Invoke-N8n GET "$script:N8nBaseUrl/api/v1/workflows?limit=100";$remaining=if($refreshed.data){@($refreshed.data)}else{@($refreshed)}
-$matches=@($remaining|Where-Object{$known -contains $_.name});$existing=$matches|Sort-Object @{Expression={if($_.name -eq 'Portfolio - Project 02 Unified Operations Control Center'){0}else{1}}}|Select-Object -First 1
+$matches=@($all|Where-Object{$known -contains $_.name})
+$existing=$matches|Sort-Object @{Expression={if($_.name -eq 'Portfolio - Project 02 Unified Operations Control Center'){0}else{1}}}|Select-Object -First 1
 try{
     if($existing){Write-Host "Updating unified workflow: $($existing.id)";$deployed=Invoke-N8n PUT "$script:N8nBaseUrl/api/v1/workflows/$($existing.id)" $payload;$verb='updated'}else{Write-Host 'Creating unified workflow...';$deployed=Invoke-N8n POST "$script:N8nBaseUrl/api/v1/workflows" $payload;$verb='created'}
-    foreach($extra in @($matches|Where-Object{$_.id -ne $deployed.id})){[void](Remove-N8nWorkflow $extra)}
     $published=Publish-N8nWorkflow $deployed;$status=if($published){'published'}else{'draft'}
     Write-Host '';Write-Host "SUCCESS: unified Project 02 workflow $verb / $status" -ForegroundColor Green
     Write-Host "Workflow name: $($deployed.name)";Write-Host "Workflow ID:   $($deployed.id)";Write-Host 'Webhook path:  portfolio-enterprise-operations'
     Write-Host 'Canvas:        one webhook + action router + 10 operational sections + shared state engine + scheduled reconciliation'
+
+    foreach($old in $legacySplit){[void](Remove-N8nWorkflow $old)}
+    foreach($extra in @($matches|Where-Object{$_.id -ne $deployed.id})){[void](Remove-N8nWorkflow $extra)}
+
     try{$healthBody=@{action='health.check';project='monday-project-ops';clientId='deployment-health-check';requestId="deploy-$([Guid]::NewGuid())";payload=@{}}|ConvertTo-Json -Depth 10;$health=Invoke-RestMethod -Method POST -Uri "$script:N8nBaseUrl/webhook/portfolio-enterprise-operations" -ContentType 'application/json' -Body $healthBody;if($health.ok){Write-Host 'Production webhook health check: OK' -ForegroundColor Green}}catch{Write-Host 'Production webhook health check did not complete. If status above is draft, publish the unified workflow once in n8n.' -ForegroundColor Yellow}
 }catch{$body=Get-ErrorBody $_;Write-Host '';Write-Host 'Unified Project 02 deployment failed.' -ForegroundColor Red;if($body){Write-Host "n8n response: $body" -ForegroundColor Yellow};throw}
 Write-Host '';Write-Host 'Project 02 is now intentionally ONE routed n8n workflow.' -ForegroundColor Cyan;Write-Host 'No Monday.com connection is required.'
