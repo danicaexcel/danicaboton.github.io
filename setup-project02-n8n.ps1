@@ -127,14 +127,15 @@ Write-Host "Downloading latest Project 02 state engine from GitHub..."
 $workflowRaw = (Invoke-WebRequest -UseBasicParsing -Uri $workflowUrl).Content
 $workflow = $workflowRaw | ConvertFrom-Json
 
+# Compatibility payload: some self-hosted n8n Public API versions reject optional
+# workflow properties such as description and pinData. Keep create/update to the
+# stable core fields accepted across versions.
 $payloadObject = [ordered]@{
     name = $workflow.name
     nodes = $workflow.nodes
     connections = $workflow.connections
     settings = $workflow.settings
 }
-if ($workflow.description) { $payloadObject.description = $workflow.description }
-if ($null -ne $workflow.pinData) { $payloadObject.pinData = $workflow.pinData }
 $payload = $payloadObject | ConvertTo-Json -Depth 100
 
 $all = @()
@@ -187,7 +188,7 @@ try {
         }
     } else {
         Write-Host "Publication status: draft" -ForegroundColor Yellow
-        Write-Host "n8n's current Public API can create/update this workflow, but publishing is done from the n8n editor. Open this workflow and click Publish once." -ForegroundColor Yellow
+        Write-Host "Open this workflow in n8n and click Publish once to register the production webhook." -ForegroundColor Yellow
     }
 
     Write-Host ""
