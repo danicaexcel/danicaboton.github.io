@@ -1,6 +1,6 @@
 {
-  "name": "Portfolio - Monday.com Project Operations Control Center",
-  "description": "API-safe starter contract for Project 02. Monday.com remains the operating interface while n8n handles cross-board validation, session control, approval/cost posting, reconciliation, and audit orchestration.",
+  "name": "Portfolio - Project 02 Operations State Engine",
+  "description": "Self-contained live backend for the Monday.com Project Operations Control Center portfolio reconstruction. No Monday.com account is required. Provides persistent demo state, task integrity, append-only work sessions, revisions/rework, timesheets, effective-dated labor rates, locked approved ledger posting, escalation control, KPI recalculation, audit logging, idempotency, and reconciliation.",
   "nodes": [
     {
       "parameters": {
@@ -9,61 +9,162 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "monday-webhook",
-      "name": "Portfolio Webhook",
+      "id": "p02-webhook",
+      "name": "Project 02 Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [-620, 0],
+      "position": [
+        -900,
+        -80
+      ],
       "webhookId": "portfolio-enterprise-operations"
     },
     {
       "parameters": {
-        "jsCode": "const b=$json.body??$json; if(!b.action) throw new Error('action is required'); const allowed=['health.check','task.validate','task.sync','project.sync','session.start','session.pause','session.resume','session.stop','revision.create','revision.update','timesheet.build','timesheet.submit','timesheet.approve','timesheet.return','rate.resolve','ledger.post','escalation.create','escalation.clear','dashboard.refresh','reconciliation.run','automation.retry']; if(!allowed.includes(b.action)) throw new Error(`Unsupported action: ${b.action}`); return [{json:{...b,project:b.project||'monday-project-ops',requestId:b.requestId||$execution.id,receivedAt:new Date().toISOString(),payload:b.payload||{}}}];"
+        "jsCode": "const raw = $json.body ?? $json;\nconst headers = $json.headers || {};\nconst action = raw.action;\nif (!action) return [{json:{action:'__invalid__',payload:{},requestId:String($execution.id),clientId:'default-demo',correlationId:String($execution.id),normalizationError:'action is required'}}];\nconst allowed = [\n'health.check','state.get','state.reset',\n'task.validate','task.sync','task.complete','task.sendReview','task.approve','project.sync',\n'session.start','session.pause','session.resume','session.stop',\n'revision.create','revision.update',\n'timesheet.build','timesheet.submit','timesheet.approve','timesheet.return','timesheet.reject',\n'rate.resolve','ledger.post','escalation.create','escalation.clear',\n'dashboard.refresh','reconciliation.run','automation.retry'\n];\nreturn [{json:{\n  action: allowed.includes(action)?action:'__invalid__',\n  payload: raw.payload || {},\n  project: raw.project || 'monday-project-ops',\n  requestId: raw.requestId || String($execution.id),\n  correlationId: raw.correlationId || raw.requestId || String($execution.id),\n  clientId: raw.clientId || raw.payload?.clientId || headers['x-portfolio-client'] || 'default-demo',\n  normalizationError: allowed.includes(action)?null:`Unsupported action: ${action}`,\n  receivedAt: new Date().toISOString()\n}}];"
       },
-      "id": "monday-validate",
-      "name": "Validate Request",
+      "id": "p02-normalize",
+      "name": "Normalize Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-380, 0]
+      "position": [
+        -660,
+        -80
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const b=$json; const p=b.payload; const entityId=p.sessionId||p.timesheetId||p.revisionId||p.itemId||p.projectId||b.requestId; const result={operation:b.action,sourceBoard:p.sourceBoard||null,targetBoard:p.targetBoard||null,itemId:p.itemId||null,projectId:p.projectId||null,entityId,deduplicationKey:p.idempotencyKey||`${b.action}:${entityId}`,correlationId:p.correlationId||b.requestId,logRecord:{executionId:$execution.id,status:'Successful',workflow:'Monday.com Project Operations Control Center',requestId:b.requestId,correlationId:p.correlationId||b.requestId}}; return [{json:{...b,result}}];"
+        "jsCode": "if ($json.normalizationError) {\n  return [{json:{ok:false,mode:'live',clientId:$json.clientId,executionId:$execution.id,action:$json.action,error:{code:'INVALID_REQUEST',message:$json.normalizationError}}}];\n}\nreturn [{json:$json}];"
       },
-      "id": "monday-route",
-      "name": "Build Cross-board Operation",
+      "id": "p02-guard",
+      "name": "Validate Action",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-130, 0]
+      "position": [
+        -420,
+        -80
+      ]
     },
     {
       "parameters": {
-        "jsCode": "return [{json:{ok:true,executionId:$execution.id,action:$json.action,status:'accepted',message:'Project 02 request validated. Production Monday.com nodes will be attached to the matching workflow family.',result:$json.result}}];"
+        "jsCode": "const req = $json;\nconst p = req.payload || {};\nconst now = new Date();\nconst nowIso = now.toISOString();\nconst store = $getWorkflowStaticData('global');\n\nif (!store.clients) store.clients = {};\nconst clientId = String(req.clientId || p.clientId || 'default-demo');\n\nfunction seedState() {\n  const projects = [\n    {id:'PRJ-001', name:'Mobile App v2 Launch', client:'Apex Retail', owner:'Maria Santos', collaborators:['Carlo Mendoza','John Reyes'], department:'Product', status:'Active', startDate:'2026-07-01', dueDate:'2026-09-30', plannedLaborHours:240, approvedLaborBudget:18000, currency:'USD'},\n    {id:'PRJ-002', name:'Website Redesign 2026', client:'Northstar Health', owner:'John Reyes', collaborators:['Maria Santos'], department:'Digital', status:'Active', startDate:'2026-08-01', dueDate:'2026-10-15', plannedLaborHours:160, approvedLaborBudget:12000, currency:'USD'},\n    {id:'PRJ-003', name:'CRM Automation Rollout', client:'BrightPath Logistics', owner:'Danica Boton', collaborators:['Maria Santos','Carlo Mendoza'], department:'Operations', status:'Active', startDate:'2026-08-15', dueDate:'2026-11-15', plannedLaborHours:180, approvedLaborBudget:14000, currency:'USD'}\n  ];\n  const tasks = [\n    {id:'TSK-001', projectId:'PRJ-001', name:'API Integration - Payment Gateway', responsible:'Carlo Mendoza', collaborators:['Maria Santos'], status:'Stuck', priority:'Critical', dueDate:'2026-08-25', plannedHours:72, escalationStatus:'Escalated', escalationReason:'External payment gateway blocker', reviewState:'Working'},\n    {id:'TSK-002', projectId:'PRJ-002', name:'Backend API Documentation', responsible:'John Reyes', collaborators:[], status:'In Progress', priority:'High', dueDate:'2026-09-05', plannedHours:32, escalationStatus:'None', escalationReason:null, reviewState:'Working'},\n    {id:'TSK-003', projectId:'PRJ-001', name:'User Acceptance Testing - Phase 1', responsible:'Maria Santos', collaborators:['Carlo Mendoza'], status:'For Review', priority:'High', dueDate:'2026-09-10', plannedHours:48, escalationStatus:'None', escalationReason:null, reviewState:'For Review'},\n    {id:'TSK-004', projectId:'PRJ-003', name:'Workflow Reliability & Reconciliation', responsible:'Danica Boton', collaborators:['Maria Santos'], status:'In Progress', priority:'Medium', dueDate:'2026-09-22', plannedHours:56, escalationStatus:'None', escalationReason:null, reviewState:'Working'}\n  ];\n  const sessions = [\n    {id:'SES-001', worker:'Carlo Mendoza', projectId:'PRJ-001', taskId:'TSK-001', revisionId:null, sessionType:'ORIGINAL', state:'CLOSED', start:'2026-08-20T01:00:00.000Z', end:'2026-08-20T09:00:00.000Z', durationHours:8, startSource:'SEED', closeReason:'Completed work block', idempotencyKey:'seed:ses-001', correlationId:'SEED-001', executionId:'SEED'},\n    {id:'SES-002', worker:'Carlo Mendoza', projectId:'PRJ-001', taskId:'TSK-001', revisionId:null, sessionType:'ORIGINAL', state:'CLOSED', start:'2026-08-21T01:00:00.000Z', end:'2026-08-21T09:00:00.000Z', durationHours:8, startSource:'SEED', closeReason:'Completed work block', idempotencyKey:'seed:ses-002', correlationId:'SEED-002', executionId:'SEED'},\n    {id:'SES-003', worker:'Carlo Mendoza', projectId:'PRJ-001', taskId:'TSK-001', revisionId:'REV-001', sessionType:'REVISION', state:'CLOSED', start:'2026-08-22T01:00:00.000Z', end:'2026-08-22T05:00:00.000Z', durationHours:4, startSource:'SEED', closeReason:'Revision completed', idempotencyKey:'seed:ses-003', correlationId:'SEED-003', executionId:'SEED'},\n    {id:'SES-004', worker:'John Reyes', projectId:'PRJ-002', taskId:'TSK-002', revisionId:null, sessionType:'ORIGINAL', state:'CLOSED', start:'2026-09-01T01:00:00.000Z', end:'2026-09-01T07:00:00.000Z', durationHours:6, startSource:'SEED', closeReason:'Completed work block', idempotencyKey:'seed:ses-004', correlationId:'SEED-004', executionId:'SEED'},\n    {id:'SES-005', worker:'Maria Santos', projectId:'PRJ-001', taskId:'TSK-003', revisionId:null, sessionType:'ORIGINAL', state:'CLOSED', start:'2026-09-02T01:00:00.000Z', end:'2026-09-02T07:00:00.000Z', durationHours:6, startSource:'SEED', closeReason:'Completed work block', idempotencyKey:'seed:ses-005', correlationId:'SEED-005', executionId:'SEED'}\n  ];\n  const revisions = [\n    {id:'REV-001', number:1, taskId:'TSK-001', projectId:'PRJ-001', requester:'Maria Santos', assignee:'Carlo Mendoza', reason:'Payment callback edge-case failure', rootCause:'Third-party API response variance', deadline:'2026-08-24', state:'Resolved', resolutionEvidence:'Callback normalization implemented', createdAt:'2026-08-22T00:30:00.000Z', resolvedAt:'2026-08-22T05:15:00.000Z'}\n  ];\n  const rates = [\n    {id:'RATE-001', worker:'Carlo Mendoza', role:'Backend Engineer', hourlyRate:82, currency:'USD', effectiveFrom:'2026-01-01', effectiveTo:null, status:'Active'},\n    {id:'RATE-002', worker:'John Reyes', role:'Technical Writer', hourlyRate:58, currency:'USD', effectiveFrom:'2026-01-01', effectiveTo:null, status:'Active'},\n    {id:'RATE-003', worker:'Maria Santos', role:'Project Lead', hourlyRate:90, currency:'USD', effectiveFrom:'2026-01-01', effectiveTo:null, status:'Active'},\n    {id:'RATE-004', worker:'Danica Boton', role:'Automation Engineer', hourlyRate:95, currency:'USD', effectiveFrom:'2026-01-01', effectiveTo:null, status:'Active'}\n  ];\n  return {\n    version: 1,\n    createdAt: nowIso,\n    updatedAt: nowIso,\n    counters: {session: 6, revision: 2, timesheet: 1, ledger: 1, event: 1},\n    projects, tasks, sessions, revisions, timesheets: [], rates, ledger: [], logs: [],\n    processedKeys: {}\n  };\n}\n\nif (!store.clients[clientId]) store.clients[clientId] = seedState();\nlet s = store.clients[clientId];\n\nfunction nextId(kind, prefix) {\n  const n = s.counters[kind] || 1;\n  s.counters[kind] = n + 1;\n  return `${prefix}-${String(n).padStart(3,'0')}`;\n}\nfunction taskById(id) { return s.tasks.find(x => x.id === id); }\nfunction projectById(id) { return s.projects.find(x => x.id === id); }\nfunction revisionById(id) { return s.revisions.find(x => x.id === id); }\nfunction timesheetById(id) { return s.timesheets.find(x => x.id === id); }\nfunction activeSession(worker) { return s.sessions.find(x => x.worker === worker && x.state === 'ACTIVE'); }\nfunction hoursBetween(start, end) { return Math.max(0, (new Date(end)-new Date(start))/3600000); }\nfunction terminal(status) { return ['Done','Completed','Cancelled','Approved'].includes(String(status||'')); }\nfunction rateFor(worker, atDate) {\n  const d = new Date(atDate).getTime();\n  const matches = s.rates.filter(r => r.worker === worker && new Date(r.effectiveFrom).getTime() <= d && (!r.effectiveTo || new Date(r.effectiveTo).getTime() >= d));\n  matches.sort((a,b)=>new Date(b.effectiveFrom)-new Date(a.effectiveFrom));\n  return matches[0] || null;\n}\nfunction computeTask(t) {\n  const closed = s.sessions.filter(x => x.taskId === t.id && x.state === 'CLOSED');\n  const original = closed.filter(x=>x.sessionType==='ORIGINAL').reduce((a,x)=>a+Number(x.durationHours||0),0);\n  const rework = closed.filter(x=>x.sessionType==='REVISION').reduce((a,x)=>a+Number(x.durationHours||0),0);\n  const approved = s.ledger.filter(x=>x.taskId===t.id && x.locked).reduce((a,x)=>a+Number(x.approvedHours||0),0);\n  return {\n    actualOriginalHours:+original.toFixed(2),\n    reworkHours:+rework.toFixed(2),\n    totalRecordedHours:+(original+rework).toFixed(2),\n    approvedHours:+approved.toFixed(2),\n    remainingHours:+Math.max(Number(t.plannedHours||0)-(original+rework),0).toFixed(2)\n  };\n}\nfunction computeProject(prj) {\n  const taskIds = s.tasks.filter(t=>t.projectId===prj.id).map(t=>t.id);\n  const sessions = s.sessions.filter(x=>taskIds.includes(x.taskId) && x.state==='CLOSED');\n  const original = sessions.filter(x=>x.sessionType==='ORIGINAL').reduce((a,x)=>a+Number(x.durationHours||0),0);\n  const rework = sessions.filter(x=>x.sessionType==='REVISION').reduce((a,x)=>a+Number(x.durationHours||0),0);\n  const ledger = s.ledger.filter(x=>x.projectId===prj.id && x.locked);\n  const approvedHours = ledger.reduce((a,x)=>a+Number(x.approvedHours||0),0);\n  const laborCost = ledger.reduce((a,x)=>a+Number(x.laborCost||0),0);\n  const reworkCost = ledger.filter(x=>x.workType==='REVISION').reduce((a,x)=>a+Number(x.laborCost||0),0);\n  const tasks = s.tasks.filter(t=>t.projectId===prj.id);\n  const overdue = tasks.filter(t=>!terminal(t.status) && t.dueDate && new Date(t.dueDate).getTime() < now.getTime()).length;\n  const escalations = tasks.filter(t=>t.escalationStatus==='Escalated').length;\n  const complete = tasks.filter(t=>terminal(t.status)).length;\n  const progress = tasks.length ? Math.round((complete/tasks.length)*100) : 0;\n  const remainingBudget = Number(prj.approvedLaborBudget||0)-laborCost;\n  const health = escalations>0 || overdue>1 || remainingBudget<0 ? 'At Risk' : overdue>0 ? 'Watch' : 'On Track';\n  return {\n    actualOriginalHours:+original.toFixed(2), reworkHours:+rework.toFixed(2), totalRecordedHours:+(original+rework).toFixed(2),\n    approvedHours:+approvedHours.toFixed(2), approvedLaborCost:+laborCost.toFixed(2), approvedReworkCost:+reworkCost.toFixed(2),\n    remainingLaborBudget:+remainingBudget.toFixed(2), overdueTasks:overdue, openEscalations:escalations, progress, health\n  };\n}\nfunction dashboard() {\n  const projects = s.projects.map(pj=>({...pj,...computeProject(pj)}));\n  const tasks = s.tasks.map(t=>({...t,...computeTask(t)}));\n  const activeSessions = s.sessions.filter(x=>x.state==='ACTIVE');\n  const overdueTasks = tasks.filter(t=>!terminal(t.status) && t.dueDate && new Date(t.dueDate).getTime()<now.getTime());\n  const approvedLaborCost = s.ledger.filter(x=>x.locked).reduce((a,x)=>a+Number(x.laborCost||0),0);\n  const approvedReworkCost = s.ledger.filter(x=>x.locked&&x.workType==='REVISION').reduce((a,x)=>a+Number(x.laborCost||0),0);\n  const totalRecorded = tasks.reduce((a,t)=>a+Number(t.totalRecordedHours||0),0);\n  const totalRework = tasks.reduce((a,t)=>a+Number(t.reworkHours||0),0);\n  const planned = s.projects.reduce((a,pj)=>a+Number(pj.plannedLaborHours||0),0);\n  return {\n    summary: {\n      projects:s.projects.length, tasks:s.tasks.length, activeSessions:activeSessions.length, overdueTasks:overdueTasks.length,\n      openEscalations:tasks.filter(t=>t.escalationStatus==='Escalated').length,\n      totalRecordedHours:+totalRecorded.toFixed(2),\n      reworkHours:+totalRework.toFixed(2),\n      utilizationPct:planned?+Math.min(100,(totalRecorded/planned)*100).toFixed(1):0,\n      reworkRatePct:totalRecorded?+(totalRework/totalRecorded*100).toFixed(1):0,\n      approvedLaborCost:+approvedLaborCost.toFixed(2),\n      approvedReworkCost:+approvedReworkCost.toFixed(2)\n    },\n    projects, tasks, activeSessions, overdueTasks,\n    recentLogs:s.logs.slice(-20).reverse()\n  };\n}\nfunction log(action, entityType, entityId, result, details={}) {\n  const event = {\n    id: nextId('event','EVT'), actor:p.actor||p.worker||'Portfolio Demo', action, entityType, entityId,\n    previousState:details.previousState||null, newState:details.newState||null, result,\n    workflow:'Project 02 State Engine', executionId:$execution.id, correlationId:req.correlationId||req.requestId,\n    retryCount:Number(p.retryCount||0), at:nowIso\n  };\n  s.logs.push(event);\n  if (s.logs.length>500) s.logs=s.logs.slice(-500);\n  return event;\n}\nfunction response(data={}, message='OK') {\n  s.updatedAt = nowIso;\n  store.clients[clientId] = s;\n  return [{json:{ok:true, mode:'live', clientId, executionId:$execution.id, action:req.action, message, data}}];\n}\nfunction fail(message, code='VALIDATION_ERROR') {\n  log(req.action||'unknown','request',req.requestId||null,'Failed',{newState:{code,message}});\n  s.updatedAt = nowIso; store.clients[clientId]=s;\n  return [{json:{ok:false, mode:'live', clientId, executionId:$execution.id, action:req.action, error:{code,message}}}];\n}\n\nconst dedupeKey = p.idempotencyKey || req.idempotencyKey || null;\nif (dedupeKey && s.processedKeys[dedupeKey]) {\n  return response({duplicate:true, original:s.processedKeys[dedupeKey]}, 'Duplicate request ignored safely');\n}\n\nlet out;\nswitch (req.action) {\n  case 'health.check':\n    out = response({stateVersion:s.version, updatedAt:s.updatedAt, counts:{projects:s.projects.length,tasks:s.tasks.length,sessions:s.sessions.length,revisions:s.revisions.length,timesheets:s.timesheets.length,rates:s.rates.length,ledger:s.ledger.length,logs:s.logs.length}}, 'Project 02 state engine is healthy');\n    break;\n\n  case 'state.get':\n    out = response({state:s, dashboard:dashboard()}, 'Current Project 02 state');\n    break;\n\n  case 'state.reset':\n    s = seedState();\n    store.clients[clientId] = s;\n    log('state.reset','client',clientId,'Successful');\n    out = response({dashboard:dashboard()}, 'Demo state reset');\n    break;\n\n  case 'task.validate': {\n    const t = taskById(p.taskId);\n    if (!t) { out=fail('Task not found','TASK_NOT_FOUND'); break; }\n    const prj=projectById(t.projectId);\n    const errors=[];\n    if (!prj) errors.push('Task must link to exactly one valid project');\n    if (!t.responsible) errors.push('Task must have exactly one responsible person');\n    if (prj && t.responsible && ![prj.owner,...(prj.collaborators||[])].includes(t.responsible)) errors.push('Responsible person must be a project member');\n    t.validationStatus=errors.length?'Invalid':'Valid'; t.validationErrors=errors; t.lastCalculatedAt=nowIso;\n    log('task.validate','task',t.id,errors.length?'Failed':'Successful',{newState:{validationStatus:t.validationStatus,errors}});\n    out=response({task:{...t,...computeTask(t)}}, errors.length?'Task validation completed with errors':'Task validation passed');\n    break;\n  }\n\n  case 'task.sync':\n  case 'project.sync': {\n    const entity=req.action==='task.sync'?taskById(p.taskId):projectById(p.projectId);\n    if (!entity) { out=fail('Requested entity not found','ENTITY_NOT_FOUND'); break; }\n    const blocked=['actualOriginalHours','reworkHours','totalRecordedHours','approvedHours','approvedLaborCost','approvedReworkCost','remainingLaborBudget','progress','health'];\n    Object.entries(p.changes||{}).forEach(([k,v])=>{if(!blocked.includes(k)) entity[k]=v;});\n    entity.updatedAt=nowIso;\n    log(req.action,req.action.startsWith('task')?'task':'project',entity.id,'Successful',{newState:p.changes||{}});\n    out=response({entity}, 'Source fields synchronized; derived fields remain system-controlled');\n    break;\n  }\n\n  case 'task.complete':\n  case 'task.sendReview':\n  case 'task.approve': {\n    const t=taskById(p.taskId); if(!t){out=fail('Task not found','TASK_NOT_FOUND');break;}\n    const prev={status:t.status,reviewState:t.reviewState};\n    if(req.action==='task.complete'){t.status='Completed';t.reviewState='Completed';}\n    if(req.action==='task.sendReview'){t.status='For Review';t.reviewState='For Review';}\n    if(req.action==='task.approve'){t.status='Approved';t.reviewState='Approved';}\n    log(req.action,'task',t.id,'Successful',{previousState:prev,newState:{status:t.status,reviewState:t.reviewState}});\n    out=response({task:{...t,...computeTask(t)}},'Task state updated');\n    break;\n  }\n\n  case 'session.start':\n  case 'session.resume': {\n    const t=taskById(p.taskId); if(!t){out=fail('Task not found','TASK_NOT_FOUND');break;}\n    const worker=p.worker||t.responsible; if(!worker){out=fail('Worker is required','WORKER_REQUIRED');break;}\n    const active=activeSession(worker); if(active){out=fail(`Worker already has an active session: ${active.id}`,'ACTIVE_SESSION_EXISTS');break;}\n    const openRevision=s.revisions.filter(r=>r.taskId===t.id&&!['Resolved','Closed'].includes(r.state)).sort((a,b)=>b.number-a.number)[0]||null;\n    const type=p.sessionType|| (openRevision?'REVISION':'ORIGINAL');\n    const ses={id:nextId('session','SES'),worker,projectId:t.projectId,taskId:t.id,revisionId:type==='REVISION'?(p.revisionId||openRevision?.id||null):null,sessionType:type,state:'ACTIVE',start:p.start||nowIso,end:null,durationHours:0,startSource:req.action==='session.resume'?'RESUME':'START',closeReason:null,idempotencyKey:dedupeKey||`${req.action}:${worker}:${t.id}:${req.requestId}`,correlationId:req.correlationId||req.requestId,executionId:$execution.id};\n    s.sessions.push(ses);\n    log(req.action,'session',ses.id,'Successful',{newState:ses});\n    out=response({session:ses,task:{...t,...computeTask(t)}},req.action==='session.resume'?'New append-only resume session created':'Work session started');\n    break;\n  }\n\n  case 'session.pause':\n  case 'session.stop': {\n    let ses=p.sessionId?s.sessions.find(x=>x.id===p.sessionId):activeSession(p.worker||'');\n    if(!ses && p.taskId){ses=s.sessions.find(x=>x.taskId===p.taskId&&x.state==='ACTIVE');}\n    if(!ses){out=fail('No active session found','ACTIVE_SESSION_NOT_FOUND');break;}\n    const end=p.end||nowIso; const dur=p.durationHours!=null?Number(p.durationHours):hoursBetween(ses.start,end);\n    ses.end=end; ses.durationHours=+dur.toFixed(4); ses.state='CLOSED'; ses.closeReason=p.closeReason||(req.action==='session.pause'?'Paused':'Stopped');\n    log(req.action,'session',ses.id,'Successful',{newState:{state:ses.state,end:ses.end,durationHours:ses.durationHours,closeReason:ses.closeReason}});\n    const t=taskById(ses.taskId);\n    out=response({session:ses,task:t?{...t,...computeTask(t)}:null,dashboard:dashboard()},req.action==='session.pause'?'Session closed for pause; resume will create a new session':'Session stopped and closed');\n    break;\n  }\n\n  case 'revision.create': {\n    const t=taskById(p.taskId); if(!t){out=fail('Task not found','TASK_NOT_FOUND');break;}\n    const number=Math.max(0,...s.revisions.filter(r=>r.taskId===t.id).map(r=>Number(r.number||0)))+1;\n    const rev={id:nextId('revision','REV'),number,taskId:t.id,projectId:t.projectId,requester:p.requester||'Reviewer',assignee:p.assignee||t.responsible,reason:p.reason||'Returned for revision',rootCause:p.rootCause||null,deadline:p.deadline||null,state:'Open',resolutionEvidence:null,createdAt:nowIso,resolvedAt:null};\n    s.revisions.push(rev); t.status='Revision'; t.reviewState='Revision';\n    log('revision.create','revision',rev.id,'Successful',{newState:rev});\n    out=response({revision:rev,task:{...t,...computeTask(t)}},'Revision created; new sessions on this task will be classified as rework');\n    break;\n  }\n\n  case 'revision.update': {\n    const rev=revisionById(p.revisionId); if(!rev){out=fail('Revision not found','REVISION_NOT_FOUND');break;}\n    const prev={state:rev.state,resolutionEvidence:rev.resolutionEvidence};\n    Object.assign(rev,p.changes||{});\n    if(p.state) rev.state=p.state;\n    if(p.resolutionEvidence) rev.resolutionEvidence=p.resolutionEvidence;\n    if(['Resolved','Closed'].includes(rev.state)&&!rev.resolvedAt) rev.resolvedAt=nowIso;\n    const t=taskById(rev.taskId); if(t&&['Resolved','Closed'].includes(rev.state)){t.status='For Review';t.reviewState='For Review';}\n    log('revision.update','revision',rev.id,'Successful',{previousState:prev,newState:{state:rev.state,resolutionEvidence:rev.resolutionEvidence}});\n    out=response({revision:rev,task:t?{...t,...computeTask(t)}:null},'Revision updated');\n    break;\n  }\n\n  case 'timesheet.build': {\n    const worker=p.worker; if(!worker){out=fail('Worker is required','WORKER_REQUIRED');break;}\n    const period=p.period||nowIso.slice(0,7);\n    const eligible=s.sessions.filter(x=>x.worker===worker&&x.state==='CLOSED'&&String(x.start).slice(0,7)===period);\n    const original=eligible.filter(x=>x.sessionType==='ORIGINAL').reduce((a,x)=>a+Number(x.durationHours||0),0);\n    const rework=eligible.filter(x=>x.sessionType==='REVISION').reduce((a,x)=>a+Number(x.durationHours||0),0);\n    let ts=s.timesheets.find(x=>x.worker===worker&&x.period===period&&x.status!=='Approved');\n    if(!ts){ts={id:nextId('timesheet','TS'),worker,period,status:'Draft',recordedOriginalHours:0,recordedReworkHours:0,approvedOriginalHours:0,approvedReworkHours:0,adjustments:0,approver:null,approvalTimestamp:null,ledgerPosted:false,locked:false,sessionIds:[]};s.timesheets.push(ts);}\n    if(ts.locked){out=fail('Approved timesheet is locked','TIMESHEET_LOCKED');break;}\n    ts.recordedOriginalHours=+original.toFixed(2);ts.recordedReworkHours=+rework.toFixed(2);ts.sessionIds=eligible.map(x=>x.id);ts.updatedAt=nowIso;\n    log('timesheet.build','timesheet',ts.id,'Successful',{newState:{recordedOriginalHours:ts.recordedOriginalHours,recordedReworkHours:ts.recordedReworkHours,sessionCount:ts.sessionIds.length}});\n    out=response({timesheet:ts},'Timesheet rebuilt from closed session evidence');\n    break;\n  }\n\n  case 'timesheet.submit': {\n    const ts=timesheetById(p.timesheetId); if(!ts){out=fail('Timesheet not found','TIMESHEET_NOT_FOUND');break;}\n    if(ts.locked){out=fail('Timesheet is locked','TIMESHEET_LOCKED');break;}\n    ts.status='Submitted';ts.submittedAt=nowIso;\n    log('timesheet.submit','timesheet',ts.id,'Successful',{newState:{status:ts.status}});\n    out=response({timesheet:ts},'Timesheet submitted for approval');\n    break;\n  }\n\n  case 'timesheet.return':\n  case 'timesheet.reject': {\n    const ts=timesheetById(p.timesheetId); if(!ts){out=fail('Timesheet not found','TIMESHEET_NOT_FOUND');break;}\n    if(ts.locked){out=fail('Approved timesheet is locked','TIMESHEET_LOCKED');break;}\n    ts.status=req.action==='timesheet.reject'?'Rejected':'Returned';ts.reviewNote=p.reviewNote||null;ts.reviewedAt=nowIso;\n    log(req.action,'timesheet',ts.id,'Successful',{newState:{status:ts.status,reviewNote:ts.reviewNote}});\n    out=response({timesheet:ts},`Timesheet ${ts.status.toLowerCase()}`);\n    break;\n  }\n\n  case 'timesheet.approve': {\n    const ts=timesheetById(p.timesheetId); if(!ts){out=fail('Timesheet not found','TIMESHEET_NOT_FOUND');break;}\n    if(ts.locked||ts.ledgerPosted){out=fail('Timesheet approval already posted','DUPLICATE_APPROVAL');break;}\n    const sessions=s.sessions.filter(x=>ts.sessionIds.includes(x.id)&&x.state==='CLOSED');\n    const newLines=[];\n    for(const ses of sessions){\n      if(s.ledger.some(l=>l.sessionId===ses.id&&l.timesheetId===ts.id)){continue;}\n      const rate=rateFor(ts.worker,ses.start);\n      if(!rate){out=fail(`No effective labor rate for ${ts.worker} on ${String(ses.start).slice(0,10)}`,'RATE_NOT_FOUND');break;}\n      const hours=Number(ses.durationHours||0);\n      const line={id:nextId('ledger','LED'),timesheetId:ts.id,worker:ts.worker,projectId:ses.projectId,taskId:ses.taskId,sessionId:ses.id,revisionId:ses.revisionId||null,workType:ses.sessionType,approvedHours:+hours.toFixed(4),appliedRateId:rate.id,appliedRate:Number(rate.hourlyRate),currency:rate.currency,laborCost:+(hours*Number(rate.hourlyRate)).toFixed(2),approvalDate:nowIso.slice(0,10),period:ts.period,locked:true,createdAt:nowIso};\n      s.ledger.push(line);newLines.push(line);\n    }\n    if(out) break;\n    ts.approvedOriginalHours=+newLines.filter(x=>x.workType==='ORIGINAL').reduce((a,x)=>a+x.approvedHours,0).toFixed(2);\n    ts.approvedReworkHours=+newLines.filter(x=>x.workType==='REVISION').reduce((a,x)=>a+x.approvedHours,0).toFixed(2);\n    ts.status='Approved';ts.approver=p.approver||'Portfolio Approver';ts.approvalTimestamp=nowIso;ts.ledgerPosted=true;ts.locked=true;\n    log('timesheet.approve','timesheet',ts.id,'Successful',{newState:{status:ts.status,ledgerLines:newLines.length}});\n    out=response({timesheet:ts,ledgerLines:newLines,dashboard:dashboard()},'Timesheet approved and locked ledger lines posted');\n    break;\n  }\n\n  case 'rate.resolve': {\n    const worker=p.worker; const at=p.at||nowIso; const rate=rateFor(worker,at);\n    if(!rate){out=fail(`No effective labor rate for ${worker}`,'RATE_NOT_FOUND');break;}\n    out=response({rate,at},'Effective-dated labor rate resolved');\n    break;\n  }\n\n  case 'ledger.post': {\n    out=fail('Direct ledger posting is disabled. Approve a timesheet to create locked ledger lines.','LEDGER_SOURCE_ENFORCED');\n    break;\n  }\n\n  case 'escalation.create': {\n    const t=taskById(p.taskId); if(!t){out=fail('Task not found','TASK_NOT_FOUND');break;}\n    if(t.escalationStatus==='Escalated'){out=response({task:{...t,...computeTask(t)},duplicate:true},'Task is already escalated');break;}\n    t.escalationStatus='Escalated';t.escalationReason=p.reason||'Escalated from portfolio demo';t.escalatedAt=nowIso;t.status=t.status==='Done'?'Done':'Stuck';\n    log('escalation.create','task',t.id,'Successful',{newState:{escalationStatus:t.escalationStatus,reason:t.escalationReason}});\n    out=response({task:{...t,...computeTask(t)},dashboard:dashboard()},'Escalation created');\n    break;\n  }\n\n  case 'escalation.clear': {\n    const t=taskById(p.taskId); if(!t){out=fail('Task not found','TASK_NOT_FOUND');break;}\n    t.escalationStatus='None';t.escalationReason=null;t.escalationClearedAt=nowIso;if(t.status==='Stuck')t.status='In Progress';\n    log('escalation.clear','task',t.id,'Successful',{newState:{escalationStatus:t.escalationStatus}});\n    out=response({task:{...t,...computeTask(t)},dashboard:dashboard()},'Escalation cleared');\n    break;\n  }\n\n  case 'dashboard.refresh': {\n    s.tasks.forEach(t=>Object.assign(t,computeTask(t),{lastCalculatedAt:nowIso}));\n    s.projects.forEach(pj=>Object.assign(pj,computeProject(pj),{lastCalculatedAt:nowIso}));\n    log('dashboard.refresh','dashboard','PROJECT-02','Successful');\n    out=response({dashboard:dashboard()},'Dashboard recalculated from source evidence');\n    break;\n  }\n\n  case 'reconciliation.run': {\n    const issues=[]; const repairs=[];\n    const byWorker={};\n    for(const ses of s.sessions.filter(x=>x.state==='ACTIVE')){(byWorker[ses.worker] ||= []).push(ses);}\n    for(const [worker,list] of Object.entries(byWorker)){\n      if(list.length>1){\n        list.sort((a,b)=>new Date(b.start)-new Date(a.start));\n        for(const extra of list.slice(1)){extra.state='CLOSED';extra.end=extra.end||nowIso;extra.durationHours=+hoursBetween(extra.start,extra.end).toFixed(4);extra.closeReason='Reconciliation auto-close duplicate active session';repairs.push(`Closed duplicate active session ${extra.id} for ${worker}`);}\n      }\n    }\n    for(const ses of s.sessions){\n      if(!taskById(ses.taskId)){issues.push(`Orphan session ${ses.id}: task ${ses.taskId} missing`);continue;}\n      const t=taskById(ses.taskId);\n      if(ses.projectId!==t.projectId){ses.projectId=t.projectId;repairs.push(`Repaired project link on ${ses.id}`);}\n      if(ses.state==='CLOSED'&&!ses.end){issues.push(`Closed session ${ses.id} has no end timestamp`);}\n    }\n    const ledgerKeys={};\n    for(const line of s.ledger){\n      const key=`${line.timesheetId}:${line.sessionId}`;\n      if(ledgerKeys[key]) issues.push(`Duplicate ledger evidence ${key}`);\n      ledgerKeys[key]=true;\n      if(!line.locked) issues.push(`Ledger line ${line.id} is not locked`);\n    }\n    for(const worker of [...new Set(s.rates.map(r=>r.worker))]){\n      const rates=s.rates.filter(r=>r.worker===worker).sort((a,b)=>new Date(a.effectiveFrom)-new Date(b.effectiveFrom));\n      for(let i=1;i<rates.length;i++){\n        const prev=rates[i-1],cur=rates[i];\n        if(!prev.effectiveTo || new Date(prev.effectiveTo)>=new Date(cur.effectiveFrom)) issues.push(`Rate overlap for ${worker}: ${prev.id}/${cur.id}`);\n      }\n    }\n    s.tasks.forEach(t=>Object.assign(t,computeTask(t),{lastCalculatedAt:nowIso}));\n    s.projects.forEach(pj=>Object.assign(pj,computeProject(pj),{lastCalculatedAt:nowIso}));\n    log('reconciliation.run','system','PROJECT-02',issues.length?'Warning':'Successful',{newState:{issues,repairs}});\n    out=response({issues,repairs,dashboard:dashboard()},`Reconciliation complete: ${issues.length} issue(s), ${repairs.length} safe repair(s)`);\n    break;\n  }\n\n  case 'automation.retry': {\n    log('automation.retry','automation',p.originalExecutionId||'unknown','Successful',{newState:{retryRequested:true}});\n    out=response({accepted:true,originalExecutionId:p.originalExecutionId||null},'Retry request recorded');\n    break;\n  }\n\n  default:\n    out=fail(`Unsupported action: ${req.action}`,'UNSUPPORTED_ACTION');\n}\n\nif (dedupeKey && out?.[0]?.json?.ok) {\n  s.processedKeys[dedupeKey] = {action:req.action,executionId:$execution.id,at:nowIso};\n  const keys=Object.keys(s.processedKeys);\n  if(keys.length>300){for(const k of keys.slice(0,keys.length-300)) delete s.processedKeys[k];}\n  store.clients[clientId]=s;\n}\nreturn out;"
       },
-      "id": "monday-result",
-      "name": "Create Execution Result",
+      "id": "p02-engine",
+      "name": "Project 02 State Engine",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [120, 0]
+      "position": [
+        -160,
+        -80
+      ]
     },
     {
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ $json }}",
-        "options": {"responseCode": 200}
+        "options": {
+          "responseCode": 200
+        }
       },
-      "id": "monday-respond",
+      "id": "p02-respond",
       "name": "Respond to Portfolio",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
-      "position": [370, 0]
+      "position": [
+        120,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "p02-schedule",
+      "name": "15 Minute Reconciliation",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -420,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const store=$getWorkflowStaticData('global');\nconst now=new Date(), nowIso=now.toISOString();\nif(!store.clients) return [{json:{ok:true,clients:0,issues:0,repairs:0,at:nowIso}}];\nlet issues=0,repairs=0;\nfor(const [clientId,s] of Object.entries(store.clients)){\n  const active=(s.sessions||[]).filter(x=>x.state==='ACTIVE');\n  const grouped={};\n  for(const ses of active)(grouped[ses.worker] ||= []).push(ses);\n  for(const [worker,list] of Object.entries(grouped)){\n    if(list.length>1){\n      list.sort((a,b)=>new Date(b.start)-new Date(a.start));\n      for(const extra of list.slice(1)){\n        extra.state='CLOSED';extra.end=extra.end||nowIso;\n        extra.durationHours=Math.max(0,(new Date(extra.end)-new Date(extra.start))/3600000);\n        extra.closeReason='Scheduled reconciliation auto-close duplicate active session';repairs++;\n      }\n    }\n  }\n  const taskMap=Object.fromEntries((s.tasks||[]).map(t=>[t.id,t]));\n  for(const ses of (s.sessions||[])){\n    const t=taskMap[ses.taskId];\n    if(!t){issues++;continue;}\n    if(ses.projectId!==t.projectId){ses.projectId=t.projectId;repairs++;}\n    if(ses.state==='CLOSED'&&!ses.end)issues++;\n  }\n  const seen=new Set();\n  for(const line of (s.ledger||[])){\n    const key=`${line.timesheetId}:${line.sessionId}`;\n    if(seen.has(key))issues++; else seen.add(key);\n    if(!line.locked)issues++;\n  }\n  s.updatedAt=nowIso;\n  s.logs=s.logs||[];\n  s.logs.push({id:`AUTO-${Date.now()}-${clientId}`,actor:'Scheduled Reconciliation',action:'reconciliation.run',entityType:'system',entityId:'PROJECT-02',result:issues?'Warning':'Successful',workflow:'Project 02 State Engine',executionId:$execution.id,correlationId:`SCHEDULED-${$execution.id}`,retryCount:0,at:nowIso});\n  if(s.logs.length>500)s.logs=s.logs.slice(-500);\n}\nreturn [{json:{ok:true,clients:Object.keys(store.clients).length,issues,repairs,at:nowIso}}];"
+      },
+      "id": "p02-scheduled-reconcile",
+      "name": "Scheduled Reconciliation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        220
+      ]
     }
   ],
   "connections": {
-    "Portfolio Webhook": {"main": [[{"node": "Validate Request", "type": "main", "index": 0}]]},
-    "Validate Request": {"main": [[{"node": "Build Cross-board Operation", "type": "main", "index": 0}]]},
-    "Build Cross-board Operation": {"main": [[{"node": "Create Execution Result", "type": "main", "index": 0}]]},
-    "Create Execution Result": {"main": [[{"node": "Respond to Portfolio", "type": "main", "index": 0}]]}
+    "Project 02 Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Request": {
+      "main": [
+        [
+          {
+            "node": "Validate Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Action": {
+      "main": [
+        [
+          {
+            "node": "Project 02 State Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Project 02 State Engine": {
+      "main": [
+        [
+          {
+            "node": "Respond to Portfolio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "15 Minute Reconciliation": {
+      "main": [
+        [
+          {
+            "node": "Scheduled Reconciliation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
   "pinData": {},
   "settings": {
