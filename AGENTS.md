@@ -2,252 +2,154 @@
 
 ## Scope
 
-This repository is a professional portfolio reconstruction. The current priority is **Project 02 — Monday.com Project Operations Control Center**.
+Current priority: **Project 02 — Monday.com Project Operations Control Center**.
 
-Codex should treat this file as the operating contract for debugging and modifying Project 02.
+This is a professional portfolio reconstruction. It visually resembles a Monday.com operations workspace, but it must **not** require a real Monday.com account, token, board ID, credential, or API connection.
 
-## Core project intent
+## Current architecture — do not revert
 
-Project 02 visually reconstructs a Monday.com-style operations workspace, but it **must not require a real Monday.com account, Monday API token, Monday board IDs, or Monday credentials**.
-
-The target architecture is:
+Project 02 is intentionally implemented as **one unified routed n8n workflow**.
 
 ```text
 Portfolio Project 02 UI
         ↓
-Public n8n webhooks
+/webhook/portfolio-enterprise-operations
         ↓
-Project 02 workflow families
+01 API Ingress
         ↓
-Authoritative Project 02 state engine
-        ↓
-Synthetic portfolio data + derived calculations + audit history
+02 Action Router
+        ├─ Task Integrity & Project Sync
+        ├─ Work Session Lifecycle → Effort Rollup
+        ├─ Revision & Rework → Effort Rollup
+        ├─ Escalation & Overdue
+        ├─ Timesheet Builder & Submission
+        ├─ Timesheet Approval → Rate Resolver → Approved Work Ledger
+        ├─ Effective-Dated Rate Resolver
+        ├─ Project KPI & Dashboard Recalculation
+        └─ Reconciliation & Audit
+                 ↓
+      Unified State + Business Rules Engine
+                 ↓
+          Portfolio Response
 ```
 
-The UI should behave like a realistic Monday.com operations control center while n8n provides the backend behavior.
+A 15-minute scheduled reconciliation trigger lives in the same workflow.
 
-## Do not change these architectural decisions
+Do **not** recreate the previous 10 split Project 02 workflows. Those files were intentionally removed.
 
-- Do not add a Monday.com dependency.
-- Do not embed API keys, tokens, `.env` contents, secrets, or credentials in GitHub files.
-- Do not commit `.env`; it is intentionally git-ignored.
-- Do not move the n8n Public API key into browser JavaScript.
-- Do not collapse the system back into one giant workflow or one giant Code node merely because it is simpler.
-- Keep the central state engine as the authoritative state/calculation layer, but preserve the separate functional workflow families for architecture visibility and debugging.
-- Do not create a standalone Monday approval board. Approval evidence belongs to Timesheets & Approvals and the Approved Work Ledger.
-- Do not double-count approved rework cost. Approved Rework Cost is a subset/breakout of Approved Labor Cost.
-- Do not use hard-coded task IDs for overdue logic. Overdue must be derived from due date + terminal status.
-- Do not overwrite work-session history. Sessions are append-only evidence.
-- Do not increment derived totals indefinitely. Recompute derived totals from source evidence.
+## Project 02 files
 
-## Project 02 n8n files
-
-The core workflow is:
+Authoritative workflow source:
 
 - `n8n-workflows/01-enterprise-operations-workspace.json`
 
-The ten functional workflow families are:
-
-- `n8n-workflows/project-02/01-task-integrity.json`
-- `n8n-workflows/project-02/02-work-session-lifecycle.json`
-- `n8n-workflows/project-02/03-effort-rollup.json`
-- `n8n-workflows/project-02/04-revision-rework.json`
-- `n8n-workflows/project-02/05-escalation-overdue.json`
-- `n8n-workflows/project-02/06-timesheet-builder.json`
-- `n8n-workflows/project-02/07-approval-ledger.json`
-- `n8n-workflows/project-02/08-rate-resolver.json`
-- `n8n-workflows/project-02/09-kpi-dashboard.json`
-- `n8n-workflows/project-02/10-reconciliation-audit.json`
-
-Deployment script:
+Deployment/assembly script:
 
 - `setup-project02-n8n.ps1`
 
-Shared browser client:
+Documentation:
+
+- `n8n-workflows/README.md`
+
+Frontend integration:
 
 - `n8n-client.js`
-
-Current Project 02 demo/case-study files include:
-
 - `monday-project-ops-demo-native-v7.html`
 - `monday-project-ops-demo-native-v8.html`
 - `monday-project-ops-case-study.html`
 - `workspace-ops-project.js`
 
-## Required workflow families and responsibilities
+## Deployment behavior
 
-### 01 — Task Integrity & Project Sync
+`setup-project02-n8n.ps1` is responsible for producing the portfolio-friendly routed canvas from the authoritative Project 02 workflow source.
 
-Must enforce:
+It must:
 
-- every task has exactly one project;
-- every task has exactly one responsible worker;
-- responsible worker belongs to the project team model;
-- source/project context can be synchronized safely;
-- validation result is explicit;
-- validation activity is auditable.
+1. load local env values without printing secrets;
+2. read `N8N_API_KEY` and `N8N_BASE_URL`;
+3. verify n8n Public API authentication;
+4. remove the obsolete split Project 02 workflows if they still exist in n8n;
+5. download the single Project 02 source JSON;
+6. assemble the visible domain routing nodes/connections;
+7. create the unified workflow when missing;
+8. update it when already present;
+9. never create duplicates on rerun;
+10. use an API-compatible payload containing only `name`, `nodes`, `connections`, and `settings` unless the live instance proves additional properties are accepted;
+11. attempt activation/publish when supported;
+12. run `health.check` when the production webhook is available.
 
-### 02 — Work Session Lifecycle
+Known self-hosted n8n compatibility evidence:
 
-Must support:
+```text
+request/body Unrecognized key(s) in object: 'description'
+```
+
+Treat exact API response bodies as the source of truth. Do not assume upstream schema support equals the user's installed version.
+
+## Route/action model
+
+The unified workflow routes requests by `action`.
+
+System/state:
+
+- `health.check`
+- `state.get`
+- `state.reset`
+- `automation.retry`
+
+Task/project:
+
+- `task.validate`
+- `task.sync`
+- `task.complete`
+- `task.sendReview`
+- `task.approve`
+- `project.sync`
+
+Work sessions:
 
 - `session.start`
 - `session.pause`
 - `session.resume`
 - `session.stop`
 
-Rules:
+Revision/rework:
 
-- at most one ACTIVE session per worker;
-- Start creates a new append-only session;
-- Pause/Stop closes the current active session;
-- Resume creates a new session, never reopens or overwrites a closed session;
-- session type is ORIGINAL or REVISION;
-- every material write carries idempotency/correlation/execution metadata.
+- `revision.create`
+- `revision.update`
 
-### 03 — Effort Rollup Engine
+Escalation:
 
-Derived calculations:
+- `escalation.create`
+- `escalation.clear`
 
-```text
-Actual Original Hours = SUM(CLOSED sessions where Session Type = ORIGINAL)
-Rework Hours          = SUM(CLOSED sessions where Session Type = REVISION)
-Total Recorded Hours  = Actual Original Hours + Rework Hours
-Task Remaining Hours  = max(Planned Hours - Total Recorded Hours, 0)
-```
+Timesheets:
 
-Rollups should propagate to projects from source evidence.
+- `timesheet.build`
+- `timesheet.submit`
+- `timesheet.return`
+- `timesheet.reject`
 
-### 04 — Revision & Rework Control
+Approval/cost:
 
-Must support:
+- `timesheet.approve`
+- `ledger.post` — direct posting must remain rejected
 
-- revision creation when work is returned;
-- revision number;
-- reason/root cause;
-- assignee;
-- due date;
-- linked revision work sessions;
-- resolution evidence;
-- rework hours and approved rework cost derivation.
+Rates:
 
-Future sessions associated with an open revision should be classifiable as REVISION work.
+- `rate.resolve`
 
-### 05 — Escalation & Overdue Engine
+KPI:
 
-Must support:
+- `dashboard.refresh`
 
-- escalation create;
-- escalation clear;
-- reason/note;
-- duplicate guard;
-- scheduled overdue evaluation;
-- project risk/health/open escalation count.
+Reconciliation:
 
-Overdue rule must be dynamic:
+- `reconciliation.run`
 
-```text
-Due Date < now AND task status is not terminal
-```
+## Logical 8-data-set model
 
-Typical terminal statuses include Done/Completed/Cancelled/Approved, depending on the data model.
-
-### 06 — Timesheet Builder & Submission
-
-Must:
-
-- aggregate eligible CLOSED work sessions by worker/period;
-- keep original and rework hours separate;
-- create/update timesheet headers;
-- support submit;
-- lock or constrain submitted evidence appropriately.
-
-### 07 — Timesheet Approval & Ledger Posting
-
-Must support:
-
-- approve;
-- return;
-- reject;
-- idempotent posting;
-- locked ledger entries on approval.
-
-Ledger dimensions should include, where available:
-
-- timesheet;
-- worker;
-- project;
-- task;
-- session/revision;
-- work type;
-- approved hours;
-- applied rate ID;
-- applied rate;
-- currency;
-- approved labor cost;
-- approval date;
-- period;
-- lock state.
-
-Direct arbitrary ledger writes should remain blocked. Approval is the authoritative posting boundary.
-
-### 08 — Effective-Dated Rate Resolver
-
-Must:
-
-- validate rate gaps and overlaps;
-- resolve the applicable rate by work/session date;
-- freeze rate ID, rate value, and currency into ledger entries when approval posts;
-- preserve historical rate accuracy after future rate changes.
-
-### 09 — Project KPI & Dashboard Recalculation
-
-Must recompute from source evidence:
-
-- actual original hours;
-- rework hours;
-- total recorded hours;
-- approved hours;
-- approved labor cost;
-- approved rework cost;
-- remaining labor budget;
-- task counts;
-- overdue count;
-- escalation count;
-- progress;
-- project health;
-- Last Calculated timestamp.
-
-Critical formulas:
-
-```text
-Approved Hours       = SUM(Approved Work Ledger.Approved Hours)
-Approved Labor Cost  = SUM(Approved Work Ledger.Labor Cost)
-Approved Rework Cost = SUM(Approved Work Ledger.Labor Cost where Work Type = REVISION)
-Remaining Budget     = Approved Labor Budget - Approved Labor Cost
-```
-
-Approved Rework Cost must never be added again on top of Approved Labor Cost.
-
-### 10 — Reconciliation & Audit
-
-Must detect/report or safely repair:
-
-- orphan sessions;
-- invalid project/task links;
-- more than one active session for a worker;
-- mismatched derived rollups;
-- duplicate ledger lines;
-- rate gaps/overlaps;
-- modified locked ledger evidence;
-- stale dashboard totals;
-- failed/retried automation activity.
-
-Every material operation should be traceable through correlation ID and n8n execution ID.
-
-## Logical 8-board data model
-
-Project 02 represents these logical boards/data sets even though no real Monday workspace is connected:
+The workflow represents these logical operating data sets even though no real Monday workspace exists:
 
 1. Master Projects
 2. Master Tasks
@@ -258,7 +160,7 @@ Project 02 represents these logical boards/data sets even though no real Monday 
 7. Approved Work Ledger
 8. Activity & Automation Logs
 
-Authoritative sources:
+Authoritative source rules:
 
 - project metadata → Master Projects
 - task metadata → Master Tasks
@@ -266,150 +168,170 @@ Authoritative sources:
 - rework context → Revisions & Rework
 - approval state → Timesheets & Approvals
 - historical rates → Labor Rates
-- approved project cost → Approved Work Ledger
+- approved cost → Approved Work Ledger
 - automation history → Activity & Automation Logs
 
-## Demo/backend separation
+## Required business invariants
 
-Synthetic seed data is acceptable because this is a public portfolio reconstruction. However:
+### Task integrity
 
-- UI values should be derived consistently from the same backend state when live mode is enabled;
-- avoid separate contradictory hard-coded totals in multiple layers;
-- browser-only fallback/synthetic mode may remain, but live n8n mode should be authoritative once configured;
-- each visitor/session should be isolated using a stable `clientId` so public users do not mutate the same demo state.
+- exactly one valid project per task;
+- exactly one responsible worker per task;
+- responsible worker must belong to the project-team model;
+- derived fields remain system-controlled.
 
-## n8n compatibility rules
+### Work session lifecycle
 
-The user's self-hosted n8n Public API has already demonstrated that some optional workflow properties can be rejected.
+- at most one ACTIVE session per worker;
+- Start creates a new session;
+- Pause closes the current session;
+- Resume creates a **new** append-only session;
+- Stop closes the current session;
+- never reopen/overwrite closed session history;
+- work type is `ORIGINAL` or `REVISION`.
 
-Known observed incompatibility:
+### Effort calculations
 
 ```text
-request/body Unrecognized key(s) in object: 'description'
+Actual Original Hours = SUM(CLOSED sessions where Session Type = ORIGINAL)
+Rework Hours          = SUM(CLOSED sessions where Session Type = REVISION)
+Total Recorded Hours  = Actual Original Hours + Rework Hours
+Task Remaining Hours  = max(Planned Hours - Total Recorded Hours, 0)
 ```
 
-Therefore:
+Recompute from source evidence. Do not endlessly increment derived totals.
 
-- deployment payloads should prefer the stable core properties `name`, `nodes`, `connections`, and `settings`;
-- do not assume the user's instance accepts every field supported by current upstream n8n;
-- when debugging API errors, use the exact response body as the source of truth;
-- keep the installer backward-compatible where practical;
-- repeated deployment must update existing workflows instead of creating duplicates.
+### Revision/rework
 
-## Deployment behavior required
+Track revision number, reason/root cause, assignee, deadline, resolution evidence, linked work sessions, rework hours and rework cost. Open revision context can cause future work sessions to be classified as `REVISION`.
 
-`setup-project02-n8n.ps1` should:
+### Escalation/overdue
 
-1. load a local env file without printing secret values;
-2. read `N8N_API_KEY` and `N8N_BASE_URL`;
-3. verify `GET /api/v1/workflows` authentication;
-4. download all Project 02 JSON files from GitHub;
-5. validate the JSON before sending it;
-6. use an API-safe payload;
-7. detect existing workflows by stable names;
-8. PUT updates to existing workflows;
-9. POST only when a workflow is missing;
-10. attempt activation/publish only when supported by the user's n8n API;
-11. report per-workflow success/failure clearly;
-12. never reveal the API key in logs.
+Overdue is always dynamic:
 
-A failure in one family should identify exactly which workflow and which API response failed.
+```text
+Due Date < now AND status is not terminal
+```
 
-## Debugging priorities for Codex
+Do not use hard-coded task IDs.
 
-Work in this order unless evidence points elsewhere:
+### Timesheet/approval/ledger
 
-1. Validate every Project 02 JSON file parses as JSON.
-2. Check that node types, node parameters, connections, and type versions are internally consistent.
-3. Check all webhook paths are unique and intentional.
-4. Check all action names are consistent between portfolio UI, family workflows, and the core state engine.
-5. Check the deployment script against the actual self-hosted n8n API behavior.
-6. Check idempotent create/update behavior and duplicate prevention.
-7. Check session lifecycle invariants.
-8. Check timesheet → rate resolution → locked ledger posting.
-9. Check KPI formulas and rework-cost subset logic.
-10. Check reconciliation rules.
-11. Check browser integration only after backend workflow contracts are stable.
+Recorded time is not approved/payable time.
 
-## Tests Codex should add/run when practical
+Timesheet approval is the authoritative ledger-posting boundary.
 
-Prefer deterministic local tests that do not require live credentials.
+`ledger.post` must reject arbitrary direct posting.
 
-At minimum, build or run checks for:
+Approved ledger lines are locked and should contain, where applicable:
 
-- parse all `n8n-workflows/project-02/*.json`;
-- parse core state engine JSON;
-- assert workflow names are unique;
-- assert webhook paths are unique;
-- assert connection targets reference existing node names;
-- assert no secret-looking environment values are embedded in tracked files;
-- assert Project 02 action names are recognized consistently;
-- assert overdue logic is date/status based, not task-ID based;
-- assert approved rework cost is a subset of approved labor cost;
-- assert Resume creates a new session rather than reopening a prior session;
-- assert approval posting is idempotent;
-- assert locked ledger lines are not directly mutable.
+- timesheet
+- worker
+- project
+- task
+- session
+- revision
+- work type
+- approved hours
+- applied rate ID
+- applied rate
+- currency
+- labor cost
+- approval date
+- period
+- lock state
 
-If n8n is not installed in the Codex environment, perform structural/static workflow validation rather than pretending execution succeeded.
+### Effective-dated labor rates
 
-## Portfolio UI expectations
+Resolve the applicable rate by work/session date. Freeze rate ID, rate value and currency into ledger evidence at approval time.
 
-Project 02 should remain visually polished and believable as a Monday-style reconstruction.
+### KPI formulas
 
-Do not replace the current visual design with generic debug UI.
+```text
+Approved Hours       = SUM(Approved Work Ledger.Approved Hours)
+Approved Labor Cost  = SUM(Approved Work Ledger.Labor Cost)
+Approved Rework Cost = SUM(Labor Cost where Work Type = REVISION)
+Remaining Budget     = Approved Labor Budget - Approved Labor Cost
+```
 
-When modifying the demo:
+Approved Rework Cost is a subset/breakout of Approved Labor Cost. Never add it on top of Approved Labor Cost.
 
-- preserve the existing Monday-style visual language;
-- fix functional wiring without degrading layout;
-- avoid hard-coded production values when the live backend can provide them;
-- keep public demo data synthetic and non-sensitive;
-- keep full-screen and case-study preview layouts working.
+### Reconciliation
 
-Known prior synthetic issue to look for:
+Detect/report or safely repair:
+
+- orphan sessions;
+- invalid task/project links;
+- more than one ACTIVE session per worker;
+- mismatched rollups;
+- duplicate ledger evidence;
+- rate gaps/overlaps;
+- unlocked/modified approved ledger evidence;
+- stale dashboard totals;
+- failed/retried automation activity.
+
+Preserve correlation ID and n8n execution ID for material operations.
+
+## Portfolio UX intent
+
+The single n8n canvas is part of the portfolio presentation. Keep the routing architecture readable and visually structured. Do not collapse it to only Webhook → giant Code node → Response.
+
+It is acceptable for the authoritative state/business-rules engine to remain centralized, but the visible action router and domain sections must remain present so reviewers can understand the system architecture from the canvas.
+
+## Frontend/backend separation
+
+- The public browser calls the production webhook only.
+- Never expose `N8N_API_KEY` in frontend JavaScript.
+- Browser/demo visitors should be isolated using a stable `clientId`.
+- Synthetic demo data is allowed and expected.
+- Live n8n state should become authoritative when live mode is enabled.
+- Avoid contradictory hard-coded totals in the frontend when backend values are available.
+
+Known prior frontend issue to check:
 
 ```js
 const overdue = tasks.filter(t => ['TSK-001','TSK-002'].includes(t.id));
 ```
 
-If still present, replace it with dynamic date/status logic without breaking the visual output.
+If still present, replace it with date/status-based logic.
 
 ## Security
 
 Never:
 
 - commit `.env`;
-- print API keys in test output;
-- copy secrets into workflow JSON;
-- put the n8n Public API key in frontend JavaScript;
-- add real client/resume/recruitment data to this project.
+- print API keys;
+- embed live tokens in workflow JSON;
+- put the n8n Public API key in browser JavaScript;
+- add real confidential client/recruitment/resume data.
 
-If a test fixture needs credentials, use placeholders only.
+## Codex debugging priorities
 
-## Definition of done for the current Project 02 debugging pass
+1. Validate the single Project 02 source JSON.
+2. Validate `setup-project02-n8n.ps1` under Windows PowerShell semantics.
+3. Validate the assembled connection structure expected by n8n.
+4. Ensure reruns update one unified workflow rather than duplicating it.
+5. Ensure obsolete split workflows are removed safely.
+6. Check action routing consistency with the authoritative state engine.
+7. Check work-session invariants.
+8. Check timesheet → rate → ledger approval flow.
+9. Check KPI formulas and rework subset logic.
+10. Check reconciliation behavior.
+11. Check frontend webhook/action wiring.
 
-A successful Codex pass should leave the repository in a state where:
+## Definition of done
 
-- all 11 Project 02 workflows are structurally valid;
-- the PowerShell installer can idempotently create/update all 11 against the user's self-hosted n8n API;
-- failures are actionable and identify the exact workflow/API field causing the problem;
-- the core state engine and ten family workflows use consistent actions/contracts;
-- no Monday.com connection is required;
-- no secrets are committed;
-- the portfolio demo can be wired to the live n8n webhook without changing the business rules above;
-- a concise debug report lists tests run, failures found, files changed, remaining risks, and any manual verification still needed.
+A successful debugging pass leaves Project 02 with:
 
-## Preferred Codex output
+- exactly **one** Project 02 n8n workflow after deployment;
+- a visible action router and operational domain branches;
+- one production webhook contract;
+- consistent business rules and state;
+- no Monday.com dependency;
+- no secret exposure;
+- idempotent deployment;
+- obsolete split workflows removed;
+- structurally valid n8n nodes/connections;
+- a concise report separating runtime-tested behavior from static validation.
 
-When finished, Codex should report:
-
-```text
-1. Root cause(s)
-2. Files changed
-3. Tests/checks run
-4. n8n compatibility fixes
-5. Remaining manual verification
-6. Any unresolved risks
-```
-
-Do not claim an n8n workflow executed successfully unless it was actually executed against a compatible n8n runtime or the user's live endpoint.
+Do not claim live execution succeeded unless it was actually executed against a compatible n8n runtime or the user's live endpoint.
