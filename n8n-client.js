@@ -1,6 +1,7 @@
 (function () {
   const STORAGE_KEY = 'dcode-n8n-connections-v1';
   const projects = {
+    'monday-project-ops': { label: 'Monday.com Project Operations Control Center', path: 'portfolio-enterprise-operations' },
     monday: { label: 'Enterprise Operations Workspace', path: 'portfolio-enterprise-operations' },
     ocr: { label: 'SPX OCR Automated Encoder System', path: 'portfolio-spx-ocr' },
     'zoho-migration': { label: 'Enterprise Zoho CRM Engineering & Migration', path: 'portfolio-zoho-migration' },
