@@ -113,19 +113,47 @@ function New-CodeNode {
     }
 }
 
+function New-SwitchNode {
+    param(
+        [string]$Id,
+        [string]$Name,
+        [string]$OutputExpression,
+        [int]$NumberOutputs,
+        [int]$X,
+        [int]$Y,
+        [string]$Notes = ''
+    )
+
+    return [PSCustomObject]@{
+        parameters = [PSCustomObject]@{
+            mode = 'expression'
+            numberOutputs = $NumberOutputs
+            output = $OutputExpression
+        }
+        id = $Id
+        name = $Name
+        type = 'n8n-nodes-base.switch'
+        typeVersion = 3.2
+        position = @($X,$Y)
+        notesInFlow = $true
+        notes = $Notes
+    }
+}
+
 function New-SingleLink {
     param([Parameter(Mandatory=$true)][string]$Target)
     $edge = [PSCustomObject]@{ node=$Target; type='main'; index=0 }
     return @{ main = @(, @($edge)) }
 }
 
-function New-FanoutLink {
-    param([Parameter(Mandatory=$true)][object[]]$Targets)
-    $edges = @()
+function New-MultiOutputLink {
+    param([Parameter(Mandatory=$true)][string[]]$Targets)
+    $outputs = @()
     foreach ($target in $Targets) {
-        $edges += [PSCustomObject]@{ node=[string]$target; type='main'; index=0 }
+        $edge = [PSCustomObject]@{ node=$target; type='main'; index=0 }
+        $outputs += ,@($edge)
     }
-    return @{ main = @(, $edges) }
+    return @{ main = $outputs }
 }
 
 function Test-WorkflowStructure {
@@ -168,6 +196,11 @@ function Test-WorkflowStructure {
     if ($webhooks.Count -ne 1) {
         throw "Unified Project 02 workflow must contain exactly one webhook trigger; found $($webhooks.Count)."
     }
+
+    $actionRouter = $Workflow.nodes | Where-Object { $_.name -eq '02 - ACTION ROUTER' } | Select-Object -First 1
+    if (-not $actionRouter -or $actionRouter.type -ne 'n8n-nodes-base.switch') {
+        throw 'Unified Project 02 workflow must use a true Switch node for the main action router.'
+    }
 }
 
 function Build-UnifiedWorkflow {
@@ -186,94 +219,69 @@ function Build-UnifiedWorkflow {
         throw 'Base Project 02 workflow is missing a required core or reconciliation node.'
     }
 
-    $webhook.position = @(-1920,0)
+    $webhook.position = @(-1940,0)
     Set-ObjectProperty $webhook 'notesInFlow' $true
     Set-ObjectProperty $webhook 'notes' 'Single public ingress for all Project 02 portfolio actions.'
 
-    $normalize.position = @(-1680,0)
+    $normalize.position = @(-1690,0)
     Set-ObjectProperty $normalize 'notesInFlow' $true
     Set-ObjectProperty $normalize 'notes' 'Normalize action, client, request, correlation and payload metadata.'
 
-    $engine.position = @(620,0)
+    $engine.position = @(650,0)
     $engine.name = 'Unified State + Business Rules Engine'
     Set-ObjectProperty $engine 'notesInFlow' $true
     Set-ObjectProperty $engine 'notes' 'Authoritative state and business-rule engine for webhook-driven operations.'
 
-    $respond.position = @(910,0)
+    $respond.position = @(950,0)
     Set-ObjectProperty $respond 'notesInFlow' $true
     Set-ObjectProperty $respond 'notes' 'HTTP response terminal used only by webhook-triggered executions.'
 
-    $schedule.position = @(-1920,1030)
+    $schedule.position = @(-1940,1030)
     Set-ObjectProperty $schedule 'notesInFlow' $true
     Set-ObjectProperty $schedule 'notes' 'Independent 15-minute trigger for scheduled integrity reconciliation.'
 
-    $scheduledProcessor.position = @(-120,1030)
+    $scheduledProcessor.position = @(-80,1030)
     $scheduledProcessor.name = '10B - Execute Scheduled Reconciliation'
     Set-ObjectProperty $scheduledProcessor 'notesInFlow' $true
     Set-ObjectProperty $scheduledProcessor 'notes' 'Scans every stored demo client, applies safe repairs, and writes reconciliation audit evidence.'
 
-    $classifierCode = @'
-const a = $json.action;
-let routeKey = 'system';
-if (a?.startsWith('task.') || a === 'project.sync') routeKey = 'task';
-else if (a?.startsWith('session.')) routeKey = 'session';
-else if (a?.startsWith('revision.')) routeKey = 'revision';
-else if (a?.startsWith('escalation.')) routeKey = 'escalation';
-else if (['timesheet.build','timesheet.submit','timesheet.return','timesheet.reject'].includes(a)) routeKey = 'timesheet';
-else if (['timesheet.approve','ledger.post'].includes(a)) routeKey = 'approval';
-else if (a === 'rate.resolve') routeKey = 'rate';
-else if (a === 'dashboard.refresh') routeKey = 'kpi';
-else if (a === 'reconciliation.run') routeKey = 'reconciliation';
-return [{json:{...$json,invocationSource:'webhook',routeKey,routeTrace:['01 API Ingress','02 Action Router']}}];
+    $actionRouterExpression = @'
+={{
+  ($json.action || '').startsWith('task.') || $json.action === 'project.sync' ? 1 :
+  ($json.action || '').startsWith('session.') ? 2 :
+  ($json.action || '').startsWith('revision.') ? 3 :
+  ($json.action || '').startsWith('escalation.') ? 4 :
+  ['timesheet.build','timesheet.submit','timesheet.return','timesheet.reject'].includes($json.action) ? 5 :
+  ['timesheet.approve','ledger.post'].includes($json.action) ? 6 :
+  $json.action === 'rate.resolve' ? 7 :
+  $json.action === 'dashboard.refresh' ? 8 :
+  $json.action === 'reconciliation.run' ? 9 : 0
+}}
 '@
-    $classifier = New-CodeNode 'p02-action-router' '02 - ACTION ROUTER - Classify Request' $classifierCode -1430 0 'Route every webhook request to exactly one visible operational domain.'
+    $actionRouter = New-SwitchNode 'p02-action-router' '02 - ACTION ROUTER' $actionRouterExpression 10 -1420 0 'True 10-output router. Each webhook request leaves through exactly one action-family output.'
 
-    function Gate([string]$key,[string]$id,[string]$name,[int]$y) {
-        $code = "if (`$json.routeKey !== '$key') return []; return [{json:`$json}];"
-        return New-CodeNode $id $name $code -1170 $y "Router gate for $key actions."
+    function Section([string]$id,[string]$name,[string]$label,[string]$routeKey,[int]$y,[string]$notes) {
+        $code = "return [{json:{...`$json,invocationSource:`$json.invocationSource||'webhook',routeKey:'$routeKey',routeTrace:[...(`$json.routeTrace||[]),'$label'],workflowSection:'$label'}}];"
+        return New-CodeNode $id $name $code -1030 $y $notes
     }
 
-    function Section([string]$id,[string]$name,[string]$label,[int]$y,[string]$notes) {
-        $code = "return [{json:{...`$json,routeTrace:[...(`$json.routeTrace||[]),'$label'],workflowSection:'$label'}}];"
-        return New-CodeNode $id $name $code -880 $y $notes
-    }
+    $sSystem = Section 'p02-section-system' '00 - System / State Control' '00 System / State' 'system' -720 'Health, state read/reset, retry metadata and invalid-request handling.'
+    $sTask = Section 'p02-section-task' '01 - Task Integrity & Project Sync' '01 Task Integrity & Project Sync' 'task' -570 'Task/project validation and controlled source-field synchronization.'
+    $sSession = Section 'p02-section-session' '02 - Work Session Lifecycle' '02 Work Session Lifecycle' 'session' -420 'Start, Pause, Resume and Stop with append-only session evidence.'
+    $sRollup = Section 'p02-section-rollup' '03 - Effort Rollup Engine' '03 Effort Rollup Engine' 'rollup' -285 'Recompute original, revision, total recorded and remaining effort.'
+    $sRevision = Section 'p02-section-revision' '04 - Revision & Rework Control' '04 Revision & Rework Control' 'revision' -140 'Revision creation/resolution and rework evidence.'
+    $sEsc = Section 'p02-section-escalation' '05 - Escalation & Overdue Engine' '05 Escalation & Overdue Engine' 'escalation' 10 'Escalation create/clear and dynamic overdue/risk inputs.'
+    $sTs = Section 'p02-section-timesheet' '06 - Timesheet Builder & Submission' '06 Timesheet Builder & Submission' 'timesheet' 160 'Build from CLOSED sessions and control submit/return/reject.'
+    $sApproval = Section 'p02-section-approval' '07 - Timesheet Approval Boundary' '07 Timesheet Approval & Ledger Posting' 'approval' 310 'Approval is the authoritative cost-posting boundary.'
+    $sRate = Section 'p02-section-rate' '08 - Effective-Dated Rate Resolver' '08 Effective-Dated Rate Resolver' 'rate' 460 'Resolve historical labor rates by work date.'
+    $sLedger = Section 'p02-section-ledger' '07B - Approved Work Ledger Posting' '07B Approved Work Ledger Posting' 'ledger' 365 'Approval path freezes rate evidence and creates locked ledger cost lines.'
+    $sKpi = Section 'p02-section-kpi' '09 - Project KPI & Dashboard Recalculation' '09 Project KPI & Dashboard Recalculation' 'kpi' 610 'Recompute source-derived hours, costs, budget, overdue, progress and health.'
+    $sRecon = Section 'p02-section-reconciliation' '10 - Reconciliation & Audit' '10 Reconciliation & Audit' 'reconciliation' 760 'Shared reconciliation entry point for manual/API and scheduled executions.'
 
-    $gSystem = Gate 'system' 'p02-route-system' 'ROUTE - System / State' -720
-    $sSystem = Section 'p02-section-system' '00 - System / State Control' '00 System / State' -720 'Health, state read/reset, retry metadata and invalid-request handling.'
-
-    $gTask = Gate 'task' 'p02-route-task' 'ROUTE - Task Control' -570
-    $sTask = Section 'p02-section-task' '01 - Task Integrity & Project Sync' '01 Task Integrity & Project Sync' -570 'Task/project validation and controlled source-field synchronization.'
-
-    $gSession = Gate 'session' 'p02-route-session' 'ROUTE - Work Sessions' -420
-    $sSession = Section 'p02-section-session' '02 - Work Session Lifecycle' '02 Work Session Lifecycle' -420 'Start, Pause, Resume and Stop with append-only session evidence.'
-    $sRollup = Section 'p02-section-rollup' '03 - Effort Rollup Engine' '03 Effort Rollup Engine' -285 'Recompute original, revision, total recorded and remaining effort.'
-
-    $gRevision = Gate 'revision' 'p02-route-revision' 'ROUTE - Revisions / Rework' -140
-    $sRevision = Section 'p02-section-revision' '04 - Revision & Rework Control' '04 Revision & Rework Control' -140 'Revision creation/resolution and rework evidence.'
-
-    $gEsc = Gate 'escalation' 'p02-route-escalation' 'ROUTE - Escalation / Overdue' 10
-    $sEsc = Section 'p02-section-escalation' '05 - Escalation & Overdue Engine' '05 Escalation & Overdue Engine' 10 'Escalation create/clear and dynamic overdue/risk inputs.'
-
-    $gTs = Gate 'timesheet' 'p02-route-timesheet' 'ROUTE - Timesheets' 160
-    $sTs = Section 'p02-section-timesheet' '06 - Timesheet Builder & Submission' '06 Timesheet Builder & Submission' 160 'Build from CLOSED sessions and control submit/return/reject.'
-
-    $gApproval = Gate 'approval' 'p02-route-approval' 'ROUTE - Approval / Ledger' 310
-    $sApproval = Section 'p02-section-approval' '07 - Timesheet Approval Boundary' '07 Timesheet Approval & Ledger Posting' 310 'Approval is the authoritative cost-posting boundary.'
-
-    $gRate = Gate 'rate' 'p02-route-rate' 'ROUTE - Labor Rate' 460
-    $sRate = Section 'p02-section-rate' '08 - Effective-Dated Rate Resolver' '08 Effective-Dated Rate Resolver' 460 'Resolve historical labor rates by work date.'
-    $sLedger = Section 'p02-section-ledger' '07B - Approved Work Ledger Posting' '07B Approved Work Ledger Posting' 365 'Approval path freezes rate evidence and creates locked ledger cost lines.'
-
-    $rateApprovalGateCode = "if (`$json.routeKey !== 'approval') return []; return [{json:`$json}];"
-    $rateLookupGateCode = "if (`$json.routeKey !== 'rate') return []; return [{json:`$json}];"
-    $gRateApproval = New-CodeNode 'p02-rate-approval-gate' 'ROUTE - Approved Cost Posting' $rateApprovalGateCode -590 390 'Continue approval requests into locked ledger posting.'
-    $gRateLookup = New-CodeNode 'p02-rate-lookup-gate' 'ROUTE - Rate Lookup Result' $rateLookupGateCode -590 500 'Return standalone rate resolution directly to the shared engine.'
-
-    $gKpi = Gate 'kpi' 'p02-route-kpi' 'ROUTE - KPI / Dashboard' 610
-    $sKpi = Section 'p02-section-kpi' '09 - Project KPI & Dashboard Recalculation' '09 Project KPI & Dashboard Recalculation' 610 'Recompute source-derived hours, costs, budget, overdue, progress and health.'
-
-    $gRecon = Gate 'reconciliation' 'p02-route-reconciliation' 'ROUTE - Reconciliation' 760
-    $sRecon = Section 'p02-section-reconciliation' '10 - Reconciliation & Audit' '10 Reconciliation & Audit' 760 'Shared reconciliation entry point for manual/API and scheduled executions.'
+    $rateRouterExpression = @'
+={{ ['timesheet.approve','ledger.post'].includes($json.action) ? 0 : 1 }}
+'@
+    $rateRouter = New-SwitchNode 'p02-rate-router' '08B - RATE / COST ROUTER' $rateRouterExpression 2 -610 430 'Approval continues to locked ledger posting; standalone rate lookup returns to the shared engine.'
 
     $prepareScheduledCode = @'
 return [{json:{
@@ -289,12 +297,12 @@ return [{json:{
   receivedAt:new Date().toISOString()
 }}];
 '@
-    $prepareScheduled = New-CodeNode 'p02-prepare-scheduled-reconciliation' 'Build Scheduled Reconciliation Request' $prepareScheduledCode -1660 1030 'Convert the schedule trigger into the same reconciliation request contract.'
+    $prepareScheduled = New-CodeNode 'p02-prepare-scheduled-reconciliation' 'Build Scheduled Reconciliation Request' $prepareScheduledCode -1680 1030 'Convert the schedule trigger into the same reconciliation request contract.'
 
-    $manualReconGateCode = "if (`$json.invocationSource === 'schedule') return []; return [{json:`$json}];"
-    $scheduledReconGateCode = "if (`$json.invocationSource !== 'schedule') return []; return [{json:`$json}];"
-    $manualReconGate = New-CodeNode 'p02-manual-recon-gate' 'ROUTE - Manual / API Reconciliation' $manualReconGateCode -590 720 'Manual/API reconciliation continues through the authoritative state engine.'
-    $scheduledReconGate = New-CodeNode 'p02-scheduled-recon-gate' 'ROUTE - Scheduled Reconciliation' $scheduledReconGateCode -590 860 'Scheduled reconciliation executes the all-client scheduled processor.'
+    $reconRouterExpression = @'
+={{ $json.invocationSource === 'schedule' ? 1 : 0 }}
+'@
+    $reconRouter = New-SwitchNode 'p02-reconciliation-source-router' '10A - RECONCILIATION SOURCE ROUTER' $reconRouterExpression 2 -610 790 'Manual/API reconciliation goes to the shared engine; scheduled reconciliation goes to the all-client scheduled processor.'
 
     $scheduledSummaryCode = @'
 return [{json:{
@@ -307,71 +315,52 @@ return [{json:{
   completedAt:$json.at||new Date().toISOString()
 }}];
 '@
-    $scheduledSummary = New-CodeNode 'p02-scheduled-audit-summary' 'Scheduled Audit Summary' $scheduledSummaryCode 180 1030 'Normal non-HTTP terminal for scheduled runs. The output remains in n8n execution history.'
+    $scheduledSummary = New-CodeNode 'p02-scheduled-audit-summary' 'Scheduled Audit Summary' $scheduledSummaryCode 220 1030 'Normal non-HTTP terminal for scheduled runs. The output remains in n8n execution history.'
 
     $Workflow.nodes = @(
-        $webhook,$normalize,$classifier,
-        $gSystem,$sSystem,
-        $gTask,$sTask,
-        $gSession,$sSession,$sRollup,
-        $gRevision,$sRevision,
-        $gEsc,$sEsc,
-        $gTs,$sTs,
-        $gApproval,$sApproval,
-        $gRate,$sRate,$gRateApproval,$gRateLookup,$sLedger,
-        $gKpi,$sKpi,
-        $gRecon,$sRecon,$manualReconGate,$scheduledReconGate,
+        $webhook,$normalize,$actionRouter,
+        $sSystem,$sTask,$sSession,$sRollup,$sRevision,$sEsc,$sTs,$sApproval,$sRate,$rateRouter,$sLedger,$sKpi,$sRecon,$reconRouter,
         $engine,$respond,
         $schedule,$prepareScheduled,$scheduledProcessor,$scheduledSummary
     )
 
-    $routerTargets = @(
-        $gSystem.name,$gTask.name,$gSession.name,$gRevision.name,$gEsc.name,
-        $gTs.name,$gApproval.name,$gRate.name,$gKpi.name,$gRecon.name
-    )
-
     $c = [ordered]@{}
     $c[$webhook.name] = New-SingleLink $normalize.name
-    $c[$normalize.name] = New-SingleLink $classifier.name
-    $c[$classifier.name] = New-FanoutLink $routerTargets
+    $c[$normalize.name] = New-SingleLink $actionRouter.name
+    $c[$actionRouter.name] = New-MultiOutputLink @(
+        $sSystem.name,
+        $sTask.name,
+        $sSession.name,
+        $sRevision.name,
+        $sEsc.name,
+        $sTs.name,
+        $sApproval.name,
+        $sRate.name,
+        $sKpi.name,
+        $sRecon.name
+    )
 
-    $c[$gSystem.name] = New-SingleLink $sSystem.name
     $c[$sSystem.name] = New-SingleLink $engine.name
-
-    $c[$gTask.name] = New-SingleLink $sTask.name
     $c[$sTask.name] = New-SingleLink $engine.name
 
-    $c[$gSession.name] = New-SingleLink $sSession.name
     $c[$sSession.name] = New-SingleLink $sRollup.name
-
-    $c[$gRevision.name] = New-SingleLink $sRevision.name
     $c[$sRevision.name] = New-SingleLink $sRollup.name
     $c[$sRollup.name] = New-SingleLink $engine.name
 
-    $c[$gEsc.name] = New-SingleLink $sEsc.name
     $c[$sEsc.name] = New-SingleLink $engine.name
-
-    $c[$gTs.name] = New-SingleLink $sTs.name
     $c[$sTs.name] = New-SingleLink $engine.name
 
-    $c[$gApproval.name] = New-SingleLink $sApproval.name
     $c[$sApproval.name] = New-SingleLink $sRate.name
-
-    $c[$gRate.name] = New-SingleLink $sRate.name
-    $c[$sRate.name] = New-FanoutLink @($gRateApproval.name,$gRateLookup.name)
-    $c[$gRateApproval.name] = New-SingleLink $sLedger.name
+    $c[$sRate.name] = New-SingleLink $rateRouter.name
+    $c[$rateRouter.name] = New-MultiOutputLink @($sLedger.name,$engine.name)
     $c[$sLedger.name] = New-SingleLink $engine.name
-    $c[$gRateLookup.name] = New-SingleLink $engine.name
 
-    $c[$gKpi.name] = New-SingleLink $sKpi.name
     $c[$sKpi.name] = New-SingleLink $engine.name
 
-    $c[$gRecon.name] = New-SingleLink $sRecon.name
     $c[$schedule.name] = New-SingleLink $prepareScheduled.name
     $c[$prepareScheduled.name] = New-SingleLink $sRecon.name
-    $c[$sRecon.name] = New-FanoutLink @($manualReconGate.name,$scheduledReconGate.name)
-    $c[$manualReconGate.name] = New-SingleLink $engine.name
-    $c[$scheduledReconGate.name] = New-SingleLink $scheduledProcessor.name
+    $c[$sRecon.name] = New-SingleLink $reconRouter.name
+    $c[$reconRouter.name] = New-MultiOutputLink @($engine.name,$scheduledProcessor.name)
     $c[$scheduledProcessor.name] = New-SingleLink $scheduledSummary.name
 
     $c[$engine.name] = New-SingleLink $respond.name
@@ -524,9 +513,9 @@ try {
     Write-Host "Workflow name: $($deployed.name)"
     Write-Host "Workflow ID:   $($deployed.id)"
     Write-Host 'Webhook path:  portfolio-enterprise-operations'
-    Write-Host 'Scheduled path: Schedule -> Build Request -> 10 Reconciliation & Audit -> Scheduled Processor -> Scheduled Audit Summary'
+    Write-Host 'Routing:       true Switch outputs; one request -> one operational branch'
+    Write-Host 'Scheduled path: Schedule -> Build Request -> Reconciliation -> Source Switch -> Scheduled Processor -> Summary'
 
-    # Cleanup happens only after the unified workflow has been successfully deployed.
     foreach ($old in $legacySplit) {
         [void](Remove-N8nWorkflow -Workflow $old)
     }
@@ -559,5 +548,5 @@ try {
 
 Write-Host ''
 Write-Host 'Project 02 is intentionally ONE routed n8n workflow.' -ForegroundColor Cyan
-Write-Host 'The scheduled reconciliation branch now has a complete execution/output path.'
+Write-Host 'Main routing now uses actual multi-output Switch nodes rather than broadcast/filter gates.'
 Write-Host 'No Monday.com connection is required.'
