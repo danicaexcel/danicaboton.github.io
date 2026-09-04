@@ -2,21 +2,21 @@
   if(!Array.isArray(window.DCODE_PROJECTS)) return;
   const orderMap={
     recruitment:'01',
-    'workspace-ops':'02',
-    monday:'03',
-    portal:'04',
-    ocr:'05',
-    'zoho-migration':'06',
-    sheets:'07',
-    'ops-dashboard':'08',
-    'monday-project-ops':'09'
+    'monday-project-ops':'02',
+    'workspace-ops':'03',
+    monday:'04',
+    portal:'05',
+    ocr:'06',
+    'zoho-migration':'07',
+    sheets:'08',
+    'ops-dashboard':'09'
   };
   window.DCODE_PROJECTS.forEach(project=>{if(orderMap[project.id]) project.order=orderMap[project.id];});
 
   if(!window.DCODE_PROJECTS.some(p=>p.id==='workspace-ops')){
     window.DCODE_PROJECTS.splice(Math.min(1,window.DCODE_PROJECTS.length),0,{
       id:'workspace-ops',
-      order:'02',
+      order:'03',
       category:'Google Workspace · Project Operations',
       title:'Google Workspace Project Operations System',
       subtitle:'A Google-powered project management workspace connecting task execution, live work-session tracking, planned-versus-actual man-hours, revisions, approvals, and project labor-cost reporting.',
@@ -47,7 +47,7 @@
   if(!window.DCODE_PROJECTS.some(p=>p.id==='monday-project-ops')){
     window.DCODE_PROJECTS.push({
       id:'monday-project-ops',
-      order:'09',
+      order:'02',
       category:'Monday.com · Project Operations',
       title:'Monday.com Project Operations Control Center',
       subtitle:'A connected Monday.com project-operations workspace that translates the Project Operations model into portfolio boards, execution tracking, append-only work sessions, revisions, approvals, labor rates, audit history, and management reporting.',
@@ -74,4 +74,5 @@
   }
 
   window.DCODE_PROJECTS.forEach(project=>{if(orderMap[project.id]) project.order=orderMap[project.id];});
+  window.DCODE_PROJECTS.sort((a,b)=>Number(a.order||99)-Number(b.order||99));
 })();
