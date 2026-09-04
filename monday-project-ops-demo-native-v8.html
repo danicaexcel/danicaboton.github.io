@@ -7,7 +7,7 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#native{display:block;width:100%;height:100%;border:0;background:#fff}</style>
 </head>
 <body>
-<iframe id="native" src="monday-project-ops-demo-native-v7.html?v=20260903-herofit4" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
+<iframe id="native" src="monday-project-ops-demo-native-v7.html?v=20260904-native-table1" title="Interactive Monday.com Project Operations Control Center reconstruction" allowfullscreen></iframe>
 <script>
 (function(){
   const outer=document.getElementById('native');
@@ -18,6 +18,7 @@
     user:svg('<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.4-3.2 2.3-5 5.5-5s5.1 1.8 5.5 5"/><path d="M18 8v6M15 11h6"/>'),
     puzzle:svg('<path d="M8.5 4H4v5.1a2.5 2.5 0 1 1 0 4.8V20h5.1a2.5 2.5 0 1 0 4.8 0H20v-5.1a2.5 2.5 0 1 0 0-4.8V4h-5.1a2.5 2.5 0 1 1-4.8 0H8.5Z"/>')
   };
+
   function fitCaseStudyPreview(){
     try{
       const frame=window.frameElement;
@@ -39,10 +40,11 @@
         display.style.setProperty('overflow','hidden','important');
       };
       fit();
-      if('ResizeObserver' in window){new ResizeObserver(fit).observe(display)}
+      if('ResizeObserver' in window)new ResizeObserver(fit).observe(display);
       else window.addEventListener('resize',fit);
     }catch(e){}
   }
+
   function deepestDoc(){
     try{
       let doc=outer.contentDocument;if(!doc)return null;
@@ -54,10 +56,10 @@
       return doc;
     }catch(e){return null}
   }
+
   function ensureStyle(doc){
-    let style=doc.getElementById('project09-stable-quality-style');
-    if(style)return;
-    style=doc.createElement('style');style.id='project09-stable-quality-style';
+    if(doc.getElementById('project02-native-widget-style'))return;
+    const style=doc.createElement('style');style.id='project02-native-widget-style';
     style.textContent=`
       .native-top-right{margin-left:auto!important;display:flex!important;align-items:center!important;gap:8px!important;height:48px!important;color:#323338!important}
       .native-top-icon.current-nav-icon{width:27px!important;min-width:27px!important;height:32px!important;display:grid!important;place-items:center!important;position:relative!important;color:#323338!important}
@@ -71,31 +73,45 @@
       .native-avatar.current-avatar{width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important;background:#f62b54!important;color:#fff!important;font-weight:700!important;font-size:12px!important;display:grid!important;place-items:center!important;margin-left:2px!important}
       .native-quality-chart{padding:18px 18px 15px!important;background:#fff!important}
       .native-quality-chart .barrow{grid-template-columns:92px 1fr 48px!important;margin:18px 0!important}
-      .native-quality-chart .bars{gap:0!important;overflow:visible!important}
-      .native-quality-chart .bar{height:22px!important;border-radius:2px!important;display:block!important}
-      .native-quality-chart .bar.utilization{background:#bb3354!important}
-      .native-quality-chart .bar.rework-rate{background:#4eccc6!important}
+      .native-quality-chart .bars{gap:0!important;overflow:visible!important}.native-quality-chart .bar{height:22px!important;border-radius:2px!important;display:block!important}
+      .native-quality-chart .bar.utilization{background:#bb3354!important}.native-quality-chart .bar.rework-rate{background:#4eccc6!important}
       .native-quality-chart .legend span:before{background:#bb3354!important}.native-quality-chart .legend span+span:before{background:#4eccc6!important}
       .native-quality-chart b{white-space:nowrap!important;color:#323338!important;font-variant-numeric:tabular-nums!important}
+
+      .native-working-table-widget{grid-column:1/-1!important;min-height:214px!important;padding:0!important;overflow:hidden!important;border:1px solid #d0d4e4!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important}
+      .native-working-table-widget .panel-title,.native-working-table-widget>.monday-dw-head{display:none!important}
+      .mwt-head{height:44px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 12px 0 16px;border-bottom:1px solid #d0d4e4;background:#fff;color:#323338}
+      .mwt-title{min-width:0;display:flex;align-items:baseline;gap:10px}.mwt-title strong{font-size:14px;font-weight:500;white-space:nowrap}.mwt-title span{font-size:10px;color:#8a8f9e;white-space:nowrap}
+      .mwt-tools{display:flex;align-items:center;gap:8px;color:#53576a}.mwt-filter{height:28px;border:1px solid #c3c7d5;border-radius:4px;background:#fff;color:#53576a;padding:0 9px;font:400 11px/1 Arial,sans-serif}.mwt-more{width:28px;height:28px;border:0;background:transparent;color:#53576a;font-size:17px;letter-spacing:1px}
+      .mwt-scroll{width:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.mwt-scroll::-webkit-scrollbar{display:none;width:0;height:0}
+      .mwt-table{width:100%;min-width:890px;border-collapse:collapse;table-layout:fixed;background:#fff;color:#323338;font-size:11px}
+      .mwt-table th{height:34px;padding:0 12px;text-align:left;background:#f6f7fb;color:#676879;font-weight:500;border-bottom:1px solid #d0d4e4;border-right:1px solid #e6e9ef;white-space:nowrap}
+      .mwt-table td{height:45px;padding:0 12px;border-bottom:1px solid #e6e9ef;border-right:1px solid #eef0f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+      .mwt-table tr:last-child td{border-bottom:0}.mwt-table th:last-child,.mwt-table td:last-child{border-right:0}
+      .mwt-table th:nth-child(1),.mwt-table td:nth-child(1){width:29%}.mwt-table th:nth-child(2),.mwt-table td:nth-child(2){width:17%}.mwt-table th:nth-child(3),.mwt-table td:nth-child(3){width:14%}.mwt-table th:nth-child(4),.mwt-table td:nth-child(4){width:19%}.mwt-table th:nth-child(5),.mwt-table td:nth-child(5){width:11%}.mwt-table th:nth-child(6),.mwt-table td:nth-child(6){width:10%}
+      .mwt-task{font-weight:500;color:#323338}.mwt-person{display:flex;align-items:center;gap:8px;min-width:0}.mwt-avatar{width:26px;height:26px;min-width:26px;border-radius:50%;display:grid;place-items:center;background:#cce5ff;color:#323338;font-size:9px;font-weight:600}.mwt-person span:last-child{overflow:hidden;text-overflow:ellipsis}
+      .mwt-status{display:inline-flex;align-items:center;justify-content:center;min-width:82px;height:25px;border-radius:3px;padding:0 8px;font-size:10px;font-weight:500;background:#fdab3d;color:#323338}.mwt-status.done{background:#00c875;color:#fff}.mwt-status.stuck{background:#e2445c;color:#fff}.mwt-status.review{background:#579bfc;color:#fff}
+      .mwt-empty{height:72px;text-align:center!important;color:#8a8f9e!important}
+      @media(max-width:720px){.native-working-table-widget{min-height:190px!important}.mwt-title span{display:none}.mwt-table{min-width:760px}.mwt-filter{display:none}}
     `;
     doc.head.appendChild(style);
   }
+
   function ensureTopNav(doc){
     const global=doc.querySelector('.global');if(!global)return;
     let right=global.querySelector('.native-top-right');
     if(!right){right=doc.createElement('div');right.className='native-top-right';global.appendChild(right)}
-    if(right.dataset.currentMondayTopnav==='4')return;
-    right.dataset.currentMondayTopnav='4';
+    if(right.dataset.currentMondayTopnav==='5')return;
+    right.dataset.currentMondayTopnav='5';
     right.innerHTML=`
       <span class="native-top-icon current-nav-icon" title="Notifications">${icons.bell}</span>
       <span class="native-top-icon current-nav-icon" title="Inbox">${icons.inbox}<span class="count">28</span></span>
       <span class="native-top-icon current-nav-icon" title="Invite members">${icons.user}</span>
       <span class="native-top-icon current-nav-icon" title="Apps">${icons.puzzle}<span class="red-dot"></span></span>
-      <span class="native-top-question" title="Help">?</span>
-      <span class="native-top-divider" aria-hidden="true"></span>
-      <span class="native-top-icon current-nav-icon" title="Products"><span class="native-appgrid current-appgrid">${'<i></i>'.repeat(9)}</span></span>
-      <span class="native-avatar current-avatar">T&</span>`;
+      <span class="native-top-question" title="Help">?</span><span class="native-top-divider" aria-hidden="true"></span>
+      <span class="native-top-icon current-nav-icon" title="Products"><span class="native-appgrid current-appgrid">${'<i></i>'.repeat(9)}</span></span><span class="native-avatar current-avatar">T&</span>`;
   }
+
   function ensureQuality(doc){
     const dashboard=doc.querySelector('.dashboard');if(!dashboard)return;
     let quality=[...dashboard.querySelectorAll('section.card')].find(card=>/Effort Quality/i.test(card.textContent));
@@ -103,34 +119,50 @@
     let host=quality;
     const parent=quality.parentElement&&quality.parentElement.closest('section.card');
     if(parent&&parent!==quality&&/^\s*Widget\b/i.test(parent.textContent||''))host=parent;
-    const alreadyCorrect=host.dataset.qualityFixed==='4' && host.querySelector('[data-quality-util]')?.textContent==='72%' && host.querySelector('[data-quality-rework]')?.textContent==='8%';
-    if(alreadyCorrect)return;
-    host.dataset.nativeQualityChart='1';
-    host.dataset.currentQualityChart='1';
-    host.dataset.qualityFixed='4';
-    host.innerHTML=`
-      <div class="monday-dw-head"><span>Effort Quality — Utilization vs Rework</span><div class="monday-dw-tools"><span title="Filter">▽</span><span class="monday-dw-more">...</span></div></div>
-      <div class="chart native-quality-chart">
-        <div class="barrow"><span>Utilization</span><div class="bars"><i class="bar utilization" style="width:72%"></i></div><b data-quality-util>72%</b></div>
-        <div class="barrow"><span>Rework rate</span><div class="bars"><i class="bar rework-rate" style="width:8%"></i></div><b data-quality-rework>8%</b></div>
-        <div class="legend"><span>Utilization</span><span>Rework rate</span></div>
-      </div>`;
+    if(host.dataset.qualityFixed==='5')return;
+    host.dataset.nativeQualityChart='1';host.dataset.currentQualityChart='1';host.dataset.qualityFixed='5';
+    host.innerHTML=`<div class="monday-dw-head"><span>Effort Quality — Utilization vs Rework</span><div class="monday-dw-tools"><span title="Filter">▽</span><span class="monday-dw-more">...</span></div></div><div class="chart native-quality-chart"><div class="barrow"><span>Utilization</span><div class="bars"><i class="bar utilization" style="width:72%"></i></div><b data-quality-util>72%</b></div><div class="barrow"><span>Rework rate</span><div class="bars"><i class="bar rework-rate" style="width:8%"></i></div><b data-quality-rework>8%</b></div><div class="legend"><span>Utilization</span><span>Rework rate</span></div></div>`;
   }
+
+  function ensureWorkingTable(doc){
+    if(doc.getElementById('monday-working-table-script')){
+      try{doc.defaultView.__applyMondayWorkingTable&&doc.defaultView.__applyMondayWorkingTable()}catch(e){}
+      return;
+    }
+    const script=doc.createElement('script');script.id='monday-working-table-script';
+    script.textContent=`
+      (function(){
+        function esc(v){return String(v==null?'':v).replace(/[&<>\"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]})}
+        function initials(name){return String(name||'').split(/\\s+/).filter(Boolean).slice(0,2).map(function(x){return x[0]}).join('').toUpperCase()||'—'}
+        function statusClass(status){var s=String(status||'').toLowerCase();if(/done|complete/.test(s))return 'done';if(/stuck|blocked/.test(s))return 'stuck';if(/review/.test(s))return 'review';return ''}
+        function tracked(value){if(value===0)return '0 h';if(value==null||value==='')return '—';if(typeof value==='number')return value+' h';var text=String(value);return /h|m/.test(text)?text:text+' h'}
+        function findWidget(){var m=[].slice.call(document.querySelectorAll('section.card')).filter(function(card){return /Working Now/i.test(card.textContent||'')});m.sort(function(a,b){return(a.textContent||'').length-(b.textContent||'').length});return m[0]||null}
+        function apply(){
+          var widget=findWidget();if(!widget)return false;if(widget.dataset.nativeWorkingTable==='3')return true;
+          var source=[];try{if(typeof tasks!=='undefined'&&Array.isArray(tasks))source=tasks.slice()}catch(e){}
+          var active=source.filter(function(t){return /working|progress|started/i.test(String(t.status||''))});var rows=(active.length?active:source).slice(0,4);
+          widget.classList.add('native-working-table-widget');widget.dataset.nativeWorkingTable='3';
+          widget.innerHTML='<div class="mwt-head"><div class="mwt-title"><strong>Working Now</strong><span>Table widget · active tasks</span></div><div class="mwt-tools"><button class="mwt-filter" type="button">Working on it ▾</button><button class="mwt-more" type="button" aria-label="Widget options">...</button></div></div><div class="mwt-scroll"><table class="mwt-table"><thead><tr><th>Task</th><th>Person</th><th>Status</th><th>Project</th><th>Due date</th><th>Time tracked</th></tr></thead><tbody>'+(rows.length?rows.map(function(t){var name=t.person||t.owner||'Unassigned',status=t.status||'Working on it';return '<tr><td class="mwt-task">'+esc(t.item||t.name||t.id||'Task')+'</td><td><div class="mwt-person"><span class="mwt-avatar">'+esc(initials(name))+'</span><span>'+esc(name)+'</span></div></td><td><span class="mwt-status '+statusClass(status)+'">'+esc(status)+'</span></td><td>'+esc(t.project||'—')+'</td><td>'+esc(t.deadline||t.due||'—')+'</td><td>'+esc(tracked(t.recorded!=null?t.recorded:t.actual))+'</td></tr>'}).join(''):'<tr><td colspan="6" class="mwt-empty">No active tasks</td></tr>')+'</tbody></table></div>';
+          return true;
+        }
+        window.__applyMondayWorkingTable=apply;apply();
+        var screen=document.getElementById('screen');if(screen&&!screen.dataset.nativeWorkingTableObserved){screen.dataset.nativeWorkingTableObserved='1';var queued=false;new MutationObserver(function(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;apply()})}).observe(screen,{childList:true,subtree:true})}
+      })();`;
+    doc.body.appendChild(script);
+  }
+
   function install(){
     const doc=deepestDoc();if(!doc||!doc.getElementById('screen'))return false;
-    ensureStyle(doc);ensureTopNav(doc);ensureQuality(doc);return true;
+    ensureStyle(doc);ensureTopNav(doc);ensureQuality(doc);ensureWorkingTable(doc);return true;
   }
+
   function start(){
     fitCaseStudyPreview();
     let attempts=0;
     const timer=setInterval(()=>{attempts++;install();if(attempts>300)clearInterval(timer)},100);
     const observerTimer=setInterval(()=>{
       const doc=deepestDoc(),screen=doc&&doc.getElementById('screen');
-      if(screen&&!screen.dataset.project09StableObserved4){
-        screen.dataset.project09StableObserved4='1';
-        new MutationObserver(()=>requestAnimationFrame(install)).observe(screen,{childList:true,subtree:true});
-        clearInterval(observerTimer);
-      }
+      if(screen&&!screen.dataset.project02NativeObserved5){screen.dataset.project02NativeObserved5='1';new MutationObserver(()=>requestAnimationFrame(install)).observe(screen,{childList:true,subtree:true});clearInterval(observerTimer)}
     },150);
     setTimeout(()=>clearInterval(observerTimer),30000);
   }
