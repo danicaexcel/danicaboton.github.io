@@ -3,8 +3,16 @@
   const RETIRED_PROJECTS = new Set();
   const HIDDEN_PROJECTS = new Set(['sheets','ops-dashboard']);
 
+  function currentProjectId() {
+    const queryId = new URLSearchParams(location.search).get('id');
+    if (queryId) return queryId;
+    if (/monday-project-ops-case-study\.html$/.test(location.pathname)) return 'monday-project-ops';
+    if (/workspace-ops-case-study\.html$/.test(location.pathname)) return 'workspace-ops';
+    return null;
+  }
+
   function removeRetiredProjects() {
-    const currentId = new URLSearchParams(location.search).get('id');
+    const currentId = currentProjectId();
     if (RETIRED_PROJECTS.has(currentId) && !/index\.html$/.test(location.pathname)) {
       location.replace('index.html#work');
       return;
@@ -107,8 +115,7 @@
       if (projectUsesN8n(project)) addWorkflowButton(card.querySelector('.projectactions'));
     });
 
-    const caseId = new URLSearchParams(location.search).get('id');
-    const caseProject = window.DCODE_PROJECTS.find(item => item.id === caseId);
+    const caseProject = window.DCODE_PROJECTS.find(item => item.id === currentProjectId());
     if (projectUsesN8n(caseProject)) {
       addWorkflowButton(document.querySelector('.casehero .actions'));
       addWorkflowButton(document.querySelector('.demo-cta .actions'));
@@ -132,7 +139,7 @@
   }
 
   function loadSpxEnhancement() {
-    const currentId = new URLSearchParams(location.search).get('id');
+    const currentId = currentProjectId();
     let src = '';
     if (document.querySelector('.project[data-id="ocr"]')) src = 'spx-index.js?v=20260903-spx-ops2';
     else if (currentId === 'ocr' && /case-study\.html$/.test(location.pathname)) src = 'spx-case-study.js?v=20260903-spx-ops2';
@@ -146,10 +153,10 @@
 
   function loadWorkspaceOpsEnhancement() {
     const finish = () => {
-      const currentId = new URLSearchParams(location.search).get('id');
+      const currentId = currentProjectId();
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260903-monday-nativewidgets2';
+        home.src = 'workspace-ops-home.js?v=20260904-project-order2';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
@@ -163,12 +170,12 @@
       }
       removeHiddenProjects();
     };
-    if (window.DCODE_PROJECTS?.some(p => p.id === 'workspace-ops')) { finish(); return; }
+    if (window.DCODE_PROJECTS?.some(p => p.id === 'workspace-ops') && window.DCODE_PROJECTS?.some(p => p.id === 'monday-project-ops')) { finish(); return; }
     if (!window.DCODE_PROJECTS) return;
     const existing = document.querySelector('script[data-workspace-project]');
     if (existing) { existing.addEventListener('load', finish, {once:true}); return; }
     const projectScript = document.createElement('script');
-    projectScript.src = 'workspace-ops-project.js?v=20260903-workspace-ops3';
+    projectScript.src = 'workspace-ops-project.js?v=20260904-project-order2';
     projectScript.dataset.workspaceProject = '1';
     projectScript.addEventListener('load', finish, {once:true});
     document.body.appendChild(projectScript);
