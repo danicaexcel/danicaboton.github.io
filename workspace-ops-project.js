@@ -56,9 +56,9 @@
       stack:['Monday.com','Monday Automations','n8n','Monday API','Dashboards','Gantt / Timeline'],
       metrics:[['7','connected boards'],['20','operational views'],['9','native automations'],['9','advanced workflows specified']],
       problem:'Project tracking alone does not provide reliable evidence of work sessions, rework, approvals, labor cost, or operational audit history. The requirement was to convert the existing Project Operations model into Monday.com without mixing it into the pre-existing workspace structures.',
-      solution:'I structured an isolated [N]-prefixed Monday.com operating system around connected project, task, work-session, revision, timesheet, labor-rate, and activity-log boards. Native Monday views and automations handle platform-level operations, while advanced cross-board controls such as one-active-session enforcement, append-only session handling, aggregation, and audit orchestration are designed for n8n and the Monday API.',
+      solution:'I structured an isolated Monday.com operating system around connected project, task, work-session, revision, timesheet, labor-rate, and activity-log boards. Native Monday views and automations handle platform-level operations, while advanced cross-board controls such as one-active-session enforcement, append-only session handling, aggregation, and audit orchestration are designed for n8n and the Monday API.',
       built:[
-        'Seven isolated [N]-prefixed boards for projects, tasks, work sessions, revisions and rework, timesheets and approvals, labor rates, and activity / automation logs.',
+        'Seven isolated boards for projects, tasks, work sessions, revisions and rework, timesheets and approvals, labor rates, and activity / automation logs.',
         'Connected-board relationships from Project → Task → Work Session, with revisions, approvals, labor rates, and audit records tied back to the same operating model.',
         'Complete project and task schemas covering owners, members, dates, timelines, planned and actual effort, approvals, rework, cost, progress, health, and audit fields.',
         'Twenty operational views spanning active/at-risk/completed projects, My Tasks, overdue work, review/revision queues, active sessions, approvals, calendars, and timelines.',
@@ -66,8 +66,8 @@
         'Project Operations Control Center dashboard for portfolio KPIs, planned-versus-actual effort, task state, rework, labor cost, budget variance, timeline, and workload.',
         'n8n workflow specifications for one-active-session enforcement, Start/Pause/Resume/Complete, duration and recorded-hour aggregation, revision classification, timesheet generation, labor-cost calculation, and audit logging.'
       ],
-      architecture:['[N] Master Projects','[N] Master Tasks','[N] Work Sessions','[N] Revisions & Rework','[N] Timesheets & Approvals','[N] Labor Rates','[N] Activity & Automation Logs','Monday Native Views','Monday Automations','n8n + Monday API'],
-      reliability:['Existing non-[N] boards isolated','Append-only work-session model','One-active-session rule designed fail-safe','Approved hours drive labor cost','Rework remains separately measurable','Connected-board source of truth','Audit records for major state changes','Native-first automation boundary'],
+      architecture:['Master Projects','Master Tasks','Work Sessions','Revisions & Rework','Timesheets & Approvals','Labor Rates','Activity & Automation Logs','Monday Native Views','Monday Automations','n8n + Monday API'],
+      reliability:['Existing boards isolated from the project-operations workspace','Append-only work-session model','One-active-session rule designed fail-safe','Approved hours drive labor cost','Rework remains separately measurable','Connected-board source of truth','Audit records for major state changes','Native-first automation boundary'],
       outcome:'The implemented Monday.com workspace demonstrates how the same project-operations architecture can be moved from Google Workspace into a board-native operating environment. The public portfolio demo reconstructs the implemented interface with synthetic names and values; sensitive workspace and member information is not exposed.',
       demoLabel:'Launch Monday Project Operations Demo'
     });
