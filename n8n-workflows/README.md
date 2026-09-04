@@ -1,33 +1,114 @@
 # Portfolio n8n workflow package
 
-These workflows are importable starter implementations for the public portfolio systems. They expose stable webhook contracts immediately after activation; credentials and tenant-specific IDs are intentionally not embedded.
+These workflows support the reconstructed portfolio systems. Credentials, API keys, and private tenant identifiers are never embedded in the repository.
 
-## Install in the n8n UI
+## Project 02 — Monday.com Project Operations Control Center
 
-1. In n8n, choose **Import from File** and import the matching JSON.
-2. Open the workflow and review the validation/normalization Code nodes.
-3. Add your credentials and replace documented connector placeholders with your Monday, Google, Zoho, Supabase, OCR, or notification nodes.
-4. Activate the workflow.
-5. Copy its **Production webhook URL**.
-6. Open the matching portfolio demo, select **Connect n8n**, paste the URL, and run **Test connection**.
+`01-enterprise-operations-workspace.json` is now a self-contained n8n backend for the public Monday-style reconstruction. It does **not** connect to a real Monday.com account and does not require a Monday API token.
 
-## Create through the n8n Public API
+The workflow provides:
 
-The JSON files intended for API creation contain only writable workflow properties. n8n's Public API rejects read-only properties such as `active`, `versionId`, `meta`, and `tags` on `POST /api/v1/workflows`.
+- task integrity validation and controlled source-field updates;
+- append-only Start / Pause / Resume / Stop work-session handling;
+- one active session per worker;
+- original-work vs revision/rework classification;
+- task and project effort rollups recomputed from session evidence;
+- revision creation, resolution, and rework tracking;
+- timesheet build, submit, return, reject, and approval states;
+- effective-dated labor-rate resolution;
+- locked Approved Work Ledger posting only through timesheet approval;
+- dynamic overdue detection and escalation create/clear actions;
+- dashboard/KPI recalculation from source evidence;
+- idempotency keys, correlation IDs, execution IDs, and audit logs;
+- manual reconciliation plus a 15-minute scheduled reconciliation trigger;
+- isolated state by `clientId`, so separate portfolio visitors can use separate demo state.
 
-For Project 02, the API payload can therefore be sent directly from `01-enterprise-operations-workspace.json` after loading it in PowerShell:
+The self-contained state store uses n8n workflow static data. This is suitable for a portfolio reconstruction and light demo traffic. For high-frequency or multi-instance production use, migrate the state collections to n8n Data Tables or an external transactional database.
 
-```powershell
-$workflow = Get-Content ".\n8n-workflows\01-enterprise-operations-workspace.json" -Raw
-Invoke-RestMethod `
-  -Method POST `
-  -Uri "$env:N8N_BASE_URL/api/v1/workflows" `
-  -Headers @{ "X-N8N-API-KEY" = $env:N8N_API_KEY } `
-  -ContentType "application/json" `
-  -Body $workflow
+## Deploy Project 02 from Windows
+
+Keep n8n and ngrok running, and keep a local `.env` containing:
+
+```dotenv
+N8N_API_KEY=your_n8n_api_key
+N8N_BASE_URL=https://your-current-ngrok-hostname
 ```
 
-Use the ngrok HTTPS origin as `N8N_BASE_URL` when calling a local self-hosted n8n instance through ngrok.
+The repository includes `setup-project02-n8n.ps1`. It:
+
+1. finds and loads the local `.env`;
+2. authenticates to the n8n Public API;
+3. downloads the latest Project 02 workflow from GitHub;
+4. creates it if missing or updates the existing Project 02 workflow if already present;
+5. reports the workflow ID and publication state;
+6. tests `health.check` automatically when the workflow is already published.
+
+The n8n Public API currently supports workflow create/update, while publishing trigger/webhook workflows is performed from the n8n editor. After the first deployment, open the workflow and click **Publish** once. Subsequent API updates to an already published workflow are re-published by n8n unless explicitly disabled.
+
+## Project 02 webhook contract
+
+Production path:
+
+```text
+/webhook/portfolio-enterprise-operations
+```
+
+Example request:
+
+```json
+{
+  "action": "session.start",
+  "project": "monday-project-ops",
+  "clientId": "browser-generated-client-id",
+  "requestId": "browser-generated-request-id",
+  "payload": {
+    "taskId": "TSK-002",
+    "worker": "John Reyes",
+    "idempotencyKey": "session.start:john:tsk-002:001"
+  }
+}
+```
+
+Supported Project 02 actions:
+
+```text
+health.check
+state.get
+state.reset
+
+task.validate
+task.sync
+task.complete
+task.sendReview
+task.approve
+project.sync
+
+session.start
+session.pause
+session.resume
+session.stop
+
+revision.create
+revision.update
+
+timesheet.build
+timesheet.submit
+timesheet.approve
+timesheet.return
+timesheet.reject
+
+rate.resolve
+ledger.post
+
+escalation.create
+escalation.clear
+
+dashboard.refresh
+reconciliation.run
+automation.retry
+```
+
+`ledger.post` intentionally rejects direct writes. Locked ledger lines are created only by `timesheet.approve`, preserving approval as the authoritative cost-posting boundary.
 
 ## Included workflows
 
@@ -39,33 +120,10 @@ Use the ngrok HTTPS origin as `N8N_BASE_URL` when calling a local self-hosted n8
 | Google Sheets-Powered Automation Systems | `04-google-sheets-automation.json` | `/webhook/portfolio-sheets-automation` |
 | Custom Operations Dashboard | `05-custom-operations-api.json` | `/webhook/portfolio-operations-api` |
 
-## Project 02 request envelope
+## Security
 
-```json
-{
-  "action": "session.start",
-  "project": "monday-project-ops",
-  "requestId": "browser-generated-uuid",
-  "sentAt": "2026-09-04T00:00:00.000Z",
-  "payload": {
-    "itemId": "TSK-001",
-    "projectId": "PRJ-002"
-  }
-}
-```
-
-The Project 02 starter contract already recognizes actions for task/project validation, work-session lifecycle, revision control, timesheets, approval, effective-dated rate resolution, approved-ledger posting, escalation, dashboard refresh, reconciliation, and retry. Individual production workflow families will implement those actions against the Monday API.
-
-The workflow returns JSON containing `ok`, `executionId`, `action`, `status`, and a project-specific result. The website sends an optional shared secret through `X-Portfolio-Token`; validate it in n8n or at your reverse proxy before publishing a production endpoint.
-
-## Production hardening
-
-- Restrict CORS to the deployed portfolio origin.
-- Validate `X-Portfolio-Token` or use an authenticated gateway.
-- Store secrets only in n8n credentials or environment variables.
-- Add idempotent persistence keyed by `requestId` or the domain-specific idempotency key.
-- Add error workflows, retry limits, and a dead-letter/review path.
-- Remove personal or client data from webhook responses.
-- Replace sample output nodes with real platform connectors only after credentials are configured.
-- For Project 02, write every material cross-board action to Activity & Automation Logs with a correlation ID and n8n execution ID.
-
+- Keep `.env` and API keys local; `.env` files are git-ignored.
+- Never put the n8n Public API key in browser JavaScript.
+- The browser should call only the production webhook, never `/api/v1`.
+- If the webhook is exposed beyond a controlled portfolio demo, put authentication/rate limiting in front of it.
+- The seeded records are synthetic portfolio data only.
