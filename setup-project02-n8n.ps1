@@ -137,14 +137,27 @@ function Test-WorkflowStructure {
         throw "Duplicate n8n node name(s): $($duplicates.Name -join ', ')"
     }
 
-    foreach ($source in $Workflow.connections.PSObject.Properties.Name) {
-        if ($names -notcontains $source) {
+    $connectionKeys = @()
+    if ($Workflow.connections -is [System.Collections.IDictionary]) {
+        $connectionKeys = @($Workflow.connections.Keys)
+    } else {
+        $connectionKeys = @($Workflow.connections.PSObject.Properties.Name)
+    }
+
+    foreach ($source in $connectionKeys) {
+        if ($names -notcontains [string]$source) {
             throw "Connection source references missing node: $source"
         }
-        $main = $Workflow.connections.$source.main
-        foreach ($output in @($main)) {
+
+        if ($Workflow.connections -is [System.Collections.IDictionary]) {
+            $entry = $Workflow.connections[$source]
+        } else {
+            $entry = $Workflow.connections.$source
+        }
+
+        foreach ($output in @($entry.main)) {
             foreach ($edge in @($output)) {
-                if ($edge -and $edge.node -and $names -notcontains $edge.node) {
+                if ($edge -and $edge.node -and $names -notcontains [string]$edge.node) {
                     throw "Connection from '$source' references missing node '$($edge.node)'"
                 }
             }
