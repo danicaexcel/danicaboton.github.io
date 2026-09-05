@@ -1,6 +1,7 @@
 (function(){
   const PROCESSING_PAGE='Processing History';
   const AUDIT_TAB='Audit Log';
+  const PROGRAM_TOTAL=120000;
   const events=[
     ['2026-09-05 18:22:00','AUD-0001','RUN-01','CONTROL','BATCH','Migration controller','Source selection','JazzHR Drive + Apploi','Two source lanes selected; parallel mode enabled','STARTED'],
     ['2026-09-05 18:22:01','AUD-0002','RUN-01','CONTROL','BATCH','Migration controller','Checkpoint initialization','Independent source state','Drive index and Apploi cursor initialized separately','PASS'],
@@ -32,5 +33,26 @@
   function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function cls(v){return /PASS|SUCCESS|CREATED|ATTACHED|MIGRATED|ACCOUNTED|NO_MATCH/i.test(v)?'audit-pass':/REVIEW|HELD|429|WAIT|PAUS/i.test(v)?'audit-warn':''}
   function filtered(){const f=document.getElementById('auditSourceFilter');return !f||f.value==='ALL'?events:events.filter(r=>r[3]===f.value)}function table(rows){return `<div class="audit-table-wrap"><table class="audit-table"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((v,i)=>`<td class="${i===9?cls(v):''}">${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
   function renderAudit(){title.textContent='Data Processing Audit History';actions.innerHTML='';const src=['ALL',...new Set(events.map(r=>r[3]))];page.innerHTML=`<section class="audit-summary"><article class="card"><strong>${events.length}</strong><span>synthetic audit events</span></article><article class="card"><strong>2</strong><span>independent source lanes</span></article><article class="card"><strong>1</strong><span>shared Zoho destination limiter</span></article><article class="card"><strong>Resume</strong><span>candidate attachment outcome audited</span></article></section><div class="audit-toolbar"><label>Source <select id="auditSourceFilter">${src.map(s=>`<option>${s}</option>`).join('')}</select></label></div><div id="auditTableMount">${table(events)}</div><div class="audit-note"><strong>Corrected architecture:</strong> JazzHR processing starts from Google Drive files, not a JazzHR API. The audit trail explicitly records Drive discovery/download, basic-data extraction, AI professional-data extraction, Zoho candidate write, original-resume attachment upload, independent source checkpoints, and parallel-source destination throttling.</div>`;document.getElementById('auditSourceFilter').onchange=()=>{document.getElementById('auditTableMount').innerHTML=table(filtered())}}
-  const baseRender=render;render=function(){if(current===PROCESSING_PAGE){nav();renderAudit();return}baseRender()};render();
+  function syncProgramScale(){
+    if(current!=='Migration Control')return;
+    const control=document.getElementById('migrationControl');
+    if(!control)return;
+    const description=control.querySelector(':scope > .muted');
+    if(description&&!/120,000/.test(description.textContent))description.textContent+=` Overall migration-program scope: ${PROGRAM_TOTAL.toLocaleString()}+ records.`;
+    const metrics=control.querySelectorAll('.runmetrics .runmetric');
+    if(metrics.length){
+      const totalMetric=metrics[metrics.length-1];
+      totalMetric.innerHTML=`<b>${PROGRAM_TOTAL.toLocaleString()}+</b><span>total migration records</span>`;
+      totalMetric.dataset.programTotal='1';
+    }
+    const modeRow=control.querySelector('.mode-row');
+    if(modeRow&&!modeRow.querySelector('[data-program-scope]')){
+      const scope=document.createElement('span');
+      scope.className='badge gray';
+      scope.dataset.programScope='1';
+      scope.textContent=`${PROGRAM_TOTAL.toLocaleString()}+ overall records`;
+      modeRow.appendChild(scope);
+    }
+  }
+  const baseRender=render;render=function(){if(current===PROCESSING_PAGE){nav();renderAudit();return}baseRender();syncProgramScale()};render();
 })();
