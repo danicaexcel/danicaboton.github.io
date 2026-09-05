@@ -9,7 +9,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef2f7}ifr
 </style>
 </head>
 <body>
-<iframe id="migrationApp" src="migration-demo.html?v=20260905-enterprise-flat1" title="Enterprise Zoho CRM migration control center"></iframe>
+<iframe id="migrationApp" src="migration-demo.html?v=20260905-source-scale1" title="Enterprise Zoho CRM migration control center"></iframe>
 <script>
 (() => {
   const frame=document.getElementById('migrationApp');
@@ -23,6 +23,24 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef2f7}ifr
     .pipe span{display:block!important;margin:0!important;color:#657487!important;font-size:9px!important;line-height:1.5!important}
     @media(max-width:700px){.pipe{grid-template-columns:30px minmax(0,1fr)!important;gap:8px 12px!important}.pipe span{grid-column:2!important}}
   `;
+  const laneTotals={'JazzHR archive / Google Drive':59000,'Apploi':62000};
+  function syncLaneTotals(doc){
+    doc.querySelectorAll('.source-run').forEach(card=>{
+      const name=card.querySelector('h4')?.textContent?.trim();
+      const total=laneTotals[name];
+      if(!total)return;
+      const countLine=card.querySelector('.progressrow small');
+      if(!countLine)return;
+      const left=countLine.querySelector('span:first-child');
+      const right=countLine.querySelector('span:last-child');
+      const processed=Number((left?.textContent||'0').split('/')[0].replace(/,/g,'').trim())||0;
+      if(left)left.textContent=`${processed.toLocaleString()} / ${total.toLocaleString()}`;
+      const pct=total?processed/total*100:0;
+      if(right)right.textContent=`${pct.toFixed(1)}%`;
+      const bar=card.querySelector('.progress i');
+      if(bar)bar.style.width=`${pct}%`;
+    });
+  }
   function apply(){
     try{
       const doc=frame.contentDocument;
@@ -30,6 +48,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef2f7}ifr
       let style=doc.getElementById('enterprise-process-register-style');
       if(!style){style=doc.createElement('style');style.id='enterprise-process-register-style';doc.head.appendChild(style)}
       style.textContent=css;
+      syncLaneTotals(doc);
+      if(!doc.documentElement.dataset.programScaleObserver){
+        doc.documentElement.dataset.programScaleObserver='1';
+        new MutationObserver(()=>syncLaneTotals(doc)).observe(doc.body,{childList:true,subtree:true});
+      }
     }catch(e){}
   }
   frame.addEventListener('load',()=>{apply();setTimeout(apply,150);setTimeout(apply,700)});
