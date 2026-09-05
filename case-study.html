@@ -4,7 +4,7 @@
 <nav class="nav"><div class="wrap navin"><a class="brand" href="index.html"><span class="brandmark">DC</span><span>DCode<small>Case study</small></span></a><div class="navlinks"><a href="index.html#work">All systems</a><a href="#relationships">Data map</a><a href="#architecture">Architecture</a><a href="#demo">Interactive demo</a></div></div></nav>
 <main id="case"></main>
 <footer class="wrap footer">DCode · Danica Marie Boton · Automation & Integration Engineer</footer>
-<script src="data.js"></script><script>
+<script src="data.js?v=migration-cleaning-20260905"></script><script>
 const id=new URLSearchParams(location.search).get('id')||'recruitment';const p=getDcodeProject(id);if(!p)location.href='index.html';document.title=`${p.title} — DCode`;
 const main=document.getElementById('case');const hasDemo=p.demoAvailable!==false;if(!hasDemo){const demoNav=document.querySelector('.navlinks a[href="#demo"]');if(demoNav)demoNav.textContent='Development state';}
 const implementation=id==='recruitment'
