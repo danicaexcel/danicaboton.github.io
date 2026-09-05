@@ -5,9 +5,16 @@
     if (!document.body || document.documentElement.dataset.project02WorkflowProof === 'removed') return;
     document.documentElement.dataset.project02WorkflowProof = 'removed';
 
-    // Remove the dedicated n8n orchestration section and its navigation entry.
+    // Remove portfolio sections the case study no longer needs.
     document.getElementById('workflows')?.remove();
     document.querySelectorAll('.navlinks a[href="#workflows"]').forEach(link => link.remove());
+    [...document.querySelectorAll('.case-section')].forEach(section => {
+      const kicker = section.querySelector('.kicker')?.textContent || '';
+      const heading = section.querySelector('h2')?.textContent || '';
+      if (/Column revision/i.test(kicker) || /Schema changes made to support the objective functionality/i.test(heading)) {
+        section.remove();
+      }
+    });
 
     // Preserve the accurate portfolio wording that does not imply a live Monday API connection.
     document.querySelectorAll('.casebar span').forEach(span => {
