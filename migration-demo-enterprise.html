@@ -9,7 +9,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef2f7}ifr
 </style>
 </head>
 <body>
-<iframe id="migrationApp" src="migration-demo.html?v=20260905-source-scale1" title="Enterprise Zoho CRM migration control center"></iframe>
+<iframe id="migrationApp" src="migration-demo.html?v=20260905-source-scale2" title="Enterprise Zoho CRM migration control center"></iframe>
 <script>
 (() => {
   const frame=document.getElementById('migrationApp');
@@ -24,6 +24,12 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef2f7}ifr
     @media(max-width:700px){.pipe{grid-template-columns:30px minmax(0,1fr)!important;gap:8px 12px!important}.pipe span{grid-column:2!important}}
   `;
   const laneTotals={'JazzHR archive / Google Drive':59000,'Apploi':62000};
+  function forceSourceData(){
+    try{
+      const win=frame.contentWindow;
+      win.eval("sources.jazzhr.total=59000;sources.apploi.total=62000;render();");
+    }catch(e){}
+  }
   function syncLaneTotals(doc){
     doc.querySelectorAll('.source-run').forEach(card=>{
       const name=card.querySelector('h4')?.textContent?.trim();
@@ -48,6 +54,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef2f7}ifr
       let style=doc.getElementById('enterprise-process-register-style');
       if(!style){style=doc.createElement('style');style.id='enterprise-process-register-style';doc.head.appendChild(style)}
       style.textContent=css;
+      forceSourceData();
       syncLaneTotals(doc);
       if(!doc.documentElement.dataset.programScaleObserver){
         doc.documentElement.dataset.programScaleObserver='1';
