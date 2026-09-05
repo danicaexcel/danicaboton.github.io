@@ -9,7 +9,7 @@
     ['DH-04','Access & Least Privilege','PARTIAL','Role and API-scope review is represented; production IAM evidence still requires owner validation.',['EV-06']],
     ['DH-05','Credential Protection','PASS','OAuth/API secrets are excluded from candidate records and generated report evidence.',['EV-04','EV-07']],
     ['DH-06','Transport Security','PASS','REST/API integrations are represented as HTTPS/TLS-protected endpoints.',['EV-04']],
-    ['DH-07','Migration Reconciliation','PASS','Each source row receives a migrated, duplicate, or exception disposition.',['EV-02','EV-03']],
+    ['DH-07','Migration Reconciliation','PASS','Each source row receives a migrated or exception disposition.',['EV-02','EV-03']],
     ['DH-08','Data Accuracy & Confidence','PASS','Confidence scoring and exception review gate uncertain parsed candidate fields.',['EV-02','EV-05','EV-09']],
     ['DH-09','PII-safe Operational Logging','PARTIAL','Operational evidence is designed around IDs and statuses; production log sampling remains a review item.',['EV-07']],
     ['DH-10','Retention & Deletion','NOT ASSESSED','Retention periods and deletion schedules require data-owner and legal-basis configuration.',['EV-10']],
@@ -24,7 +24,7 @@
       ['resume_filename','Source Resume Filename','Operational metadata','Trace source record and resume','Yes'],
       ['gdrive_link','Resume File Link','Personal data reference','Preserve authorized recruiter access path','Yes'],
       ['first_name / last_name','Candidate identity','PII','Candidate identification','Yes'],
-      ['email / mobile','Contact fields','PII','Dedupe and recruitment contact','Yes'],
+      ['email / mobile','Contact fields','PII','Recruitment contact','Yes'],
       ['street / state / zip','Candidate address','PII','Recruitment record migration','Conditional'],
       ['facility-applied','Facility Lookup','Recruitment data','Route candidate to target facility','Yes'],
       ['confidence','Migration Confidence','Operational metadata','Manual review gate','Yes'],
@@ -32,16 +32,15 @@
     ]},
     {id:'EV-02',title:'Migration Processing Log',type:'Operational log',status:'AVAILABLE',supports:['DH-07','DH-08','DH-11'],summary:'Synthetic execution log showing traceable batch processing without exposing candidate names, email addresses, resume contents, or access tokens.',columns:['Timestamp','Batch','Record ref','Stage','Result'],rows:[
       ['2026-09-03 10:07:14','JHR-028','SRC-000184','Manifest validation','PASS'],
-      ['2026-09-03 10:07:15','JHR-028','SRC-000184','Candidate normalization','PASS'],
+      ['2026-09-03 10:07:15','JHR-028','SRC-000184','Candidate field mapping','PASS'],
       ['2026-09-03 10:07:16','JHR-028','SRC-000184','Facility lookup','PASS'],
       ['2026-09-03 10:07:17','JHR-028','SRC-000184','Zoho write','CREATED'],
       ['2026-09-03 10:07:19','JHR-028','SRC-000185','Confidence validation','REVIEW_REQUIRED'],
-      ['2026-09-03 10:07:22','JHR-028','SRC-000186','Dedupe check','DUPLICATE']
+      ['2026-09-03 10:07:22','JHR-028','SRC-000186','Zoho write verification','PASS']
     ]},
     {id:'EV-03',title:'Migration Reconciliation Report',type:'Reconciliation',status:'AVAILABLE',supports:['DH-07','DH-12'],summary:'Shows that processed source rows reconcile to a final disposition so records are not silently lost.',columns:['Metric','Count','Validation'],rows:[
       ['Source rows in sample batch','5,000','Locked manifest'],
-      ['Migrated','4,812','Destination record verified'],
-      ['Duplicates','143','Matched by approved dedupe rules'],
+      ['Migrated','4,955','Destination record verified'],
       ['Exceptions','45','Exception register created'],
       ['Unaccounted rows','0','PASS — all rows have a disposition'],
       ['Reconciliation rate','100.0%','5,000 / 5,000 accounted for']
@@ -57,7 +56,6 @@
       ['EX-0037','Facility name ambiguous','0.63','Manual mapping required','OPEN'],
       ['EX-0041','License value requires normalization','0.71','Qualification review','OPEN'],
       ['EX-0044','Resume link inaccessible','0.92','Source link validation','OPEN'],
-      ['EX-0045','Possible duplicate by email/mobile','0.88','Dedupe review','RESOLVED']
     ]},
     {id:'EV-06',title:'Access & OAuth Scope Review',type:'Access review',status:'PARTIAL',supports:['DH-04'],summary:'Documents the intended least-privilege access model. Production user-role exports and owner approval remain external evidence.',columns:['Identity / integration','Required access','Excluded access','Assessment'],rows:[
       ['Migration operator','Candidate migration modules only','Admin/security configuration','Least-privilege design documented'],
