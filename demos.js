@@ -748,10 +748,10 @@ function migration() {
   function render() {
     mount.innerHTML = genericShell({
       brand: 'Zoho Migration Control Center',
-      tabs: ['Overview', 'Mappings', 'Batches', 'Functions', 'Reconciliation'],
-      activeTab: page === 'Migration Overview' ? 'Overview' : page === 'Field Mapping' ? 'Mappings' : page === 'Import Batches' ? 'Batches' : page === 'Deluge Functions' ? 'Functions' : 'Reconciliation',
+      tabs: ['Overview', 'Mappings', 'Cleaning & Dedupe', 'Batches', 'Functions', 'Reconciliation'],
+      activeTab: page === 'Migration Overview' ? 'Overview' : page === 'Field Mapping' ? 'Mappings' : page === 'Data Cleaning & Deduplication' ? 'Cleaning & Dedupe' : page === 'Import Batches' ? 'Batches' : page === 'Deluge Functions' ? 'Functions' : 'Reconciliation',
       sideTitle: 'Migration',
-      sideItems: ['Migration Overview', 'Field Mapping', 'Import Batches', 'Deluge Functions', 'API Usage', 'Reconciliation'],
+      sideItems: ['Migration Overview', 'Field Mapping', 'Data Cleaning & Deduplication', 'Import Batches', 'Deluge Functions', 'API Usage', 'Reconciliation'],
       activeSide: page,
       content: `<div class="toolbar"><h2>${page}</h2>${page === 'Import Batches' ? '<button class="ui-btn" id="runBatch">Run synthetic batch</button>' : ''}</div><div id="migrationPage"></div>`
     });
@@ -768,6 +768,9 @@ function migration() {
     }
     if (page === 'Field Mapping') {
       el.innerHTML = `<div class="panel"><h3>Resume migration field map</h3><p class="mapping-note">Source resume rows are mapped into Zoho candidate, contact, address, facility, evidence, and review fields before batch import.</p><div class="mapping migration-field-map">${fieldMappings.map(row => `<div><strong>${row[0]}</strong><small>Source column</small></div><div class="maparrow">-></div><div><strong>${row[1]}</strong><small>${row[2]}</small></div>`).join('')}</div></div>`;
+    }
+    if (page === 'Data Cleaning & Deduplication') {
+      el.innerHTML = `<div class="migration-grid"><div class="migr-card"><strong>Normalize</strong><span>names, emails, phones, dates, and parsed text</span></div><div class="migr-card"><strong>Validate</strong><span>required fields, facility, license, and resume evidence</span></div><div class="migr-card"><strong>Match</strong><span>email, phone, name, date, and resume keys</span></div><div class="migr-card"><strong>Retain latest</strong><span>keep the newest record in each duplicate group</span></div></div><div class="panel" style="margin-top:12px"><h3>Cleaning and deduplication sequence</h3><div class="timeline"><div class="event"><time>Step 1</time><strong>Standardize whitespace, casing, email, mobile, dates, and parsed candidate fields</strong></div><div class="event"><time>Step 2</time><strong>Flag incomplete or low-confidence rows for review before import</strong></div><div class="event"><time>Step 3</time><strong>Build duplicate groups using normalized email, phone, name, date, and resume evidence</strong></div><div class="event"><time>Step 4</time><strong>Retain the latest source record and preserve the duplicate disposition for reconciliation</strong></div><div class="event"><time>Step 5</time><strong>For Apploi rows, update an existing Zoho Applicant when found; otherwise create a new record</strong></div></div></div><div class="panel" style="margin-top:12px"><table class="dbtable"><tr><th>Match rule</th><th>Cleaning applied</th><th>Result</th></tr><tr><td>Email</td><td>trim + lowercase</td><td>Exact duplicate group</td></tr><tr><td>Mobile</td><td>digits + country-code normalization</td><td>Exact duplicate group</td></tr><tr><td>Name + date/resume</td><td>standardized name + latest source evidence</td><td>Review, then retain latest</td></tr><tr><td>Existing Zoho Applicant</td><td>search before write</td><td>Update existing or create new</td></tr></table></div>`;
     }
     if (page === 'Import Batches') {
       el.innerHTML = `<div class="panel" id="batchLog"><h3>Batch Progress</h3><div><small>Batch JHR-027</small><div class="progress"><i style="width:88%"></i></div></div><div style="margin-top:12px"><small>Batch APP-014</small><div class="progress"><i style="width:62%"></i></div></div></div>`;
