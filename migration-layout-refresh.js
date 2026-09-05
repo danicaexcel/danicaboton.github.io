@@ -1,8 +1,8 @@
 (() => {
-  const VERSION = '20260905-enterprise-flat1';
+  const VERSION = '20260905-source-scale1';
 
   function refreshMigrationUrls(root = document) {
-    root.querySelectorAll?.('iframe[src*="migration-demo.html"],a[href*="migration-demo.html"]').forEach(el => {
+    root.querySelectorAll?.('iframe[src*="migration-demo.html"],a[href*="migration-demo.html"],iframe[src*="migration-demo-enterprise.html"],a[href*="migration-demo-enterprise.html"]').forEach(el => {
       const attr = el.tagName === 'IFRAME' ? 'src' : 'href';
       const current = el.getAttribute(attr) || '';
       const isEmbed = /[?&]embed=1(?:&|$)/.test(current);
