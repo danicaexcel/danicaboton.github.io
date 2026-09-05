@@ -89,7 +89,7 @@
 <section class="wrap section" id="contact"><div class="contact"><div class="kicker">Work with me</div><h2>Show me the broken handoff.</h2><p>I can map the process, identify where data or decisions are getting stuck, design the architecture, and build the automation or client-facing layer around it.</p><div class="actions"><a class="btn primary" href="mailto:boton.danicamarie@gmail.com">boton.danicamarie@gmail.com</a></div></div></section>
 </main>
 <footer class="wrap footer">DCode · Danica Marie Boton · Systems Architect · Automation & Integration Engineer</footer>
-<script src="data.js?v=migration-cleaning-20260905"></script>
+<script src="data.js?v=migration-corrected-20260905"></script>
 <script src="workspace-ops-project.js?v=20260904-project-order3"></script>
 <script>
 const root=document.getElementById('projectCards');
@@ -99,8 +99,8 @@ DCODE_PROJECTS.filter(p=>!['sheets','ops-dashboard'].includes(p.id)).forEach(p=>
   const hasDemo=p.demoAvailable!==false;
   const hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
   const caseHref=p.id==='workspace-ops'?'workspace-ops-case-study.html':p.id==='monday-project-ops'?'monday-project-ops-case-study.html':`case-study.html?id=${p.id}`;
-  const demoHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?v=20260903-restored-compliance-1':p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?v=20260904-cleanui3':`demo.html?id=${p.id}`;
-  const previewHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?embed=1&v=20260903-restored-compliance-1':p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?embed=1&v=20260904-cleanui3':p.id==='workspace-ops'?'workspace-ops-demo-v2.html?embed=1&v=20260903-workspace-ops2':`demo.html?id=${p.id}&embed=1`;
+  const demoHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?v=20260905-corrected':p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?v=20260904-cleanui3':`demo.html?id=${p.id}`;
+  const previewHref=p.id==='portal'?'secure-candidate-review.html':p.id==='zoho-migration'?'migration-demo.html?embed=1&v=20260905-corrected':p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?embed=1&v=20260904-cleanui3':p.id==='workspace-ops'?'workspace-ops-demo-v2.html?embed=1&v=20260903-workspace-ops2':`demo.html?id=${p.id}&embed=1`;
   const workflowAction=hasN8n?`<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>`:'';
   const actions=hasDemo
     ? `<a class="btn" href="${caseHref}">Read case study</a><button class="btn primary fullscreen-btn" type="button" data-target="${screenId}">Open demo ↗</button>${workflowAction}`
