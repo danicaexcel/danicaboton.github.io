@@ -1,5 +1,5 @@
 (() => {
-  const VERSION = '20260905-source-scale1';
+  const VERSION = '20260905-source-scale2';
 
   function refreshMigrationUrls(root = document) {
     root.querySelectorAll?.('iframe[src*="migration-demo.html"],a[href*="migration-demo.html"],iframe[src*="migration-demo-enterprise.html"],a[href*="migration-demo-enterprise.html"]').forEach(el => {
