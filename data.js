@@ -147,7 +147,7 @@ window.DCODE_PROJECTS = [
     order: '05',
     category: 'Zoho · Migration · Deluge · APIs',
     title: 'Enterprise Zoho CRM Engineering & Migration',
-    subtitle: 'Large-volume recruitment resume migration with Google Drive resume links, parsed candidate fields, facility mapping, confidence scoring, custom Deluge functions, API integrations, reconciliation, and workflow reliability.',
+    subtitle: 'Large-volume recruitment resume migration with resume parsing, data cleaning, multi-key deduplication, Google Drive traceability, facility mapping, controlled Zoho writes, reconciliation, and workflow reliability.',
     status: 'Production work reconstruction',
     role: 'Zoho CRM Engineer · Migration & Automation Specialist',
     stack: ['Zoho CRM','Zoho Recruit','Deluge','Workflow Rules','REST APIs','OAuth2','CSV / Batch Processing'],
@@ -157,8 +157,8 @@ window.DCODE_PROJECTS = [
       ['62K+','Apploi source scope'],
       ['240K','API-call usage evidence in portfolio material']
     ],
-    problem: 'Large legacy recruitment datasets needed controlled migration into a structured Zoho environment without losing traceability between the resume filename, Google Drive resume file, parsed candidate identity, facility applied, license details, and confidence score.',
-    solution: 'I treated each source row as a controlled migration record: resume_filename and gdrive_link preserved file traceability, candidate fields mapped into Zoho records, facility-applied drove lookup alignment, confidence flagged review risk, and filename_date/license supported validation, deduplication, reconciliation, UAT, and post-write verification.',
+    problem: 'Large legacy recruitment datasets contained inconsistent parsed fields and duplicate applicant or resume records. They needed controlled migration into Zoho without losing traceability between the source file, Google Drive resume, candidate identity, facility applied, license details, confidence score, and final record disposition.',
+    solution: 'I cleaned and normalized the parsed candidate fields, grouped duplicates using email, phone, name, date, and resume evidence, and retained the latest valid source record. For Apploi rows, the process searches the Zoho Applicant module first: an existing applicant is updated, while a new applicant is created only when no match is found. Every row retains its source, duplicate, exception, or write disposition for reconciliation and post-write verification.',
     built: [
       'Field mapping, cleansing, deduplication, exception handling, and reconciliation rules for resume_filename, gdrive_link, first_name, last_name, email, mobile, secondary_email, company, designation, street, state, zip, facility-applied, confidence, filename_date, and license.',
       'Source-to-Zoho mapping where parsed candidate identity, contact, address, facility, resume link, confidence, and license fields are retained as auditable migration inputs.',
@@ -166,9 +166,9 @@ window.DCODE_PROJECTS = [
       'Webhook and REST API integrations with named connections and external processing layers.',
       'Failure analysis and live execution monitoring for HTTP/data-type issues.'
     ],
-    architecture: ['Resume File Inventory','Drive Link Traceability','Parsed Candidate Fields','Facility + License Mapping','Confidence Review Gate','Map + Deduplicate','Batch Import','Reconcile','UAT / Acceptance'],
-    reliability: ['Disposition for every source record','Resume-to-record traceability','Confidence-based exception review','Facility lookup verification','Post-write verification','Named connections','Failure logs'],
-    outcome: 'The demo presents a migration control center rather than pretending the old client tenant is still available. Visitors can inspect mappings, batches, reconciliation, and function execution evidence using synthetic data.',
+    architecture: ['Resume File Inventory','Parse PDF / DOC / DOCX / Image','Clean + Normalize Fields','Validate Required Data','Deduplicate by Email / Phone / Name / Resume','Retain Latest Record','Search Existing Zoho Applicant','Update Existing or Create New','Batch Write','Reconcile + Verify'],
+    reliability: ['Disposition for every source record','Resume-to-record traceability','Field normalization rules','Multi-key duplicate detection','Latest-record retention','Search before Zoho write','Confidence-based exception review','Facility lookup verification','Post-write verification','Failure logs'],
+    outcome: 'The demo presents a migration control center where visitors can inspect field cleaning, duplicate matching, latest-record retention, Zoho update-or-create decisions, mappings, batches, and reconciliation using synthetic data.',
     demoLabel: 'Launch Migration Control Demo'
   },
   {
@@ -201,8 +201,38 @@ window.DCODE_PROJECTS = [
     demoLabel: 'Launch Sheets Automation Demo'
   },
   {
-    id: 'ops-dashboard',
+    id: 'workspace-ops',
     order: '07',
+    category: 'Google Workspace · Project Operations',
+    title: 'Google Workspace Project Operations System',
+    subtitle: 'A Google-powered project management workspace connecting task execution, live work-session tracking, planned-versus-actual man-hours, revisions, approvals, and project labor-cost reporting.',
+    status: 'Interactive portfolio reconstruction',
+    role: 'Systems Architect · Google Workspace Automation Developer',
+    stack: ['Google Sheets','Apps Script','AppSheet','Looker Studio','Google Drive','Gmail','Google Calendar'],
+    metrics: [
+      ['6','active projects'],
+      ['180+','managed tasks'],
+      ['1,200+','auditable work logs'],
+      ['Real-time','task punching']
+    ],
+    problem: 'Project plans, employee work logs, approvals, and labor-cost calculations are often maintained in disconnected spreadsheets. This makes it difficult to compare planned and actual effort, prevent overlapping time entries, distinguish rework, and determine which approved hours should feed compensation.',
+    solution: 'I designed a Google Workspace operating system where Sheets acts as a structured datastore, Apps Script enforces task and timekeeping rules, and a role-based member interface turns Start, Pause, Resume, Complete, and Revision actions into append-only work sessions. Approved logs then drive project variance, utilization, and labor-cost reporting.',
+    built: [
+      'Project dashboard with health, progress, planned-versus-actual hours, and labor-cost variance.',
+      'Project workspaces with task lists, Kanban status, dependencies, milestones, and Gantt timelines.',
+      'Member workspace with Start, Pause, Resume, Complete, and Revision task actions.',
+      'Single-active-task enforcement to prevent simultaneous timers and inflated hours.',
+      'Append-only work sessions, revision records, weekly timesheets, supervisor approvals, and audit history.',
+      'Approved work-log based compensation inputs and resource-utilization reporting.'
+    ],
+    architecture: ['AppSheet / Apps Script UI','Projects + Phases','Tasks + Assignments','Apps Script Workflow Engine','Append-only Time Sessions','Revisions + Approvals','Approved Timesheets','Labor Cost + Looker Studio'],
+    reliability: ['Single active timer per member','Append-only time sessions','Role-based actions','Protected rate fields','Approval before payable hours','Revision-hour separation','Audit trail','Threshold notifications'],
+    outcome: 'The reconstruction demonstrates how familiar Google tools can operate as a governed project-delivery workspace. Managers see schedule and labor risk early, while members record work through controlled task actions rather than editable timesheet totals.',
+    demoLabel: 'Launch Project Operations Demo'
+  },
+  {
+    id: 'ops-dashboard',
+    order: '08',
     category: 'Custom UI · API-Driven Operations',
     title: 'Custom Operations Dashboard',
     subtitle: 'A focused control surface for teams that need operational visibility and workflow actions without buying a full CRM or PM suite.',
