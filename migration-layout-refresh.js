@@ -1,12 +1,12 @@
 (() => {
-  const VERSION = '20260905-crashfix1';
+  const VERSION = '20260905-crashfix2';
 
   function refreshMigrationUrls(root = document) {
-    root.querySelectorAll?.('iframe[src*="migration-demo.html"],a[href*="migration-demo.html"],iframe[src*="migration-demo-enterprise.html"],a[href*="migration-demo-enterprise.html"]').forEach(el => {
+    root.querySelectorAll?.('iframe[src*="migration-demo.html"],a[href*="migration-demo.html"],iframe[src*="migration-demo-enterprise.html"],a[href*="migration-demo-enterprise.html"],iframe[src*="migration-demo-control.html"],a[href*="migration-demo-control.html"]').forEach(el => {
       const attr = el.tagName === 'IFRAME' ? 'src' : 'href';
       const current = el.getAttribute(attr) || '';
       const isEmbed = /[?&]embed=1(?:&|$)/.test(current);
-      const next = `migration-demo-enterprise.html?${isEmbed ? 'embed=1&' : ''}v=${VERSION}`;
+      const next = `migration-demo-control.html?${isEmbed ? 'embed=1&' : ''}v=${VERSION}`;
       if (current !== next) el.setAttribute(attr, next);
     });
   }
