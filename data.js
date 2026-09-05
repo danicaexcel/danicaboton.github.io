@@ -147,7 +147,7 @@ window.DCODE_PROJECTS = [
     order: '05',
     category: 'Zoho · Migration · Deluge · APIs',
     title: 'Enterprise Zoho CRM Engineering & Migration',
-    subtitle: 'Large-volume recruitment resume migration with resume parsing, data cleaning, multi-key deduplication, Google Drive traceability, facility mapping, controlled Zoho writes, reconciliation, and workflow reliability.',
+    subtitle: 'Large-volume recruitment resume migration with Google Drive resume links, parsed candidate fields, facility mapping, confidence scoring, controlled Zoho writes, reconciliation, and workflow reliability.',
     status: 'Production work reconstruction',
     role: 'Zoho CRM Engineer · Migration & Automation Specialist',
     stack: ['Zoho CRM','Zoho Recruit','Deluge','Workflow Rules','REST APIs','OAuth2','CSV / Batch Processing'],
@@ -157,18 +157,18 @@ window.DCODE_PROJECTS = [
       ['62K+','Apploi source scope'],
       ['240K','API-call usage evidence in portfolio material']
     ],
-    problem: 'Large legacy recruitment datasets contained inconsistent parsed fields and duplicate applicant or resume records. They needed controlled migration into Zoho without losing traceability between the source file, Google Drive resume, candidate identity, facility applied, license details, confidence score, and final record disposition.',
-    solution: 'I cleaned and normalized the parsed candidate fields, grouped duplicates using email, phone, name, date, and resume evidence, and retained the latest valid source record. For Apploi rows, the process searches the Zoho Applicant module first: an existing applicant is updated, while a new applicant is created only when no match is found. Every row retains its source, duplicate, exception, or write disposition for reconciliation and post-write verification.',
+    problem: 'Large legacy recruitment datasets needed controlled migration into a structured Zoho environment without losing traceability between the resume filename, Google Drive resume file, parsed candidate identity, facility applied, license details, and confidence score.',
+    solution: 'I treated each source row as a controlled migration record: resume_filename and gdrive_link preserved file traceability, parsed candidate fields mapped into Zoho Applicant records, facility-applied drove lookup alignment, confidence flagged review risk, and filename_date and license supported validation, reconciliation, and post-write verification.',
     built: [
-      'Field mapping, cleansing, deduplication, exception handling, and reconciliation rules for resume_filename, gdrive_link, first_name, last_name, email, mobile, secondary_email, company, designation, street, state, zip, facility-applied, confidence, filename_date, and license.',
+      'Field mapping, validation, exception handling, and reconciliation rules for resume_filename, gdrive_link, first_name, last_name, email, mobile, secondary_email, company, designation, street, state, zip, facility-applied, confidence, filename_date, and license.',
       'Source-to-Zoho mapping where parsed candidate identity, contact, address, facility, resume link, confidence, and license fields are retained as auditable migration inputs.',
       'Deluge functions for stage-based history, subform preservation, lookup handling, file transfer, safe updates, and verification.',
       'Webhook and REST API integrations with named connections and external processing layers.',
       'Failure analysis and live execution monitoring for HTTP/data-type issues.'
     ],
-    architecture: ['Resume File Inventory','Parse PDF / DOC / DOCX / Image','Clean + Normalize Fields','Validate Required Data','Deduplicate by Email / Phone / Name / Resume','Retain Latest Record','Search Existing Zoho Applicant','Update Existing or Create New','Batch Write','Reconcile + Verify'],
-    reliability: ['Disposition for every source record','Resume-to-record traceability','Field normalization rules','Multi-key duplicate detection','Latest-record retention','Search before Zoho write','Confidence-based exception review','Facility lookup verification','Post-write verification','Failure logs'],
-    outcome: 'The demo presents a migration control center where visitors can inspect field cleaning, duplicate matching, latest-record retention, Zoho update-or-create decisions, mappings, batches, and reconciliation using synthetic data.',
+    architecture: ['Recruitment Source Data','Resume File Traceability','Parsed Candidate Fields','Field Mapping','Facility + License Mapping','Confidence Review Gate','Controlled Zoho Write','Reconcile + Verify','UAT / Acceptance'],
+    reliability: ['Disposition for every source record','Resume-to-record traceability','Confidence-based exception review','Facility lookup verification','Post-write verification','Named connections','Failure logs'],
+    outcome: 'The demo presents a migration control center rather than pretending the old client tenant is still available. Visitors can inspect mappings, batches, reconciliation, and function execution evidence using synthetic data.',
     demoLabel: 'Launch Migration Control Demo'
   },
   {
