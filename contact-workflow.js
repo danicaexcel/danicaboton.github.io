@@ -8,6 +8,7 @@
     if (queryId) return queryId;
     if (/monday-project-ops-case-study\.html$/.test(location.pathname)) return 'monday-project-ops';
     if (/workspace-ops-case-study\.html$/.test(location.pathname)) return 'workspace-ops';
+    if (/migration-case-study\.html$/.test(location.pathname)) return 'zoho-migration';
     return null;
   }
 
@@ -155,7 +156,7 @@
       const attribute = element.tagName === 'IFRAME' ? 'src' : 'href';
       const original = element.getAttribute(attribute) || '';
       const isEmbed = element.tagName === 'IFRAME' || /[?&]embed=1(?:&|$)/.test(original);
-      element.setAttribute(attribute, `migration-demo.html?${isEmbed ? 'embed=1&' : ''}v=20260905-pipeline2`);
+      element.setAttribute(attribute, `migration-demo.html?${isEmbed ? 'embed=1&' : ''}v=20260905-drive-parallel1`);
     });
   }
 
@@ -261,7 +262,7 @@
   const needsMigrationUpgrade = document.querySelector('.project[data-id="zoho-migration"]') || (/case-study\.html$/.test(location.pathname) && id === 'zoho-migration');
   if (!needsMigrationUpgrade || document.querySelector('script[data-migration-project-upgrade]')) return;
   const script = document.createElement('script');
-  script.src = 'migration-project-upgrade.js?v=20260905-pipeline2';
+  script.src = 'migration-project-upgrade.js?v=20260905-drive-parallel1';
   script.dataset.migrationProjectUpgrade = '1';
   document.body.appendChild(script);
 })();
