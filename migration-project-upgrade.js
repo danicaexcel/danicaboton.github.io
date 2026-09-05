@@ -16,6 +16,8 @@
     if (chips) chips.innerHTML = ['JazzHR API','Apploi API','Google Drive API','AI Resume Extraction','Data Cleaning + Dedupe'].map(x => `<span class="chip">${x}</span>`).join('');
     const metrics = card.querySelector('.metricline');
     if (metrics) metrics.innerHTML = '<div class="mini"><strong>120K+</strong><span>overall migration program</span></div><div class="mini"><strong>3 inputs</strong><span>JazzHR · Apploi · Google Drive</span></div>';
+    const caseLink = card.querySelector('.projectactions a[href*="case-study"]');
+    if (caseLink) caseLink.setAttribute('href','migration-case-study.html');
     return true;
   }
 
