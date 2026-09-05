@@ -21,8 +21,8 @@
 <p class="casesub">Large-volume recruitment migration where JazzHR-sourced candidate resumes/files are processed from Google Drive, basic and professional candidate data are extracted and cleaned, duplicates are controlled, Zoho records are written and verified, and the original resume file is uploaded to the Zoho candidate record.</p>
 <div class="casebar"><span>Production work reconstruction</span><span>Zoho CRM Engineer · Migration & Automation Specialist</span><span>Google Drive API</span><span>Apploi source integration</span><span>Zoho CRM / Recruit</span><span>Deluge</span><span>AI Resume Extraction</span><span>Data Cleaning + Dedupe</span></div>
 <div class="implementation-note"><span>Drive-first migration + parallel source control</span><p>JazzHR is not presented as an API source. Its migration lane starts in Google Drive, where the source resumes/files are stored. The pipeline derives candidate basics and professional data from those files, normalizes and deduplicates the candidate, validates confidence and facility mapping, writes the candidate to Zoho, and uploads the original resume file to that Zoho record. Apploi is handled as a separate source lane. The control center can run either lane alone or selected lanes in parallel with independent checkpoints and shared Zoho write throttling.</p></div>
-<div class="actions"><a class="btn primary" href="migration-demo.html?v=20260905-pipeline-layout1">Launch Migration Control Center ↗</a><a class="btn" href="#architecture">See architecture</a></div>
-<div class="case-hero-shot"><div class="case-laptop"><div class="case-laptop-top"><span>Zoho Migration Control Center</span><a href="migration-demo.html?v=20260905-pipeline-layout1">Open ↗</a></div><div class="case-laptop-display"><iframe class="case-live-preview" src="migration-demo.html?embed=1&v=20260905-pipeline-layout1" title="Enterprise Zoho CRM migration interactive preview" loading="lazy"></iframe></div></div></div>
+<div class="actions"><a class="btn primary" href="migration-demo-enterprise.html?v=20260905-source-scale2">Launch Migration Control Center ↗</a><a class="btn" href="#architecture">See architecture</a></div>
+<div class="case-hero-shot"><div class="case-laptop"><div class="case-laptop-top"><span>Zoho Migration Control Center</span><a href="migration-demo-enterprise.html?v=20260905-source-scale2">Open ↗</a></div><div class="case-laptop-display"><iframe class="case-live-preview" src="migration-demo-enterprise.html?embed=1&v=20260905-source-scale2" title="Enterprise Zoho CRM migration interactive preview" loading="lazy"></iframe></div></div></div>
 <div class="stats4"><div class="statbox"><strong>120K+</strong><span>overall migration program</span></div><div class="statbox"><strong>59K+</strong><span>JazzHR scope from Google Drive</span></div><div class="statbox"><strong>62K+</strong><span>Apploi source scope</span></div><div class="statbox"><strong>2 lanes</strong><span>select individually or parallel</span></div></div>
 </header>
 
@@ -57,6 +57,6 @@
 </main>
 <footer class="wrap footer">DCode · Danica Marie Boton · Systems Architect · Automation & Integration Engineer</footer>
 <script src="contact-workflow.js?v=20260905-drive-parallel1"></script>
-<script src="migration-layout-refresh.js?v=20260905-pipeline-layout1"></script>
+<script src="migration-layout-refresh.js?v=20260905-source-scale2"></script>
 </body>
 </html>
