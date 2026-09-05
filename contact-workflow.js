@@ -9,6 +9,7 @@
     if (/monday-project-ops-case-study\.html$/.test(location.pathname)) return 'monday-project-ops';
     if (/workspace-ops-case-study\.html$/.test(location.pathname)) return 'workspace-ops';
     if (/migration-case-study\.html$/.test(location.pathname)) return 'zoho-migration';
+    if (/spx-case-study-v2\.html$/.test(location.pathname)) return 'ocr';
     return null;
   }
 
@@ -163,9 +164,9 @@
   function loadSpxEnhancement() {
     const currentId = currentProjectId();
     let src = '';
-    if (document.querySelector('.project[data-id="ocr"]')) src = 'spx-index.js?v=20260903-spx-ops2';
-    else if (currentId === 'ocr' && /case-study\.html$/.test(location.pathname)) src = 'spx-case-study.js?v=20260903-spx-ops2';
-    else if (currentId === 'ocr' && /demo\.html$/.test(location.pathname)) src = 'spx-operations-demo.js?v=20260903-spx-ops2';
+    if (document.querySelector('.project[data-id="ocr"]')) src = 'spx-index.js?v=20260905-spx-modern1';
+    else if (currentId === 'ocr' && /case-study\.html$/.test(location.pathname)) src = 'spx-case-study.js?v=20260905-spx-modern1';
+    else if (currentId === 'ocr' && /demo\.html$/.test(location.pathname)) src = 'spx-operations-demo.js?v=20260905-spx-modern1';
     if (!src || document.querySelector(`script[data-spx-enhancement="${src}"]`)) return;
     const script = document.createElement('script');
     script.src = src;
