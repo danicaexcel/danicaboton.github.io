@@ -1,6 +1,6 @@
 (() => {
   const EMAIL = 'boton.danicamarie@gmail.com';
-  const RETIRED_PROJECTS = new Set();
+  const RETIRED_PROJECTS = new Set(['monday']);
   const HIDDEN_PROJECTS = new Set(['sheets','ops-dashboard']);
 
   function currentProjectId() {
@@ -168,6 +168,7 @@
         const option = document.querySelector(`option[value="${currentId}"]`);
         if (option) option.textContent = option.textContent.replace(/^\d+\s+/, `${currentProject.order} `);
       }
+      removeRetiredProjects();
       removeHiddenProjects();
     };
     if (window.DCODE_PROJECTS?.some(p => p.id === 'workspace-ops') && window.DCODE_PROJECTS?.some(p => p.id === 'monday-project-ops')) { finish(); return; }
