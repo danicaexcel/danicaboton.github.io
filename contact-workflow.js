@@ -221,3 +221,13 @@
   script.dataset.m09CaseErd = '1';
   document.body.appendChild(script);
 })();
+
+(() => {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!/case-study\.html$/.test(location.pathname) || id !== 'recruitment') return;
+  if (document.querySelector('script[data-project01-role-model]')) return;
+  const script = document.createElement('script');
+  script.src = 'project01-role-model.js?v=20260905-role-model1';
+  script.dataset.project01RoleModel = '1';
+  document.body.appendChild(script);
+})();
