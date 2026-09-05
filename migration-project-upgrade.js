@@ -3,7 +3,7 @@
   const isLegacyMigrationCase = /case-study\.html$/.test(location.pathname) && id === 'zoho-migration';
 
   if (isLegacyMigrationCase) {
-    location.replace('migration-case-study.html?v=20260905-drive-parallel1');
+    location.replace('migration-case-study.html?v=20260905-enterprise-flat1');
     return;
   }
 
@@ -32,10 +32,10 @@
     if (metrics) metrics.innerHTML = '<div class="mini"><strong>120K+</strong><span>overall migration program</span></div><div class="mini"><strong>2 lanes</strong><span>source-selectable / parallel capable</span></div>';
 
     const caseLink = card.querySelector('.projectactions a[href*="case-study"]');
-    if (caseLink) caseLink.href = 'migration-case-study.html?v=20260905-drive-parallel1';
+    if (caseLink) caseLink.href = 'migration-case-study.html?v=20260905-enterprise-flat1';
 
     const iframe = card.querySelector('iframe');
-    if (iframe && /migration-demo/.test(iframe.src)) iframe.src = 'migration-demo.html?embed=1&v=20260905-drive-parallel1';
+    if (iframe && /migration-demo/.test(iframe.src)) iframe.src = 'migration-demo-enterprise.html?embed=1&v=20260905-enterprise-flat1';
 
     return true;
   }
