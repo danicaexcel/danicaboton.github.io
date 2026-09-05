@@ -11,6 +11,27 @@
     return null;
   }
 
+  function retireProjectData() {
+    if (!Array.isArray(window.DCODE_PROJECTS)) return;
+    for (let i = window.DCODE_PROJECTS.length - 1; i >= 0; i -= 1) {
+      if (RETIRED_PROJECTS.has(window.DCODE_PROJECTS[i]?.id)) window.DCODE_PROJECTS.splice(i, 1);
+    }
+    const orderMap = {
+      recruitment: '01',
+      'monday-project-ops': '02',
+      'workspace-ops': '03',
+      portal: '04',
+      ocr: '05',
+      'zoho-migration': '06',
+      sheets: '07',
+      'ops-dashboard': '08'
+    };
+    window.DCODE_PROJECTS.forEach(project => {
+      if (orderMap[project.id]) project.order = orderMap[project.id];
+    });
+    window.DCODE_PROJECTS.sort((a, b) => Number(a.order || 99) - Number(b.order || 99));
+  }
+
   function removeRetiredProjects() {
     const currentId = currentProjectId();
     if (RETIRED_PROJECTS.has(currentId) && !/index\.html$/.test(location.pathname)) {
@@ -153,10 +174,11 @@
 
   function loadWorkspaceOpsEnhancement() {
     const finish = () => {
+      retireProjectData();
       const currentId = currentProjectId();
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260904-project-order2';
+        home.src = 'workspace-ops-home.js?v=20260905-remove-legacy-monday1';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
@@ -176,12 +198,13 @@
     const existing = document.querySelector('script[data-workspace-project]');
     if (existing) { existing.addEventListener('load', finish, {once:true}); return; }
     const projectScript = document.createElement('script');
-    projectScript.src = 'workspace-ops-project.js?v=20260904-project-order2';
+    projectScript.src = 'workspace-ops-project.js?v=20260905-remove-legacy-monday1';
     projectScript.dataset.workspaceProject = '1';
     projectScript.addEventListener('load', finish, {once:true});
     document.body.appendChild(projectScript);
   }
 
+  retireProjectData();
   removeRetiredProjects();
   removeHiddenProjects();
   enrichProjectActions();
