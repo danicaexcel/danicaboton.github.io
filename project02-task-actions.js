@@ -26,16 +26,15 @@
     const style = document.createElement('style');
     style.id = 'project02-worker-action-style';
     style.textContent = `
-      .p02-work-actions{display:flex;align-items:center;gap:5px;min-width:230px;overflow:visible}
-      .p02-work-btn{height:25px;border:1px solid #c3c7d5;border-radius:4px;background:#fff;color:#323338;padding:0 8px;font:500 9px/1 Arial,sans-serif;cursor:pointer;white-space:nowrap}
+      .p02-work-btn{height:25px;min-width:74px;border:1px solid #c3c7d5;border-radius:4px;background:#fff;color:#323338;padding:0 8px;font:500 9px/1 Arial,sans-serif;cursor:pointer;white-space:nowrap}
       .p02-work-btn:hover{background:#f0f6ff;border-color:#0073ea;color:#0060b9}
       .p02-work-btn.primary{background:#0073ea;border-color:#0073ea;color:#fff}.p02-work-btn.primary:hover{background:#0060b9}
       .p02-work-btn.warn{background:#fff7e6;border-color:#fdab3d;color:#8a5500}
       .p02-work-btn.review{background:#f1edff;border-color:#a25ddc;color:#6f35a5}
       .p02-work-btn[disabled]{opacity:.5;cursor:wait}
-      .p02-work-state{display:inline-flex;align-items:center;height:25px;padding:0 8px;border-radius:4px;background:#f1f3f6;color:#676879;font-size:9px;white-space:nowrap}
-      .p02-work-state.review{background:#ede8fb;color:#6f35a5}.p02-work-state.done{background:#e7f7ef;color:#057a4d}
-      .board-table th.p02-actions-head,.board-table td.p02-actions-cell{min-width:238px;max-width:238px;overflow:visible!important}
+      .p02-action-empty{display:inline-flex;align-items:center;justify-content:center;width:100%;color:#b2b6c2;font-size:10px}
+      .board-table th.p02-button-head,.board-table td.p02-button-cell{min-width:104px;max-width:124px;text-align:center!important;overflow:visible!important}
+      .board-table th.p02-button-head{font-size:10px!important;white-space:normal!important;line-height:1.2!important}
       .p02-toast{position:fixed;right:18px;bottom:18px;z-index:9999;max-width:360px;padding:11px 14px;border-radius:6px;background:#323338;color:#fff;font-size:11px;line-height:1.45;box-shadow:0 8px 30px rgba(0,0,0,.18)}
     `;
     document.head.appendChild(style);
@@ -108,48 +107,70 @@
     function button(label, action, taskId, cls='') {
       return `<button type="button" class="p02-work-btn ${cls}" data-p02-work-action="${action}" data-p02-task="${taskId}">${label}</button>`;
     }
+    function empty() { return '<span class="p02-action-empty">—</span>'; }
 
-    function actionsFor(task) {
-      if (isApproved(task)) return '<span class="p02-work-state done">✓ Approved / complete</span>';
-      if (isReview(task)) return '<span class="p02-work-state review">Awaiting reviewer decision</span>';
+    function actionCellsFor(task) {
+      const cells = {
+        actionStart: empty(),
+        actionPause: empty(),
+        actionResume: empty(),
+        actionStop: empty(),
+        actionReview: empty(),
+        actionResolve: empty()
+      };
+      if (isApproved(task) || isReview(task)) return cells;
 
       const stateValue = String(task.timerState || 'IDLE').toUpperCase();
       const revision = isRevision(task);
-      const parts = [];
+      const hasOpenRevision = revision && !!openRevision(task);
+
       if (stateValue === 'ACTIVE') {
-        parts.push(button('Pause','session.pause',task.id,'warn'));
-        parts.push(button('Stop Work','session.stop',task.id,''));
+        cells.actionPause = button('Pause','session.pause',task.id,'warn');
+        cells.actionStop = button('Stop','session.stop',task.id,'');
       } else if (stateValue === 'PAUSED') {
-        parts.push(button(revision ? 'Resume Revision' : 'Resume Work','session.resume',task.id,'primary'));
+        cells.actionResume = button('Resume','session.resume',task.id,'primary');
       } else {
-        parts.push(button(revision ? 'Start Revision' : 'Start Work','session.start',task.id,'primary'));
+        cells.actionStart = button('Start','session.start',task.id,'primary');
       }
 
       if (stateValue !== 'ACTIVE') {
-        if (revision && openRevision(task)) parts.push(button('Resolve & Resubmit','revision.resolve',task.id,'review'));
-        else parts.push(button('Send for Review','task.sendReview',task.id,'review'));
+        if (hasOpenRevision) cells.actionResolve = button('Resolve','revision.resolve',task.id,'review');
+        else cells.actionReview = button('Send','task.sendReview',task.id,'review');
       }
-      return `<div class="p02-work-actions">${parts.join('')}</div>`;
+      return cells;
     }
+
+    const ACTION_COLUMNS = [
+      ['Start','actionStart'],
+      ['Pause','actionPause'],
+      ['Resume','actionResume'],
+      ['Stop','actionStop'],
+      ['Send for Review','actionReview'],
+      ['Resolve & Resubmit','actionResolve']
+    ];
+    const ACTION_KEYS = new Set(['workActions', ...ACTION_COLUMNS.map(c => c[1])]);
 
     function refreshValues() {
       if (typeof tasks === 'undefined' || typeof schemas === 'undefined' || !schemas.tasks) return false;
       const columns = schemas.tasks.columns;
-      if (!columns.some(c => c[1] === 'workActions')) {
-        const sessionIndex = columns.findIndex(c => c[1] === 'currentSession');
-        columns.splice(sessionIndex >= 0 ? sessionIndex + 1 : 8, 0, ['Work Actions','workActions']);
+      for (let i = columns.length - 1; i >= 0; i--) {
+        if (ACTION_KEYS.has(columns[i][1])) columns.splice(i, 1);
       }
-      tasks.forEach(task => { task.workActions = actionsFor(task); });
+      const sessionIndex = columns.findIndex(c => c[1] === 'currentSession');
+      columns.splice(sessionIndex >= 0 ? sessionIndex + 1 : 8, 0, ...ACTION_COLUMNS.map(c => [...c]));
+      tasks.forEach(task => Object.assign(task, actionCellsFor(task)));
       return true;
     }
 
     function decorateRenderedTable() {
       document.querySelectorAll('.board-table').forEach(table => {
         const headers = [...table.querySelectorAll('thead th')];
-        const index = headers.findIndex(th => th.textContent.trim() === 'Work Actions');
-        if (index < 0) return;
-        headers[index].classList.add('p02-actions-head');
-        table.querySelectorAll('tbody tr').forEach(row => row.children[index]?.classList.add('p02-actions-cell'));
+        ACTION_COLUMNS.forEach(([label]) => {
+          const index = headers.findIndex(th => th.textContent.trim() === label);
+          if (index < 0) return;
+          headers[index].classList.add('p02-button-head');
+          table.querySelectorAll('tbody tr').forEach(row => row.children[index]?.classList.add('p02-button-cell'));
+        });
       });
     }
 
@@ -214,7 +235,7 @@
       }
       if (action === 'task.sendReview') payload.completionNote = 'Submitted from worker task view.';
 
-      const rowButtons = buttonEl.closest('.p02-work-actions')?.querySelectorAll('button') || [buttonEl];
+      const rowButtons = buttonEl.closest('tr')?.querySelectorAll('[data-p02-work-action]') || [buttonEl];
       rowButtons.forEach(btn => btn.disabled = true);
       try {
         const result = await callBackend(backendAction, payload);
