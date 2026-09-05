@@ -155,7 +155,7 @@
       const attribute = element.tagName === 'IFRAME' ? 'src' : 'href';
       const original = element.getAttribute(attribute) || '';
       const isEmbed = element.tagName === 'IFRAME' || /[?&]embed=1(?:&|$)/.test(original);
-      element.setAttribute(attribute, `migration-demo.html?${isEmbed ? 'embed=1&' : ''}v=20260903-fullheight-1`);
+      element.setAttribute(attribute, `migration-demo.html?${isEmbed ? 'embed=1&' : ''}v=20260905-pipeline2`);
     });
   }
 
@@ -253,5 +253,15 @@
   const script = document.createElement('script');
   script.src = 'project01-role-model.js?v=20260905-role-model1';
   script.dataset.project01RoleModel = '1';
+  document.body.appendChild(script);
+})();
+
+(() => {
+  const id = new URLSearchParams(location.search).get('id');
+  const needsMigrationUpgrade = document.querySelector('.project[data-id="zoho-migration"]') || (/case-study\.html$/.test(location.pathname) && id === 'zoho-migration');
+  if (!needsMigrationUpgrade || document.querySelector('script[data-migration-project-upgrade]')) return;
+  const script = document.createElement('script');
+  script.src = 'migration-project-upgrade.js?v=20260905-pipeline2';
+  script.dataset.migrationProjectUpgrade = '1';
   document.body.appendChild(script);
 })();
