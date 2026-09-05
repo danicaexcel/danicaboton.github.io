@@ -4,7 +4,7 @@
 <nav class="nav"><div class="wrap navin"><a class="brand" href="index.html"><span class="brandmark">DC</span><span>DCode<small>Case study</small></span></a><div class="navlinks"><a href="index.html#work">All systems</a><a href="#relationships">Data map</a><a href="#architecture">Architecture</a><a href="#demo">Interactive demo</a></div></div></nav>
 <main id="case"></main>
 <footer class="wrap footer">DCode · Danica Marie Boton · Automation & Integration Engineer</footer>
-<script src="data.js?v=migration-cleaning-20260905"></script><script>
+<script src="data.js?v=migration-corrected-20260905"></script><script>
 const id=new URLSearchParams(location.search).get('id')||'recruitment';const p=getDcodeProject(id);if(!p)location.href='index.html';document.title=`${p.title} — DCode`;
 const main=document.getElementById('case');const hasDemo=p.demoAvailable!==false;if(!hasDemo){const demoNav=document.querySelector('.navlinks a[href="#demo"]');if(demoNav)demoNav.textContent='Development state';}
 const implementation=id==='recruitment'
@@ -77,20 +77,20 @@ const relationshipModels={
     {name:'Source_Disposition',type:'Archive / review',fields:[['PK','Disposition_ID'],['FK','Source_File_ID'],['','Destination'],['','Move_Status']]},
     {name:'Automation_Run',type:'n8n execution audit',fields:[['PK','Run_ID'],['','Discovered'],['','Validated'],['','Needs_Review'],['','Failed']]}
   ],relations:[[0,1,'stores original'],[0,2,'starts OCR'],[2,3,'extracts record'],[4,3,'enriches seller'],[3,5,'feeds activity'],[3,6,'validation gate'],[6,7,'queues exception'],[6,8,'approved records'],[3,8,'report source'],[5,8,'attendance source'],[8,9,'generates'],[6,10,'archive route'],[7,10,'review route'],[0,11,'tracked by'],[8,11,'report evidence']]},
-  'zoho-migration':{summary:'Each migration row is parsed, cleaned, normalized, checked for duplicates, and assigned a disposition before Zoho write-back. Duplicate groups use normalized email, phone, name, date, and resume evidence; the latest valid record is retained, and Apploi rows update an existing Applicant or create a new one only when no match is found.',entities:[
+  'zoho-migration':{summary:'Each migration row preserves resume file traceability, Google Drive evidence, parsed candidate identity, contact details, facility applied, confidence, filename date, and license before the record is mapped, reviewed, written to Zoho, and reconciled.',entities:[
     {name:'Resume_Source_Row',type:'Migration source table',fields:[['PK','resume_filename'],['','filename_date'],['','confidence'],['','facility-applied'],['','license']]},
     {name:'Resume_File',type:'Google Drive evidence',fields:[['PK','gdrive_link'],['FK','resume_filename'],['','File_Status'],['','Access_Status'],['','Upload_Date']]},
     {name:'Candidate_Profile',type:'Parsed identity fields',fields:[['PK','Candidate_Key'],['','first_name'],['','last_name'],['','company'],['','designation']]},
     {name:'Contact_Detail',type:'Parsed contact fields',fields:[['PK','Contact_Key'],['FK','Candidate_Key'],['','email'],['','mobile'],['','secondary_email']]},
     {name:'Address_Detail',type:'Parsed address fields',fields:[['PK','Address_Key'],['FK','Candidate_Key'],['','street'],['','state'],['','zip']]},
     {name:'Facility_Lookup',type:'Zoho lookup target',fields:[['PK','Facility_ID'],['','facility-applied'],['','Facility_Name'],['','Match_Status']]},
-    {name:'Data_Cleaning',type:'Normalization rules',fields:[['PK','Cleaning_ID'],['','Normalized_Email'],['','Normalized_Mobile'],['','Normalized_Name'],['','Clean_Status']]},
-    {name:'Deduplication_Gate',type:'Duplicate decision',fields:[['PK','Dedup_ID'],['','Match_Key'],['','Existing_Zoho_ID'],['','Keep_Record'],['','Decision']]},
+    {name:'Field_Mapping',type:'Migration rules',fields:[['PK','Mapping_ID'],['','Source_Field'],['','Zoho_Field'],['','Transform'],['','Required']]},
+    {name:'Confidence_Review',type:'Exception gate',fields:[['PK','Review_ID'],['FK','resume_filename'],['','confidence'],['','Review_Status'],['','Reason']]},
     {name:'Import_Batch',type:'Controlled Zoho load',fields:[['PK','Batch_ID'],['','Record_Count'],['','Started_On'],['','Status'],['','Owner']]},
     {name:'Zoho_Candidate_Record',type:'Target Zoho record',fields:[['PK','Zoho_Record_ID'],['FK','Candidate_Key'],['FK','Facility_ID'],['','Resume_Link'],['','Write_Status']]},
     {name:'Migration_Exception',type:'Review queue',fields:[['PK','Exception_ID'],['FK','Batch_ID'],['FK','resume_filename'],['','Issue_Type'],['','Resolution']]},
     {name:'Reconciliation',type:'Verification report',fields:[['PK','Check_ID'],['FK','Batch_ID'],['','Source_Count'],['','Target_Count'],['','Result']]}
-  ],relations:[[0,1,'file evidence'],[0,2,'identity parse'],[2,3,'contact fields'],[2,4,'address fields'],[0,5,'facility match'],[0,6,'source cleaning'],[2,6,'normalize identity'],[3,6,'normalize contact'],[4,6,'normalize address'],[5,6,'verify facility'],[6,7,'clean candidate'],[7,10,'duplicate or review'],[7,8,'latest valid record'],[8,9,'update or create'],[1,9,'resume link'],[5,9,'facility lookup'],[8,10,'failed rows'],[8,11,'verified by'],[9,11,'target count'],[10,11,'exception status']]},
+  ],relations:[[0,1,'file evidence'],[0,2,'identity parse'],[2,3,'contact fields'],[2,4,'address fields'],[0,5,'facility match'],[0,6,'mapped by'],[2,6,'candidate mapping'],[3,6,'contact mapping'],[4,6,'address mapping'],[5,6,'lookup mapping'],[0,7,'confidence gate'],[7,10,'may create'],[6,8,'batch rules'],[8,9,'writes Zoho'],[1,9,'resume link'],[5,9,'facility lookup'],[8,10,'failed rows'],[8,11,'verified by'],[9,11,'target count'],[10,11,'exception status']]},
   sheets:{summary:'Sheet-native modules share employee and schedule data, with Apps Script and n8n handling validation and external sync.',entities:[
     {name:'Employee',type:'Reference sheet',fields:[['PK','Employee_ID'],['','Name'],['','Rate'],['','Status']]},{name:'Attendance',type:'Transaction sheet',fields:[['PK','Entry_ID'],['FK','Employee_ID'],['','Time_In'],['','Time_Out'],['','Hours']]},{name:'Payroll_Run',type:'Calculated output',fields:[['PK','Payroll_ID'],['FK','Employee_ID'],['','Period'],['','Gross_Pay']]},{name:'Project_Task',type:'Gantt sheet',fields:[['PK','Task_ID'],['','Owner'],['','Start_Date'],['','Due_Date']]},{name:'Calendar_Event',type:'Google Calendar',fields:[['PK','Event_ID'],['FK','Task_ID'],['','Start_Time'],['','Sync_Status']]},{name:'Automation_Log',type:'Apps Script / n8n',fields:[['PK','Log_ID'],['','Workflow_Type'],['','Row_ID'],['','Result']]}
   ],relations:[[0,1,'records'],[0,2,'paid in'],[1,2,'calculates'],[3,4,'syncs'],[5,1,'validates'],[5,4,'tracks']]},
