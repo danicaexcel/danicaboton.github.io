@@ -17,12 +17,13 @@
   const metrics=card.querySelector('.metricline');
   if(metrics) metrics.innerHTML='<div class="mini"><strong>5 min</strong><span>driver compliance monitoring cadence</span></div><div class="mini"><strong>$0.03</strong><span>verified handed-over parcel pay basis</span></div>';
   const caseLink=card.querySelector('a[href*="case-study.html"],a[href*="spx-case-study"]');
-  if(caseLink) caseLink.href='spx-case-study-v2.html?v=20260905-spx-modern1';
+  if(caseLink) caseLink.href='spx-case-study.html?v=20260906-spx-queue5';
   const screenTitle=card.querySelector('.screen-title');
   if(screenTitle) screenTitle.textContent='SPX Logistics Operations & Automated Encoding System';
   const frame=card.querySelector('iframe.live-demo-preview');
   if(frame){
     frame.title='Interactive reconstructed SPX logistics operations workspace';
-    frame.src='demo.html?id=ocr&embed=1&v=20260905-spx-modern1';
+    frame.src='demo.html?id=ocr&embed=1&v=20260906-spx-queue5';
   }
+  card.querySelectorAll('a[href*="demo.html?id=ocr"]').forEach(link=>{link.href='demo.html?id=ocr&v=20260906-spx-queue5';});
 })();
