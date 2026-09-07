@@ -7,10 +7,10 @@
   const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
   if(mondayProject){
     mondayProject.category='Monday.com · AI Agents · Project Operations · n8n';
-    mondayProject.subtitle='A Monday.com project operations system with native AI Project Manager and Planner agents for task follow-up, recovery planning, Sprint/Agile planning, client proposal costing, approval-controlled plan changes, and n8n orchestration when work needs to leave Monday.';
+    mondayProject.subtitle='A Monday.com project operations system with native AI Project Manager and Planner agents for proactive daily/weekly reporting, task follow-up, recovery planning, Sprint/Agile planning, client proposal costing, approval-controlled plan changes, and n8n orchestration when work needs to leave Monday.';
     mondayProject.status='Interactive reconstruction · native Monday AI agent operating model';
     mondayProject.stack=['Monday.com','Monday AI Agents','n8n','Monday API','Dashboards','Gantt / Timeline'];
-    mondayProject.metrics=[['2','native AI agents'],['Proposal → approval','costed plan + sprint baseline'],['8','connected data boards'],['10','production n8n workflow families']];
+    mondayProject.metrics=[['2','native AI agents'],['Daily + weekly','proactive agent reports'],['Proposal → approval','costed plan + sprint baseline'],['8','connected data boards']];
   }
 
   const projects=['workspace-ops','monday-project-ops'].map(id=>window.DCODE_PROJECTS.find(p=>p.id===id)).filter(Boolean);
@@ -19,7 +19,7 @@
     const el=document.createElement('article');el.className='project';el.dataset.id=p.id;
     const screenId=`preview-${p.id}`,hasDemo=p.demoAvailable!==false,hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
     const caseHref=p.id==='workspace-ops'?'workspace-ops-case-study.html':p.id==='monday-project-ops'?'monday-project-ops-case-study.html':`case-study.html?id=${p.id}`;
-    const previewHref=p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?embed=1&v=20260907-proposal-costing1':`demo.html?id=${p.id}&embed=1`;
+    const previewHref=p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?embed=1&v=20260907-proactive-reporting1':`demo.html?id=${p.id}&embed=1`;
     const workflowAction=hasN8n?'<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>':'';
     const actions=hasDemo?`<a class="btn" href="${caseHref}">Read case study</a><button class="btn primary fullscreen-btn" type="button" data-target="${screenId}">Open demo ↗</button>${workflowAction}`:`<a class="btn primary" href="${caseHref}">View ongoing case study</a><span class="demo-pending">Public demo in development</span>`;
     const visual=hasDemo?`<div class="laptop-wrap"><div class="laptop-screen" id="${screenId}"><div class="laptop-bezel"><span class="camera-dot"></span><span class="screen-title">${p.title}</span><div class="screen-controls"><button type="button" class="screen-btn fullscreen-btn" data-target="${screenId}" aria-label="View ${p.title} demo fullscreen">⛶</button></div></div><div class="laptop-display"><iframe class="live-demo-preview" src="${previewHref}" title="Interactive reconstructed ${p.title} preview" loading="lazy" allowfullscreen></iframe></div></div><div class="laptop-base"><span></span></div><div class="demo-caption"><span>Interactive reconstruction</span><i></i><span>Synthetic data</span><i></i><span>Fullscreen available</span></div></div>`:'';
@@ -54,9 +54,9 @@
     if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
     const metrics=card.querySelector('.metricline');
     if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
-    if(subtitle&&!card.querySelector('.p02-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p02-home-agent-note"><strong>AI Agent layer</strong>Project Manager Agent for risk/follow-up + Planner Agent for Sprint/Agile planning and client proposal costing. Proposal and plan changes stay approval-controlled before becoming the Monday baseline.</div>');
+    if(subtitle&&!card.querySelector('.p02-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p02-home-agent-note"><strong>AI Agent layer</strong>Project Manager Agent proactively publishes daily attention and weekly project-health reports, then handles risk/follow-up. Planner Agent handles Sprint/Agile planning and client proposal costing. Proposal and plan changes stay approval-controlled before becoming the Monday baseline.</div>');
     const frame=card.querySelector('.live-demo-preview');
-    if(frame)frame.src='monday-project-ops-demo-native-v8.html?embed=1&v=20260907-proposal-costing1';
+    if(frame)frame.src='monday-project-ops-demo-native-v8.html?embed=1&v=20260907-proactive-reporting1';
   }
   enhanceMondayCard();
 
