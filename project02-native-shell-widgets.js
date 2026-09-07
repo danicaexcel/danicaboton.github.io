@@ -17,7 +17,7 @@
   const icons={
     workspace:'<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="12" y="3" width="5" height="5" rx="1"/><rect x="3" y="12" width="5" height="5" rx="1"/><rect x="12" y="12" width="5" height="5" rx="1"/></svg>',
     sidekick:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.8l1.2 3.4 3.4 1.2-3.4 1.2-1.2 3.4-1.2-3.4-3.4-1.2 3.4-1.2L10 2.8z"/><path d="M15.2 12.2l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9z"/></svg>',
-    agents:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8.2 5.1 5.1 8.2a3 3 0 0 0 4.2 4.2l2.2-2.2"/><path d="m11.8 14.9 3.1-3.1a3 3 0 0 0-4.2-4.2L8.5 9.8"/></svg>',
+    agents:'<svg viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="8.1" cy="9" rx="4.6" ry="2.35" transform="rotate(-25 8.1 9)"/><ellipse cx="13.2" cy="11.5" rx="3.25" ry="1.7" transform="rotate(14 13.2 11.5)"/></svg>',
     vibe:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.8l5.2 4.1-2 7.1L10 17.2 6.8 14l-2-7.1L10 2.8z"/><path d="M4.8 6.9h10.4M6.8 14h6.4"/></svg>',
     workflows:'<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="10" cy="15" r="2"/><path d="M7 5h6M6.1 6.6l2.8 6.6M13.9 6.6l-2.8 6.6"/></svg>',
     notetaker:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8v4M7 5.5v9M10 3.5v13M13 5.5v9M16 8v4"/></svg>',
@@ -34,6 +34,13 @@
     diamond:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 4h10l2 4-7 8-7-8zM5 4l5 12 5-12M3 8h14"/></svg>'
   };
 
+  const agentRows=[
+    {group:'Scheduled Reports',item:'Daily attention report',id:'AR-001',agent:'Project Manager Agent',type:'Daily Report',schedule:'Weekdays · 08:00',status:'Completed',project:'Portfolio / all active projects',audience:'Project owners',summary:'Overdue work, blockers, reviews and project-risk items requiring attention.',published:'Sep 7, 2026 · 08:00'},
+    {group:'Scheduled Reports',item:'Weekly project-health report',id:'AR-002',agent:'Project Manager Agent',type:'Weekly Report',schedule:'Friday · 16:00',status:'Completed',project:'Portfolio / all active projects',audience:'Project owners',summary:'Delivery health, carry-over work, budget/risk signals and unresolved escalations.',published:'Sep 4, 2026 · 16:00'},
+    {group:'Planning Outputs',item:'Sprint 18 proposal',id:'AR-003',agent:'Planner Agent',type:'Sprint Plan',schedule:'Sep 7 · planning run',status:'Review',project:'Website Redesign 2026',audience:'Project owner + delivery team',summary:'26 h proposed commitment from 72 h available capacity; blocked vendor work deferred.',published:'Sep 7, 2026 · 09:20'},
+    {group:'Planning Outputs',item:'Client proposal v1',id:'AR-004',agent:'Planner Agent',type:'Costed Proposal',schedule:'Sep 7 · costing run',status:'Draft',project:'Website Redesign 2026',audience:'Project owner',summary:'Costed project plan generated from client scope, budget, timeline, roles and labor-rate inputs.',published:'Sep 7, 2026 · 10:10'}
+  ];
+
   function ensureStyle(doc){
     if(doc.getElementById('project02-native-shell-widget-style'))return;
     const style=doc.createElement('style');
@@ -41,7 +48,7 @@
     style.textContent=`
       .native-rail-item .ri svg{width:18px;height:18px;display:block;fill:none;stroke:#4e5366;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}.native-rail-item .ri svg .fill{fill:#4e5366;stroke:none}.native-rail-item.active .ri svg{stroke:#323338}.native-rail-item.active .ri svg .fill{fill:#323338}.native-rail-item:has(.ri[data-p02-icon="agents"]).active{background:#cce5ff!important}
       .native-top-icon svg{width:17px;height:17px;display:block;fill:none;stroke:#323338;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}.native-search-icon{display:grid!important;place-items:center!important;width:18px!important;height:18px!important}.native-search-icon svg{width:14px;height:14px;fill:none;stroke:#676879;stroke-width:1.5;stroke-linecap:round}.native-upgrade .diamond{display:inline-grid!important;place-items:center!important;width:17px;height:17px}.native-upgrade .diamond svg{width:17px;height:17px;fill:none;stroke:#0073ea;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}
-      .p02-native-agent-table{grid-column:1/-1!important;border:1px solid #d0d4e4!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important;overflow:hidden!important;padding:0!important}.p02-native-agent-table .monday-dw-head{height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;border-bottom:1px solid #d0d4e4;background:#fff;color:#323338;font-size:13px;font-weight:500}.p02-native-agent-table .monday-dw-tools{display:flex;align-items:center;gap:14px;color:#676879;font-size:14px}.p02-native-agent-table .mini-table{width:100%;border-collapse:collapse;background:#fff}.p02-native-agent-table .mini-table th{background:#f8f9fb!important;color:#676879!important;font-weight:500;text-align:left}.p02-native-agent-table .mini-table th,.p02-native-agent-table .mini-table td{border-bottom:1px solid #e6e9f0!important;padding:10px 12px!important;font-size:10px!important;vertical-align:top}.p02-native-agent-table .mini-table td{color:#53576a}.p02-native-agent-table .mini-table td:first-child{color:#323338;font-weight:500}.p02-native-agent-table .p02-native-status{display:inline-flex;align-items:center;padding:3px 7px;border-radius:3px;font-size:8px;font-weight:600}.p02-native-agent-table .p02-native-status.done{background:#00c875;color:#fff}.p02-native-agent-table .p02-native-status.review{background:#fdab3d;color:#fff}.p02-native-agent-table .p02-native-status.draft{background:#579bfc;color:#fff}.p02-native-agent-table .p02-native-table-note{padding:8px 12px;color:#8a8f9e;font-size:8px;background:#fff}
+      .p02-native-agent-table{grid-column:1/-1!important;border:1px solid #d0d4e4!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important;overflow:hidden!important;padding:0!important}.p02-native-agent-table .monday-dw-head{height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;border-bottom:1px solid #d0d4e4;background:#fff;color:#323338;font-size:13px;font-weight:500}.p02-native-agent-table .monday-dw-tools{display:flex;align-items:center;gap:14px;color:#676879;font-size:14px}.p02-native-agent-table .mini-table{width:100%;border-collapse:collapse;background:#fff}.p02-native-agent-table .mini-table th{background:#f8f9fb!important;color:#676879!important;font-weight:500;text-align:left}.p02-native-agent-table .mini-table th,.p02-native-agent-table .mini-table td{border-bottom:1px solid #e6e9f0!important;padding:10px 12px!important;font-size:10px!important;vertical-align:top}.p02-native-agent-table .mini-table td{color:#53576a}.p02-native-agent-table .mini-table td:first-child{color:#323338;font-weight:500}.p02-native-status{display:inline-flex;align-items:center;padding:3px 7px;border-radius:3px;font-size:8px;font-weight:600;color:#fff}.p02-native-status.done{background:#00c875}.p02-native-status.review{background:#fdab3d}.p02-native-status.draft{background:#579bfc}
       @media(max-width:780px){.p02-native-agent-table{overflow:auto!important}.p02-native-agent-table .mini-table{min-width:780px}}
     `;
     doc.head.appendChild(style);
@@ -69,35 +76,67 @@
     const diamond=doc.querySelector('.native-upgrade .diamond');if(diamond)diamond.innerHTML=icons.diamond;
   }
 
+  function installAgentReportsBoard(doc){
+    if(doc.getElementById('project02-agent-reports-board-runtime'))return;
+    const script=doc.createElement('script');
+    script.id='project02-agent-reports-board-runtime';
+    script.textContent=`(function(){
+      if(window.__project02AgentReportsBoardInstalled)return;
+      window.__project02AgentReportsBoardInstalled=true;
+      const rows=${JSON.stringify(agentRows)};
+      window.__project02AgentReportRows=rows;
+      if(typeof schemas==='undefined'||typeof nav==='undefined')return;
+      schemas.agentReports={
+        title:'Agent Reports',
+        tabs:['Main table','Scheduled Reports','Planning Outputs'],
+        columns:[['Report / Plan','item'],['Report ID','id'],['Agent','agent'],['Type','type'],['Run / Schedule','schedule'],['Status','status','pill'],['Connected Project','project'],['Audience','audience'],['Published At','published'],['Summary','summary']],
+        rows
+      };
+      if(!nav.some(x=>x[0]==='agentReports')){
+        const insertAt=nav.findIndex(x=>x[0]==='logs');
+        nav.splice(insertAt>=0?insertAt:nav.length,0,['agentReports','▦','Agent Reports']);
+      }
+      if(typeof renderNav==='function')renderNav();
+    })();`;
+    doc.body.appendChild(script);
+  }
+
   function removeCustomAgentPanel(doc){
     doc.querySelectorAll('.p02-agent-dashboard').forEach(el=>el.remove());
+  }
+
+  function removeGenericWidgetHead(widget){
+    widget.querySelectorAll(':scope > .monday-dw-head').forEach(head=>{
+      const label=head.querySelector('span')?.textContent.trim();
+      if(label==='Widget')head.remove();
+    });
   }
 
   function addNativeAgentTable(doc){
     const grid=doc.querySelector('.dashboard .dash-grid');if(!grid)return false;
     removeCustomAgentPanel(doc);
-    if(grid.querySelector('.p02-native-agent-table'))return true;
-    const widget=doc.createElement('section');
-    widget.className='card p02-native-agent-table';
-    widget.innerHTML=`
-      <div class="monday-dw-head"><span>Agent Reports</span><div class="monday-dw-tools"><span title="Filter">▽</span><span title="More">...</span></div></div>
-      <table class="mini-table" aria-label="Agent Reports table widget">
-        <thead><tr><th>Report / plan</th><th>Agent</th><th>Run / schedule</th><th>Status</th><th>Summary</th></tr></thead>
-        <tbody>
-          <tr><td>Daily attention report</td><td>Project Manager Agent</td><td>Weekdays · 08:00</td><td><span class="p02-native-status done">Completed</span></td><td>Overdue work, blockers, reviews and project-risk items requiring attention.</td></tr>
-          <tr><td>Weekly project-health report</td><td>Project Manager Agent</td><td>Friday · 16:00</td><td><span class="p02-native-status done">Completed</span></td><td>Delivery health, carry-over work, budget/risk signals and unresolved escalations.</td></tr>
-          <tr><td>Sprint 18 proposal</td><td>Planner Agent</td><td>Sep 7 · planning run</td><td><span class="p02-native-status review">Review</span></td><td>26 h proposed commitment from 72 h available capacity; blocked vendor work deferred.</td></tr>
-          <tr><td>Client proposal v1</td><td>Planner Agent</td><td>Sep 7 · costing run</td><td><span class="p02-native-status draft">Draft</span></td><td>Costed project plan generated from client scope, budget, timeline, roles and labor-rate inputs.</td></tr>
-        </tbody>
-      </table>
-      <div class="p02-native-table-note">Native dashboard pattern: Table widget connected to an Agent Reports board. Detailed agent run history remains in Agents → Activity.</div>`;
-    grid.appendChild(widget);
+    let widget=grid.querySelector('.p02-native-agent-table');
+    if(!widget){
+      widget=doc.createElement('section');
+      widget.className='card p02-native-agent-table';
+      widget.dataset.nativePanel2='1';
+      widget.dataset.nativeNumber2='1';
+      widget.innerHTML=`
+        <div class="monday-dw-head"><span>Agent Reports</span><div class="monday-dw-tools"><span title="Filter">▽</span><span title="More">...</span></div></div>
+        <table class="mini-table" aria-label="Agent Reports table widget">
+          <thead><tr><th>Report / plan</th><th>Agent</th><th>Run / schedule</th><th>Status</th><th>Summary</th></tr></thead>
+          <tbody>${agentRows.map(r=>`<tr><td>${r.item}</td><td>${r.agent}</td><td>${r.schedule}</td><td><span class="p02-native-status ${r.status==='Completed'?'done':r.status==='Review'?'review':'draft'}">${r.status}</span></td><td>${r.summary}</td></tr>`).join('')}</tbody>
+        </table>`;
+      grid.appendChild(widget);
+    }
+    widget.dataset.nativePanel2='1';
+    removeGenericWidgetHead(widget);
     return true;
   }
 
   function apply(){
     const doc=deepestDoc();if(!doc||!doc.body)return false;
-    ensureStyle(doc);patchRail(doc);patchTop(doc);removeCustomAgentPanel(doc);addNativeAgentTable(doc);
+    ensureStyle(doc);installAgentReportsBoard(doc);patchRail(doc);patchTop(doc);removeCustomAgentPanel(doc);addNativeAgentTable(doc);
     return true;
   }
 
