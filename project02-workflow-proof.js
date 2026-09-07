@@ -36,7 +36,7 @@
     const kicker = document.querySelector('.casehero .kicker');
     if (kicker) kicker.textContent = '02 / Monday.com · AI Agents · Project Operations · n8n';
     const subtitle = document.querySelector('.casehero .casesub');
-    if (subtitle) subtitle.textContent = 'A Monday.com project operations system combining auditable time/cost controls with a native-style AI Project Manager Agent and Planner Agent for project follow-up, recovery planning, Sprint/Agile planning, client proposal costing, revision, approval, and controlled plan changes.';
+    if (subtitle) subtitle.textContent = 'A Monday.com project operations system combining auditable time/cost controls with a native-style AI Project Manager Agent and Planner Agent for proactive scheduled reporting, project follow-up, recovery planning, Sprint/Agile planning, client proposal costing, revision, approval, and controlled plan changes.';
 
     const casebar = document.querySelector('.casebar');
     if (casebar && !/Monday AI Agents/i.test(casebar.textContent)) {
@@ -56,19 +56,19 @@
 
     const implementationNote = document.querySelector('.implementation-note p');
     if (implementationNote) {
-      implementationNote.textContent = 'The public portfolio reconstructs the Monday.com operating experience and AI-agent workflow with synthetic data. The target architecture is native-first inside Monday: Project Manager and Planner agents read board context and Updates, recommend actions, and use approval gates before changing dates, scope, sprint assignments, risk, or approved proposal baselines. n8n remains the orchestration layer when work must leave Monday or requires cross-system validation, audit, retries, or external APIs.';
+      implementationNote.textContent = 'The public portfolio reconstructs the Monday.com operating experience and AI-agent workflow with synthetic data. The target architecture is native-first inside Monday: the Project Manager Agent can run scheduled daily attention and weekly project-health reports without a user prompt, while both agents read board context and Updates, recommend actions, and use approval gates before changing dates, scope, sprint assignments, risk, or approved proposal baselines. n8n remains the orchestration layer when work must leave Monday or requires cross-system validation, audit, retries, external delivery, or external APIs.';
     }
 
     const statBoxes = [...document.querySelectorAll('.stats4 .statbox')];
     if (statBoxes[0]) { statBoxes[0].querySelector('strong').textContent='8'; statBoxes[0].querySelector('span').textContent='connected data boards'; }
     if (statBoxes[1]) { statBoxes[1].querySelector('strong').textContent='2'; statBoxes[1].querySelector('span').textContent='AI agents in Project 02'; }
-    if (statBoxes[2]) { statBoxes[2].querySelector('strong').textContent='10'; statBoxes[2].querySelector('span').textContent='n8n workflow domains'; }
+    if (statBoxes[2]) { statBoxes[2].querySelector('strong').textContent='Daily + weekly'; statBoxes[2].querySelector('span').textContent='proactive agent reports'; }
     if (statBoxes[3]) { statBoxes[3].querySelector('strong').textContent='Proposal → approval'; statBoxes[3].querySelector('span').textContent='costed project baseline'; }
 
     document.querySelectorAll('a[href*="monday-project-ops-demo-native-v8.html"],iframe[src*="monday-project-ops-demo-native-v8.html"]').forEach(el => {
       const attr = el.tagName === 'IFRAME' ? 'src' : 'href';
       const current = el.getAttribute(attr) || '';
-      el.setAttribute(attr, `monday-project-ops-demo-native-v8.html?${el.tagName === 'IFRAME' || /embed=1/.test(current) ? 'embed=1&' : ''}v=20260907-proposal-costing1`);
+      el.setAttribute(attr, `monday-project-ops-demo-native-v8.html?${el.tagName === 'IFRAME' || /embed=1/.test(current) ? 'embed=1&' : ''}v=20260907-proactive-reporting1`);
     });
 
     const nav = document.querySelector('.navlinks');
@@ -89,14 +89,14 @@
         <div class="wrap">
           <div class="p02-agent-case-head">
             <div><div class="kicker">AI agent operating layer</div><h2>Two agents sit on top of the project system.</h2></div>
-            <p>The agents do not replace the project data model. They use the existing projects, tasks, Updates, dates, workload, approvals, labor rates, and audit evidence as context. Their authority is deliberately limited: they can analyze and recommend freely, but plan-changing actions require the appropriate human approval.</p>
+            <p>The agents do not replace the project data model. They use the existing projects, tasks, Updates, dates, workload, approvals, labor rates, and audit evidence as context. Their authority is deliberately limited: they can analyze, report, and recommend freely, but plan-changing actions require the appropriate human approval.</p>
           </div>
           <div class="p02-agent-case-grid">
-            <article class="p02-agent-case-card"><small>01 · Project Manager Agent</small><h3>Follow up, diagnose, recover</h3><p>Monitors overdue and stuck work, reads the latest Monday Updates and blocker context, asks the assigned member for clarification, suggests another path when a task is blocked, and requests project-owner approval before changing the plan.</p><ul><li>Reads task status, dates, owner, dependencies and Updates</li><li>Follows up with the assigned member when context is missing</li><li>Suggests recovery actions instead of silently moving dates</li><li>Applies approved date/status/risk changes only after the approval gate</li></ul></article>
+            <article class="p02-agent-case-card"><small>01 · Project Manager Agent</small><h3>Report, follow up, diagnose, recover</h3><p>Monitors overdue and stuck work, reads the latest Monday Updates and blocker context, asks the assigned member for clarification, suggests another path when a task is blocked, and requests project-owner approval before changing the plan.</p><ul><li>Publishes a weekday daily-attention report automatically at 08:00</li><li>Publishes a weekly project-health report every Friday at 16:00</li><li>Reads task status, dates, owner, dependencies and Updates</li><li>Follows up with the assigned member when context is missing</li><li>Suggests recovery actions instead of silently moving dates</li><li>Applies approved date/status/risk changes only after the approval gate</li></ul></article>
             <article class="p02-agent-case-card"><small>02 · Planner Agent · Sprint / Agile + costing</small><h3>Plan the work before it becomes the baseline</h3><p>Turns a client brief, target budget, timeline and team/rate inputs into a costed proposal plan. The same Planner also reviews backlog, workload, remaining hours and blockers to build realistic Sprint/Agile scope.</p><ul><li>Builds phased scope, estimated hours and project costing</li><li>Generates a proposal-plan file for review</li><li>Supports Request revision → revised version → Approve</li><li>Applies only the approved budget/hours/sprint baseline to Monday</li></ul></article>
           </div>
           <div class="p02-agent-flow"><div class="p02-agent-flow-title"><strong>Planner proposal workflow</strong><span>The proposal is treated as a controlled planning artifact, not an AI answer that immediately rewrites the board.</span></div><div class="p02-agent-flow-steps"><div><em>01</em><b>Client inputs</b><span>Brief, scope, budget, timeline, constraints.</span></div><div><em>02</em><b>Costing context</b><span>Roles, rates, capacity, project assumptions.</span></div><div><em>03</em><b>Planner analysis</b><span>Phases, hours, dependencies, reserve and delivery load.</span></div><div><em>04</em><b>Proposal file</b><span>Generated plan with scope, hours and cost breakdown.</span></div><div><em>05</em><b>Review</b><span>Project owner checks assumptions and commercial fit.</span></div><div><em>06</em><b>Revise / approve</b><span>Revision creates a new version; approval locks the decision.</span></div><div><em>07</em><b>Monday baseline</b><span>Approved hours, budget, dates and sprint scope become controlled plan values.</span></div></div></div>
-          <div class="p02-agent-boundary"><strong>Architecture boundary:</strong> native Monday AI Agents are the preferred layer for reasoning and actions that stay inside Monday. n8n is used when the agent needs external systems, custom services, cross-platform orchestration, stronger retry/reconciliation logic, or a centralized audit path beyond the native agent surface.</div>
+          <div class="p02-agent-boundary"><strong>Architecture boundary:</strong> native Monday AI Agents are the preferred layer for scheduled reporting, reasoning, follow-up, and actions that stay inside Monday. n8n is used when the report or agent action needs external systems, external delivery, custom services, cross-platform orchestration, stronger retry/reconciliation logic, or a centralized audit path beyond the native agent surface.</div>
         </div>`;
       firstSection.insertAdjacentElement('afterend', section);
     }
@@ -110,19 +110,19 @@
         const h = cols[0].querySelector('h3');
         const p = cols[0].querySelector('p');
         if (h) h.textContent = 'Monday operating layer + native AI Agents';
-        if (p) p.textContent = 'Boards, relationships, people, statuses, dates, Updates, files, dashboards, workload and planning stay in Monday. The Project Manager and Planner agents use that context for follow-up, recovery, Sprint planning and proposal costing, with human approval before plan-changing writes.';
+        if (p) p.textContent = 'Boards, relationships, people, statuses, dates, Updates, files, dashboards, workload and planning stay in Monday. The Project Manager Agent can proactively generate scheduled daily/weekly reports, while the Project Manager and Planner agents use Monday context for follow-up, recovery, Sprint planning and proposal costing, with human approval before plan-changing writes.';
       }
       if (cols[1]) {
         const h = cols[1].querySelector('h3');
         const p = cols[1].querySelector('p');
         if (h) h.textContent = 'n8n + external orchestration';
-        if (p) p.textContent = 'n8n handles the work that should not be forced into the native agent layer: cross-system APIs, external notifications, append-only evidence workflows, idempotency, complex cost posting, retries, reconciliation and centralized technical audit when required.';
+        if (p) p.textContent = 'n8n handles the work that should not be forced into the native agent layer: cross-system APIs, external report delivery, external notifications, append-only evidence workflows, idempotency, complex cost posting, retries, reconciliation and centralized technical audit when required.';
       }
     }
 
     const demoIntro = document.querySelector('#demo .sectionhead > p');
     if (demoIntro) {
-      demoIntro.textContent = 'The public demo reconstructs the Monday.com operating experience with synthetic data and now includes the Project Manager Agent plus the Planner Agent for Sprint/Agile planning and client proposal costing, revision, approval, and controlled baseline write-back.';
+      demoIntro.textContent = 'The public demo reconstructs the Monday.com operating experience with synthetic data and now includes proactive scheduled Project Manager reports plus the Project Manager Agent and Planner Agent for follow-up, Sprint/Agile planning, client proposal costing, revision, approval, and controlled baseline write-back.';
     }
   };
 
