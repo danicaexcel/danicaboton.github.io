@@ -52,6 +52,20 @@
     if (label) el.setAttribute('aria-label', label);
   }
 
+  function bindHeaderAgent(doc, actions) {
+    const agent = [...actions.children].find(el => /Agents/i.test(el.textContent || '') || el.getAttribute('aria-label') === 'Agents');
+    if (!agent || agent.dataset.p02AgentProxyBound) return;
+    agent.dataset.p02AgentProxyBound = '1';
+    agent.setAttribute('title', 'Open AI Project Manager Agent');
+    agent.addEventListener('click', event => {
+      const rail = [...doc.querySelectorAll('.native-rail-item')].find(el => /Agents/i.test(el.textContent || ''));
+      if (!rail) return;
+      event.preventDefault();
+      event.stopPropagation();
+      rail.click();
+    });
+  }
+
   function apply() {
     const doc = deepestDoc();
     if (!doc || !doc.body) return false;
@@ -88,6 +102,7 @@
         link.type = 'button'; link.className = 'p02-head-action p02-head-link'; link.innerHTML = icons.link; link.setAttribute('aria-label','Copy board link');
         invite.insertAdjacentElement('afterend', link);
       }
+      bindHeaderAgent(doc, actions);
     });
     return true;
   }
