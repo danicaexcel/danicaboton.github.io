@@ -3,13 +3,23 @@
   if(!root||!Array.isArray(window.DCODE_PROJECTS)) return;
   const hidden=new Set(['sheets','ops-dashboard']);
   root.querySelectorAll('.project').forEach(card=>{if(hidden.has(card.dataset.id))card.remove();});
+
+  const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
+  if(mondayProject){
+    mondayProject.category='Monday.com · AI Agents · Project Operations · n8n';
+    mondayProject.subtitle='A Monday.com project operations system with native AI Project Manager and Planner agents for task follow-up, recovery planning, Sprint/Agile planning, client proposal costing, approval-controlled plan changes, and n8n orchestration when work needs to leave Monday.';
+    mondayProject.status='Interactive reconstruction · native Monday AI agent operating model';
+    mondayProject.stack=['Monday.com','Monday AI Agents','n8n','Monday API','Dashboards','Gantt / Timeline'];
+    mondayProject.metrics=[['2','native AI agents'],['Proposal → approval','costed plan + sprint baseline'],['8','connected data boards'],['10','production n8n workflow families']];
+  }
+
   const projects=['workspace-ops','monday-project-ops'].map(id=>window.DCODE_PROJECTS.find(p=>p.id===id)).filter(Boolean);
   function add(p){
     if(root.querySelector(`.project[data-id="${p.id}"]`)) return;
     const el=document.createElement('article');el.className='project';el.dataset.id=p.id;
     const screenId=`preview-${p.id}`,hasDemo=p.demoAvailable!==false,hasN8n=p.stack.some(item=>/\bn8n\b/i.test(item));
     const caseHref=p.id==='workspace-ops'?'workspace-ops-case-study.html':p.id==='monday-project-ops'?'monday-project-ops-case-study.html':`case-study.html?id=${p.id}`;
-    const previewHref=p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?embed=1&v=20260903-herofit4':`demo.html?id=${p.id}&embed=1`;
+    const previewHref=p.id==='monday-project-ops'?'monday-project-ops-demo-native-v8.html?embed=1&v=20260907-proposal-costing1':`demo.html?id=${p.id}&embed=1`;
     const workflowAction=hasN8n?'<button class="btn" type="button" data-workflow-contact>View n8n workflow</button>':'';
     const actions=hasDemo?`<a class="btn" href="${caseHref}">Read case study</a><button class="btn primary fullscreen-btn" type="button" data-target="${screenId}">Open demo ↗</button>${workflowAction}`:`<a class="btn primary" href="${caseHref}">View ongoing case study</a><span class="demo-pending">Public demo in development</span>`;
     const visual=hasDemo?`<div class="laptop-wrap"><div class="laptop-screen" id="${screenId}"><div class="laptop-bezel"><span class="camera-dot"></span><span class="screen-title">${p.title}</span><div class="screen-controls"><button type="button" class="screen-btn fullscreen-btn" data-target="${screenId}" aria-label="View ${p.title} demo fullscreen">⛶</button></div></div><div class="laptop-display"><iframe class="live-demo-preview" src="${previewHref}" title="Interactive reconstructed ${p.title} preview" loading="lazy" allowfullscreen></iframe></div></div><div class="laptop-base"><span></span></div><div class="demo-caption"><span>Interactive reconstruction</span><i></i><span>Synthetic data</span><i></i><span>Fullscreen available</span></div></div>`:'';
@@ -19,6 +29,36 @@
     if(frame&&typeof window.fitPreview==='function') window.fitPreview(frame);
   }
   projects.forEach(add);
+
+  if(!document.getElementById('project02-home-agent-style')){
+    const style=document.createElement('style');
+    style.id='project02-home-agent-style';
+    style.textContent=`
+      .project[data-id="monday-project-ops"] .p02-home-agent-note{margin:14px 0 0;padding:11px 12px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);color:#cbd2d9;font-size:10px;line-height:1.55}
+      .project[data-id="monday-project-ops"] .p02-home-agent-note strong{display:block;margin-bottom:4px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function enhanceMondayCard(){
+    const p=window.DCODE_PROJECTS.find(project=>project.id==='monday-project-ops');
+    const card=root.querySelector('.project[data-id="monday-project-ops"]');
+    if(!p||!card)return;
+    const label=card.querySelector('.projecttop .num');
+    if(label)label.textContent=`${p.order} / ${p.category}`;
+    const status=card.querySelector('.projecttop .status');
+    if(status)status.textContent=p.status;
+    const subtitle=card.querySelector('.projectcopy > p');
+    if(subtitle)subtitle.textContent=p.subtitle;
+    const chips=card.querySelector('.chips');
+    if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
+    const metrics=card.querySelector('.metricline');
+    if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
+    if(subtitle&&!card.querySelector('.p02-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p02-home-agent-note"><strong>AI Agent layer</strong>Project Manager Agent for risk/follow-up + Planner Agent for Sprint/Agile planning and client proposal costing. Proposal and plan changes stay approval-controlled before becoming the Monday baseline.</div>');
+    const frame=card.querySelector('.live-demo-preview');
+    if(frame)frame.src='monday-project-ops-demo-native-v8.html?embed=1&v=20260907-proposal-costing1';
+  }
+  enhanceMondayCard();
 
   window.DCODE_PROJECTS.forEach(project=>{
     const card=root.querySelector(`.project[data-id="${project.id}"]`);
