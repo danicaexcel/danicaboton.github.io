@@ -32,7 +32,6 @@
     `;
     document.head.appendChild(style);
 
-    // Hero positioning now makes the agent layer visible instead of burying it in the demo.
     const kicker = document.querySelector('.casehero .kicker');
     if (kicker) kicker.textContent = '02 / Monday.com · AI Agents · Project Operations · n8n';
     const subtitle = document.querySelector('.casehero .casesub');
@@ -49,7 +48,6 @@
       });
     }
 
-    // Preserve accurate reconstruction wording without implying a live production tenant in the public demo.
     document.querySelectorAll('.casebar span').forEach(span => {
       if (span.textContent.trim() === 'Monday API') span.textContent = 'Monday API / Agent tools';
     });
@@ -68,7 +66,7 @@
     document.querySelectorAll('a[href*="monday-project-ops-demo-native-v8.html"],iframe[src*="monday-project-ops-demo-native-v8.html"]').forEach(el => {
       const attr = el.tagName === 'IFRAME' ? 'src' : 'href';
       const current = el.getAttribute(attr) || '';
-      el.setAttribute(attr, `monday-project-ops-demo-native-v8.html?${el.tagName === 'IFRAME' || /embed=1/.test(current) ? 'embed=1&' : ''}v=20260907-proactive-reporting1`);
+      el.setAttribute(attr, `monday-project-ops-demo-native-v8.html?${el.tagName === 'IFRAME' || /embed=1/.test(current) ? 'embed=1&' : ''}v=20260907-native-agent-widgets1`);
     });
 
     const nav = document.querySelector('.navlinks');
