@@ -23,7 +23,7 @@
 
     if (!document.querySelector('script[data-project02-workflow-proof]')) {
       const proof = document.createElement('script');
-      proof.src = 'project02-workflow-proof.js?v=20260904-roleflow2';
+      proof.src = 'project02-workflow-proof.js?v=20260907-proactive-reporting1';
       proof.dataset.project02WorkflowProof = '1';
       document.body.appendChild(proof);
     }
