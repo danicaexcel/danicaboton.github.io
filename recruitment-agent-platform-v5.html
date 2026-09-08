@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recruitment AI Agent Platform — Secure Workspace</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f4efeb}#platformFrame{display:block;width:100%;height:100%;border:0;background:#f4efeb}
+</style>
+</head>
+<body>
+<iframe id="platformFrame" src="recruitment-agent-platform-v4.html?v=20260908-dashboard-refresh1" title="Recruitment AI Agent Platform"></iframe>
+<script>
+(function(){
+  const outer=document.getElementById('platformFrame');
+  const VERSION='20260908-secure-roles1';
+  function innerFrame(){try{return outer.contentDocument?.getElementById('appFrame')}catch(e){return null}}
+  function targetDoc(){try{return innerFrame()?.contentDocument||null}catch(e){return null}}
+  function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+  function injectStyle(doc){
+    if(doc.getElementById('secureRoleStyle'))return;
+    const style=doc.createElement('style');style.id='secureRoleStyle';style.textContent=`
+      :root{--bg:#f5f0ec!important;--panel:#fffdfb!important;--text:#2d2a28!important;--muted:#837a74!important;--line:#e7ded7!important;--soft:#faf6f3!important;--accent:#efaa73!important;--accent-soft:#fff0e4!important;--green:#557a65!important;--amber:#b57c49!important;--red:#a85e58!important;--shadow:0 15px 38px rgba(70,54,44,.08)!important}
+      html,body{background:linear-gradient(135deg,#f5f0ec 0%,#f7f4f1 55%,#f9eee6 100%)!important;color:#2d2a28!important}
+      .topbar{background:rgba(255,253,251,.96)!important;border-color:#eadfd7!important;box-shadow:0 8px 24px rgba(73,57,47,.04)!important;height:66px!important}
+      .brandmark{background:#2f2c2a!important;color:#f6b27d!important;border-radius:10px!important}.brand b{color:#2d2a28!important}.brand span{color:#9a8d84!important}
+      .status{background:#fffaf6!important;border-color:#eadfd7!important;color:#766d67!important}.avatar{background:#2f2c2a!important;color:#ffc08e!important;cursor:pointer!important}
+      .menu-toggle,.back{background:#fffaf6!important;border-color:#e7dad1!important;color:#675e58!important}.menu-toggle:hover,.back:hover{background:#fff1e6!important}
+      .body-layout{grid-template-columns:252px minmax(0,1fr)!important}.sidebar{width:252px!important;background:#302e2d!important;border-right:0!important;padding:16px 12px!important;box-shadow:10px 0 30px rgba(58,47,40,.08)!important}
+      .side-new{height:40px!important;background:#f1aa73!important;border:0!important;color:#2d2926!important;border-radius:10px!important;font-weight:800!important;box-shadow:0 7px 18px rgba(239,170,115,.18)!important}.side-new:hover{background:#f5b984!important}
+      .side-label{color:#d59c73!important;margin:18px 9px 7px!important;letter-spacing:.16em!important;font-weight:800!important}
+      .side-link{color:#d8d0ca!important;border-radius:9px!important;padding:10px 11px!important}.side-link:hover{background:#3d3937!important;color:#fff!important}.side-link.active{background:#fff0e4!important;color:#2f2b28!important;font-weight:750!important}.side-link em{background:#46413e!important;color:#cfc4bd!important}.side-link.active em{background:#f4c39e!important;color:#4a382c!important}
+      .conversation-item{color:#ded6d0!important;border-radius:9px!important;padding:9px!important}.conversation-item:hover{background:#3b3735!important}.conversation-item.active{background:#443d39!important}.conversation-badge{background:#fff0e4!important;color:#9a5d35!important}.conversation-copy span,.conversation-time{color:#a99e97!important}.conversation-copy b{color:#eee8e4!important}
+      .side-foot{border-color:#494441!important;color:#a99f99!important}.side-foot b{color:#efb181!important}
+      .main{background:transparent!important}.panel,.card,.kpi,.chat-card{background:#fffdfb!important;border-color:#e9dfd8!important}.panel,.chat-card{box-shadow:0 14px 34px rgba(73,56,44,.07)!important}.page-head h1,.chat-head h1{color:#282522!important}.page-head p,.chat-head p{color:#857a73!important}
+      .agent-trigger{background:#fffdfb!important;border-color:#e4d9d1!important}.agent-option.active{background:#fff0e4!important;border-color:#f1c49f!important}.agent-icon,.empty-symbol{background:#fff0e4!important;color:#9e6039!important}.send,.btn.primary{background:#2f2c2a!important;border-color:#2f2c2a!important;color:#fff!important}.prompt-btn:hover{background:#fff5ed!important;border-color:#efc6a7!important}
+      .notice{background:#fff4e9!important;border-left-color:#efaa73!important;color:#71665f!important}.notice strong{color:#2d2926!important}
+      .bar-track span{background:#f0aa73!important}.bar-track .nano{background:#57514d!important}.progress span{background:#efaa73!important}
+      .table th{background:#faf5f1!important;color:#8e8179!important}.pill.success,.pill.approved{background:#eaf2ed!important;color:#4f715d!important}.pill.pending{background:#fff0df!important;color:#9e6738!important}.pill.review{background:#f1ece8!important;color:#675a53!important}
+      .role-control{position:relative;margin-left:2px}.role-button{height:34px;border:1px solid #e4d8cf;border-radius:9px;background:#fffaf6;color:#49413c;padding:0 10px;display:flex;align-items:center;gap:7px;cursor:pointer;font-size:7px;font-weight:750}.role-button svg{width:12px;height:12px}.role-menu{display:none;position:absolute;right:0;top:41px;width:220px;background:#fffdfb;border:1px solid #e7dcd4;border-radius:11px;box-shadow:0 18px 42px rgba(53,42,35,.16);padding:6px;z-index:120}.role-control.open .role-menu{display:grid;gap:3px}.role-menu button{border:0;background:transparent;border-radius:8px;padding:9px;text-align:left;color:#514842;cursor:pointer}.role-menu button:hover{background:#fff1e6}.role-menu button b{display:block;font-size:7.6px}.role-menu button span{display:block;color:#91857d;font-size:6.5px;margin-top:2px;line-height:1.35}.role-menu .signout{border-top:1px solid #eee4dd;border-radius:0;margin-top:3px;padding-top:10px}
+      .client-scope{display:none;margin-bottom:12px;background:linear-gradient(100deg,#fff4ea,#fffdfb);border:1px solid #eed9ca;border-radius:12px;padding:13px 15px}.client-scope .scope-top{display:flex;align-items:center;gap:10px}.client-scope .scope-icon{width:34px;height:34px;border-radius:9px;background:#2f2c2a;color:#f5b17e;display:grid;place-items:center;font-weight:800;font-size:8px}.client-scope h3{margin:0;font-size:10px}.client-scope p{margin:3px 0 0;color:#83776f;font-size:7px}.client-scope .scope-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.client-scope .scope-tags span{border:1px solid #ecd5c4;background:#fffaf6;border-radius:999px;padding:4px 7px;color:#7b6657;font-size:6.5px}
+      body.role-client .client-scope{display:block}body.role-client [data-page-link="usage"],body.role-client [data-page-link="tools"],body.role-client [data-page-link="integrations"],body.role-client [data-page-link="architecture"],body.role-client [data-page-link="schedules"]{display:none!important}
+      body.role-client [data-page="dashboard"] .dashboard-grid,body.role-client [data-page="dashboard"] .grid-2{display:none!important}body.role-client [data-page="dashboard"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.role-client [data-page="dashboard"] .kpis .kpi:nth-child(2),body.role-client [data-page="dashboard"] .kpis .kpi:nth-child(3),body.role-client [data-page="dashboard"] .kpis .kpi:nth-child(4){display:none!important}
+      .client-cards{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:12px}body.role-client .client-cards{display:grid}.client-card{background:#fffdfb;border:1px solid #eadfd8;border-radius:11px;padding:13px}.client-card span{display:block;color:#978a82;font-size:6.5px;text-transform:uppercase;letter-spacing:.08em}.client-card strong{display:block;color:#2f2b28;font-size:18px;margin-top:5px}.client-card small{display:block;color:#958981;font-size:6.5px;margin-top:3px}
+      .auth-overlay{position:fixed;inset:0;background:radial-gradient(circle at 16% 14%,rgba(248,185,136,.40),transparent 26%),radial-gradient(circle at 84% 8%,rgba(245,168,111,.28),transparent 28%),linear-gradient(145deg,#f5f0ec,#f8f6f3);z-index:9999;display:grid;place-items:center;padding:24px}.auth-overlay.hidden{display:none}.auth-shell{width:min(860px,96vw);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);background:#fffdfb;border:1px solid #eadfd8;border-radius:22px;box-shadow:0 30px 80px rgba(62,47,38,.16);overflow:hidden}.auth-story{background:#302e2d;color:#fff;padding:42px;position:relative;overflow:hidden}.auth-story:after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(241,170,115,.16);right:-120px;bottom:-130px}.auth-mark{width:44px;height:44px;border-radius:12px;background:#f1aa73;color:#292622;display:grid;place-items:center;font-weight:900;font-size:12px}.auth-story h1{font-size:30px;line-height:1.02;margin:28px 0 12px;letter-spacing:-.04em}.auth-story p{color:#cfc6c0;font-size:11px;line-height:1.65;max-width:420px}.auth-controls{display:flex;flex-wrap:wrap;gap:6px;margin-top:24px}.auth-controls span{border:1px solid #55504c;border-radius:999px;padding:6px 8px;color:#e5dcd6;font-size:7px}.auth-form{padding:38px 34px}.auth-kicker{color:#b2754a;font-size:7px;font-weight:850;text-transform:uppercase;letter-spacing:.12em}.auth-form h2{font-size:23px;margin:8px 0 5px;color:#2f2b28}.auth-form>p{margin:0 0 18px;color:#857a73;font-size:8px;line-height:1.55}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#f7f1ed;border-radius:10px;padding:4px;margin-bottom:16px}.auth-tab{border:0;background:transparent;border-radius:8px;padding:8px;color:#7c7068;font-size:7.5px;font-weight:750;cursor:pointer}.auth-tab.active{background:#fffdfb;color:#2f2b28;box-shadow:0 2px 8px rgba(70,52,42,.07)}.field{display:grid;gap:5px;margin-top:10px}.field label{font-size:7px;color:#6f655f;font-weight:700}.field input{height:39px;border:1px solid #e3d8d0;border-radius:9px;background:#fff;padding:0 11px;color:#3f3834;outline:0;font-size:8px}.field input:focus{border-color:#eab489;box-shadow:0 0 0 3px rgba(239,170,115,.13)}.auth-submit{width:100%;height:40px;border:0;border-radius:9px;background:#302e2d;color:#fff;margin-top:14px;font-weight:800;font-size:8px;cursor:pointer}.auth-submit:hover{background:#3a3633}.auth-demo{margin-top:12px;border-top:1px solid #eee4dd;padding-top:12px;color:#978a82;font-size:6.8px;line-height:1.5}.auth-demo strong{color:#655a53}.auth-error{display:none;margin-top:8px;border:1px solid #f0d0ca;background:#fff0ed;color:#a45b51;border-radius:8px;padding:7px 9px;font-size:7px}.auth-error.show{display:block}.security-note{display:flex;align-items:center;gap:6px;margin-top:12px;color:#8d8179;font-size:6.7px}.security-note svg{width:12px;height:12px;color:#9a6542}
+      @media(max-width:900px){.auth-shell{grid-template-columns:1fr}.auth-story{display:none}.client-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:800px){.body-layout{display:block!important}.sidebar{width:270px!important}.role-button{padding:0 8px}.role-button span{display:none}}
+      @media(max-width:520px){.auth-form{padding:28px 22px}.client-cards{grid-template-columns:1fr}}
+    `;doc.head.appendChild(style);
+  }
+
+  function addClientDashboard(doc){
+    const dash=doc.querySelector('[data-page="dashboard"] .page-wrap');if(!dash||doc.getElementById('clientScope'))return;
+    const scope=doc.createElement('div');scope.id='clientScope';scope.className='client-scope';scope.innerHTML='<div class="scope-top"><div class="scope-icon">NH</div><div><h3>North Harbor Healthcare · Client workspace</h3><p>Scoped view: assigned facilities, openings, candidate approvals and approved reporting only.</p></div></div><div class="scope-tags"><span>3 facilities</span><span>12 active openings</span><span>Hiring Manager role</span><span>Candidate-impacting actions approval-controlled</span></div>';
+    const clientCards=doc.createElement('div');clientCards.className='client-cards';clientCards.innerHTML='<div class="client-card"><span>Open positions</span><strong>12</strong><small>across assigned facilities</small></div><div class="client-card"><span>Candidates in review</span><strong>34</strong><small>current client scope</small></div><div class="client-card"><span>Awaiting approval</span><strong>3</strong><small>outreach / posting actions</small></div><div class="client-card"><span>Weekly fill rate</span><strong>71%</strong><small>synthetic client reporting</small></div>';
+    const head=dash.querySelector('.page-head');if(head){head.insertAdjacentElement('afterend',clientCards);head.insertAdjacentElement('afterend',scope)}
+  }
+
+  function addRoleMenu(doc){
+    const meta=doc.querySelector('.top-meta');if(!meta||doc.getElementById('roleControl'))return;
+    const wrap=doc.createElement('div');wrap.className='role-control';wrap.id='roleControl';wrap.innerHTML=`<button class="role-button" id="roleButton" type="button" aria-haspopup="menu"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5.5 9V6.8a4.5 4.5 0 0 1 9 0V9"/><rect x="4" y="9" width="12" height="8" rx="2"/></svg><span id="roleLabel">Admin view</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m6 8 4 4 4-4"/></svg></button><div class="role-menu" id="roleMenu"><button type="button" data-role="admin"><b>Admin operations view</b><span>Full observability, cost, schedules, tools, integrations and governance.</span></button><button type="button" data-role="client"><b>Client / hiring manager view</b><span>Facility-scoped dashboard, agent chat, approvals and activity.</span></button><button type="button" class="signout" data-signout><b>Sign out</b><span>Return to the secure-access reconstruction.</span></button></div>`;
+    const avatar=meta.querySelector('.avatar');if(avatar)meta.insertBefore(wrap,avatar);else meta.appendChild(wrap);
+    wrap.querySelector('#roleButton').onclick=()=>wrap.classList.toggle('open');
+    wrap.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{setRole(doc,b.dataset.role);wrap.classList.remove('open')});
+    wrap.querySelector('[data-signout]').onclick=()=>{sessionStorage.removeItem('p01-agent-role');showLogin(doc);wrap.classList.remove('open')};
+  }
+
+  function ensureRoleVisible(doc,role){
+    const active=doc.querySelector('.side-link.active');
+    if(role==='client'&&active&&['usage','tools','integrations','architecture','schedules'].includes(active.dataset.pageLink||'')){
+      doc.querySelector('[data-page-link="dashboard"]')?.click();
+    }
+  }
+
+  function setRole(doc,role){
+    role=role==='client'?'client':'admin';sessionStorage.setItem('p01-agent-role',role);doc.body.classList.toggle('role-client',role==='client');doc.body.classList.toggle('role-admin',role==='admin');
+    const label=doc.getElementById('roleLabel');if(label)label.textContent=role==='client'?'Client view':'Admin view';
+    const avatar=doc.querySelector('.avatar');if(avatar)avatar.textContent=role==='client'?'HM':'DB';
+    const dashTitle=doc.querySelector('[data-page="dashboard"] .page-head h1');if(dashTitle)dashTitle.textContent=role==='client'?'Client recruitment overview':'Agent operations dashboard';
+    const dashCopy=doc.querySelector('[data-page="dashboard"] .page-head p');if(dashCopy)dashCopy.textContent=role==='client'?'A hiring-manager view scoped to assigned facilities, openings, approvals and approved agent activity.':'Monitor cost, tokens, scheduled and requested runs, approvals, model usage, errors and agent performance from one place.';
+    ensureRoleVisible(doc,role);
+  }
+
+  function showLogin(doc){
+    let overlay=doc.getElementById('authOverlay');if(!overlay)return;overlay.classList.remove('hidden');
+  }
+  function hideLogin(doc){doc.getElementById('authOverlay')?.classList.add('hidden')}
+
+  function addLogin(doc){
+    if(doc.getElementById('authOverlay'))return;
+    const overlay=doc.createElement('div');overlay.className='auth-overlay';overlay.id='authOverlay';overlay.innerHTML=`<div class="auth-shell"><section class="auth-story"><div class="auth-mark">RA</div><h1>Recruitment AI<br>Operations</h1><p>A governed agent workspace connected to Zoho CRM through n8n. Access is role-scoped so internal administrators and client hiring managers see different operational surfaces.</p><div class="auth-controls"><span>SSO-ready architecture</span><span>MFA policy</span><span>Role-based access</span><span>Session audit</span><span>Scoped tools</span></div></section><section class="auth-form"><div class="auth-kicker">Secure access reconstruction</div><h2>Sign in to the workspace</h2><p>This public portfolio demonstrates the intended authentication and authorization experience. Do not enter real credentials.</p><div class="auth-tabs"><button class="auth-tab active" data-login-role="admin" type="button">Admin demo</button><button class="auth-tab" data-login-role="client" type="button">Client demo</button></div><div class="field"><label>Work email</label><input id="loginEmail" autocomplete="off" value="admin@northharbor.demo"></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="off" value="DemoOnly!2026"></div><div class="auth-error" id="authError">Enter both the demo email and password.</div><button class="auth-submit" id="authSubmit" type="button">Sign in securely</button><div class="security-note"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5.5 9V6.8a4.5 4.5 0 0 1 9 0V9"/><rect x="4" y="9" width="12" height="8" rx="2"/></svg><span>Target production control: SSO / MFA + RBAC + scoped sessions + audit logging.</span></div><div class="auth-demo"><strong>Demo only:</strong> credentials are local to this reconstruction and are never sent to a backend. Admin and client tabs demonstrate different permission scopes.</div></section></div>`;
+    doc.body.appendChild(overlay);
+    let loginRole='admin';const email=overlay.querySelector('#loginEmail');
+    overlay.querySelectorAll('[data-login-role]').forEach(btn=>btn.onclick=()=>{loginRole=btn.dataset.loginRole;overlay.querySelectorAll('[data-login-role]').forEach(x=>x.classList.toggle('active',x===btn));email.value=loginRole==='client'?'manager@northharbor.demo':'admin@northharbor.demo'});
+    overlay.querySelector('#authSubmit').onclick=()=>{const e=email.value.trim(),p=overlay.querySelector('#loginPassword').value.trim(),err=overlay.querySelector('#authError');if(!e||!p){err.classList.add('show');return}err.classList.remove('show');setRole(doc,loginRole);hideLogin(doc)};
+    const prior=sessionStorage.getItem('p01-agent-role');if(prior){setRole(doc,prior);hideLogin(doc)}
+  }
+
+  function patchTarget(){
+    const doc=targetDoc();if(!doc||!doc.body)return false;
+    injectStyle(doc);addClientDashboard(doc);addRoleMenu(doc);addLogin(doc);
+    const back=doc.querySelector('.back');if(back){back.href='recruitment-case-study-v2.html?v='+VERSION;back.target='_top'}
+    const sideFoot=doc.querySelector('.side-foot');if(sideFoot)sideFoot.innerHTML='<b>Secure role-scoped workspace</b>Admin sees observability and system controls. Client / hiring-manager access is scoped to assigned recruiting context and approved actions.';
+    return true;
+  }
+
+  function wire(){
+    const inner=innerFrame();if(!inner){setTimeout(wire,120);return}
+    inner.addEventListener('load',()=>{setTimeout(patchTarget,80);setTimeout(patchTarget,400)});
+    if(inner.contentDocument?.readyState==='complete'){setTimeout(patchTarget,80);setTimeout(patchTarget,350)}
+  }
+  outer.addEventListener('load',wire);if(outer.contentDocument?.readyState==='complete')wire();
+})();
+</script>
+</body>
+</html>
