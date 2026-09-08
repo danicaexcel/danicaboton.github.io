@@ -30,6 +30,9 @@
   }
   projects.forEach(add);
 
+  const recruitmentFrame=root.querySelector('.project[data-id="recruitment"] .live-demo-preview');
+  if(recruitmentFrame) recruitmentFrame.src='demo.html?id=recruitment&embed=1&v=20260908-no-agents1';
+
   if(!document.getElementById('project02-home-agent-style')){
     const style=document.createElement('style');
     style.id='project02-home-agent-style';
