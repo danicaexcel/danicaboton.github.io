@@ -4,15 +4,6 @@
   const hidden=new Set(['sheets','ops-dashboard']);
   root.querySelectorAll('.project').forEach(card=>{if(hidden.has(card.dataset.id))card.remove();});
 
-  const recruitmentProject=window.DCODE_PROJECTS.find(p=>p.id==='recruitment');
-  if(recruitmentProject){
-    recruitmentProject.category='Zoho CRM · Zia Agents · Recruitment Automation · APIs';
-    recruitmentProject.subtitle='A Zoho CRM recruitment platform with custom Zia Agents built in Agent Studio for candidate rediscovery, job-posting content, recruiter operations and manager assistance, plus multi-channel posting, AI-assisted applicant communication, and the existing resume extraction + scoring workflow.';
-    recruitmentProject.status='Zoho CRM reconstruction · custom Zia Agents deployed to CRM';
-    recruitmentProject.stack=['Zoho CRM','Zia Agents','Deluge','n8n','Twilio / Messaging','Indeed / Meta APIs'];
-    recruitmentProject.metrics=[['4','custom Zia recruitment agents'],['AI Rediscovered','controlled talent-pool pipeline'],['3','automated posting channels'],['Existing AI','resume extraction + scoring']];
-  }
-
   const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
   if(mondayProject){
     mondayProject.category='Monday.com · AI Agents · Project Operations · n8n';
@@ -43,25 +34,11 @@
     const style=document.createElement('style');
     style.id='project02-home-agent-style';
     style.textContent=`
-      .project[data-id="monday-project-ops"] .p02-home-agent-note,.project[data-id="recruitment"] .p01-home-agent-note{margin:14px 0 0;padding:11px 12px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);color:#cbd2d9;font-size:10px;line-height:1.55}
-      .project[data-id="monday-project-ops"] .p02-home-agent-note strong,.project[data-id="recruitment"] .p01-home-agent-note strong{display:block;margin-bottom:4px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+      .project[data-id="monday-project-ops"] .p02-home-agent-note{margin:14px 0 0;padding:11px 12px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);color:#cbd2d9;font-size:10px;line-height:1.55}
+      .project[data-id="monday-project-ops"] .p02-home-agent-note strong{display:block;margin-bottom:4px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
     `;
     document.head.appendChild(style);
   }
-
-  function enhanceRecruitmentCard(){
-    const p=window.DCODE_PROJECTS.find(project=>project.id==='recruitment');
-    const card=root.querySelector('.project[data-id="recruitment"]');
-    if(!p||!card)return;
-    const label=card.querySelector('.projecttop .num');if(label)label.textContent=`${p.order} / ${p.category}`;
-    const status=card.querySelector('.projecttop .status');if(status)status.textContent=p.status;
-    const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
-    const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
-    const metrics=card.querySelector('.metricline');if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
-    if(subtitle&&!card.querySelector('.p01-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-home-agent-note"><strong>Custom Zia Agent layer</strong>Candidate Rediscovery, Job Posting Content, Recruitment Operations and Recruitment Manager Assistant are built in Zia Agent Studio and deployed into Zoho CRM. They are custom agents, not Agent Store marketplace hires. Resume extraction and candidate scoring remain the existing AI workflow.</div>');
-    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-crm-agent-tiles4';
-  }
-  enhanceRecruitmentCard();
 
   function enhanceMondayCard(){
     const p=window.DCODE_PROJECTS.find(project=>project.id==='monday-project-ops');
