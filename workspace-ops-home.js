@@ -4,6 +4,14 @@
   const hidden=new Set(['sheets','ops-dashboard']);
   root.querySelectorAll('.project').forEach(card=>{if(hidden.has(card.dataset.id))card.remove();});
 
+  const recruitmentProject=window.DCODE_PROJECTS.find(p=>p.id==='recruitment');
+  if(recruitmentProject){
+    recruitmentProject.category='Zoho CRM · Deluge · n8n · Custom Agent Extension';
+    recruitmentProject.subtitle='One recruitment architecture with two connected operating surfaces: the Zoho CRM recruitment system and a separate custom AI agent platform connected through APIs/webhooks. Resume extraction + candidate scoring remain part of the CRM workflow; the agent extension adds governed recruiting specialists without embedding them inside Zoho.';
+    recruitmentProject.status='Two connected demos · Zoho CRM + custom agent platform';
+    recruitmentProject.stack=['Zoho CRM','Deluge','n8n','Custom AI Agents','REST APIs','Twilio / Meta'];
+  }
+
   const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
   if(mondayProject){
     mondayProject.category='Monday.com · AI Agents · Project Operations · n8n';
@@ -30,15 +38,31 @@
   }
   projects.forEach(add);
 
-  const recruitmentFrame=root.querySelector('.project[data-id="recruitment"] .live-demo-preview');
-  if(recruitmentFrame) recruitmentFrame.src='demo.html?id=recruitment&embed=1&v=20260908-no-agents1';
+  function enhanceRecruitmentCard(){
+    const p=window.DCODE_PROJECTS.find(project=>project.id==='recruitment');
+    const card=root.querySelector('.project[data-id="recruitment"]');
+    if(!p||!card)return;
+    const label=card.querySelector('.projecttop .num');if(label)label.textContent=`${p.order} / ${p.category}`;
+    const status=card.querySelector('.projecttop .status');if(status)status.textContent=p.status;
+    const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
+    const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-agent-extension1';
+    const actions=card.querySelector('.projectactions');
+    if(actions&&!actions.querySelector('[data-p01-agent-demo]')){
+      const crmButton=actions.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='Open CRM demo ↗';
+      const link=document.createElement('a');link.className='btn';link.dataset.p01AgentDemo='1';link.href='recruitment-agent-platform.html?v=20260908-agent-extension1';link.textContent='Open AI Agents demo ↗';
+      if(crmButton)crmButton.insertAdjacentElement('afterend',link);else actions.appendChild(link);
+    }
+    if(subtitle&&!card.querySelector('.p01-dual-demo-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-dual-demo-note"><strong>Two connected demos</strong>CRM Demo = recruiter operating system. AI Agents Demo = separate custom agent control center using Zoho CRM as the system of record.</div>');
+  }
+  enhanceRecruitmentCard();
 
-  if(!document.getElementById('project02-home-agent-style')){
+  if(!document.getElementById('project-home-extension-style')){
     const style=document.createElement('style');
-    style.id='project02-home-agent-style';
+    style.id='project-home-extension-style';
     style.textContent=`
-      .project[data-id="monday-project-ops"] .p02-home-agent-note{margin:14px 0 0;padding:11px 12px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);color:#cbd2d9;font-size:10px;line-height:1.55}
-      .project[data-id="monday-project-ops"] .p02-home-agent-note strong{display:block;margin-bottom:4px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+      .project[data-id="monday-project-ops"] .p02-home-agent-note,.project[data-id="recruitment"] .p01-dual-demo-note{margin:14px 0 0;padding:11px 12px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);color:#cbd2d9;font-size:10px;line-height:1.55}
+      .project[data-id="monday-project-ops"] .p02-home-agent-note strong,.project[data-id="recruitment"] .p01-dual-demo-note strong{display:block;margin-bottom:4px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
     `;
     document.head.appendChild(style);
   }
