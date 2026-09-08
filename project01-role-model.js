@@ -12,8 +12,7 @@
       .p01-ai-case{border-top:1px solid #343c44;border-bottom:1px solid #343c44;background:#1b2025}.p01-ai-case .wrap{padding-top:64px;padding-bottom:64px}.p01-ai-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:34px;align-items:end;margin-bottom:24px}.p01-ai-head h2{margin:8px 0 0;color:#fff;font-size:clamp(30px,4vw,48px);line-height:1.02;letter-spacing:-.045em}.p01-ai-head p{margin:0;color:#aeb6bf;font-size:13px;line-height:1.7}
       .p01-agent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.p01-agent-card{border:1px solid #414850;background:#22282e;padding:18px;min-height:245px}.p01-agent-card small{display:block;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em}.p01-agent-card h3{margin:9px 0;color:#fff;font-size:16px}.p01-agent-card p,.p01-agent-card li{color:#aeb6bf;font-size:10.5px;line-height:1.6}.p01-agent-card ul{margin:11px 0 0;padding-left:18px}.p01-agent-card strong{color:#fff}
       .p01-flow{margin-top:14px;border:1px solid #414850;background:#20262c;padding:16px}.p01-flow-title{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:12px}.p01-flow-title strong{color:#fff;font-size:12px}.p01-flow-title span{color:#9da8b2;font-size:9px;line-height:1.5;max-width:680px}.p01-flow-steps{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px}.p01-flow-steps div{border:1px solid #46505a;background:#282f36;padding:11px;min-height:104px}.p01-flow-steps b{display:block;color:#fff;font-size:9px;line-height:1.35}.p01-flow-steps span{display:block;margin-top:5px;color:#9da8b2;font-size:8px;line-height:1.45}.p01-flow-steps em{display:block;margin-bottom:6px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;font-style:normal}
-      .p01-stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.p01-stack span{border:1px solid #46505a;background:#252c32;color:#cbd2d9;padding:6px 8px;font-size:8px}.p01-boundary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.p01-boundary article{border:1px solid #414850;background:#22282e;padding:15px}.p01-boundary small{display:block;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em}.p01-boundary strong{display:block;color:#fff;font-size:12px;margin:7px 0}.p01-boundary p{margin:0;color:#aeb6bf;font-size:10px;line-height:1.55}
-      .p01-existing{margin-top:14px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);padding:14px 16px;color:#c4ccd4;font-size:10px;line-height:1.6}.p01-existing strong{color:#fff}.p01-ai-case .kicker{color:#f5b36d}
+      .p01-stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.p01-stack span{border:1px solid #46505a;background:#252c32;color:#cbd2d9;padding:6px 8px;font-size:8px}.p01-boundary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.p01-boundary article{border:1px solid #414850;background:#22282e;padding:15px}.p01-boundary small{display:block;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em}.p01-boundary strong{display:block;color:#fff;font-size:12px;margin:7px 0}.p01-boundary p{margin:0;color:#aeb6bf;font-size:10px;line-height:1.55}.p01-existing{margin-top:14px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);padding:14px 16px;color:#c4ccd4;font-size:10px;line-height:1.6}.p01-existing strong{color:#fff}.p01-ai-case .kicker{color:#f5b36d}
       @media(max-width:1080px){.p01-flow-steps{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:780px){.p01-ai-head,.p01-agent-grid,.p01-boundary{grid-template-columns:1fr}.p01-flow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:460px){.p01-flow-steps{grid-template-columns:1fr}}
     `;
     document.head.appendChild(style);
@@ -27,7 +26,7 @@
       const label = implementation.querySelector('span');
       const copy = implementation.querySelector('p');
       if (label) label.textContent = 'Zoho CRM system of record + AI-assisted recruitment layer';
-      if (copy) copy.textContent = 'Zoho CRM remains the recruiter operating surface and system of record. Job Openings trigger distribution to configured channels, applicant intake stays structured through Zoho Webforms / Zoho Forms, messaging channels assist applicants and follow up on approved missing information, and four AI agents support rediscovery, content, recruiter operations, and manager oversight. Existing resume extraction and candidate scoring remain part of the current processing workflow.';
+      if (copy) copy.textContent = 'Zoho CRM remains the recruiter operating surface and system of record. Job Openings trigger distribution to configured channels, applicant intake stays structured through Zoho Webforms / Zoho Forms, messaging channels assist applicants and follow up on approved missing information, and four AI agents support rediscovery, content, recruiter operations, and manager oversight. The existing n8n resume extraction + candidate scoring branch remains part of the platform.';
     }
 
     const casebar = document.querySelector('.casebar');
@@ -41,6 +40,36 @@
     if (stats[2]) { stats[2].querySelector('strong').textContent='AI Rediscovered'; stats[2].querySelector('span').textContent='controlled talent-pool pipeline'; }
     if (stats[3]) { stats[3].querySelector('strong').textContent='Human-approved'; stats[3].querySelector('span').textContent='outreach and hiring decisions'; }
 
+    const contextSection=[...document.querySelectorAll('.case-section')].find(section=>/Context/i.test(section.querySelector('.kicker')?.textContent||''));
+    if(contextSection){
+      const contextCopy=contextSection.querySelectorAll('.casegrid p');
+      if(contextCopy[0])contextCopy[0].textContent='Recruitment work needed one connected operating flow from job opening and sourcing through application intake, communication, screening, recruiter action, interview, outcome, rediscovery, and management reporting. Manual channel posting, incomplete applications, hard-to-find previous candidates, and fragmented follow-up created avoidable recruiter work.';
+      if(contextCopy[1])contextCopy[1].textContent='I designed Zoho CRM as the recruitment system of record, then extended it with automated job distribution, structured Zoho forms, messaging integrations, four AI agents, and the existing resume extraction + scoring workflow. Same-system record state remains governed in Zoho; external channels and AI services are connected through controlled API/orchestration paths with human approval where the action affects candidates or published content.';
+    }
+
+    const scopeSection=[...document.querySelectorAll('.case-section')].find(section=>/Scope/i.test(section.querySelector('.kicker')?.textContent||''));
+    if(scopeSection){
+      const list=scopeSection.querySelector('.case-content ul');
+      if(list)list.innerHTML=[
+        'Zoho CRM recruitment data model connecting Applicants, Job Openings, Facilities, Employees, Workqueue, Tasks, Meetings, Calls, stage history, and reporting.',
+        'Job Opening automation that prepares and distributes approved postings to Indeed, Facebook, and Instagram through configured integrations.',
+        'Job Posting Content Agent that creates channel-specific copy from the approved Job Opening without inventing requirements or compensation.',
+        'Zoho Webforms / Zoho Forms for structured application intake, with AI-assisted messaging used for applicant help and approved missing-field follow-up.',
+        'Messaging integrations for Twilio SMS, Messenger, and Microsoft Teams so applicant communication can be AI-assisted while remaining traceable to the recruitment record.',
+        'Candidate Rediscovery Agent that searches previous applicants and marks strong matches into an AI Rediscovered pipeline with score, reason, target opening, and recruiter-review status.',
+        'Recruitment Operations Agent combining application completeness, recruiter copilot, pipeline-risk detection, interview prep, and follow-up recommendations.',
+        'Recruitment Manager Assistant Agent for proactive daily/weekly reporting, recruiter workload, sourcing performance, aging candidates, bottlenecks, and openings at risk.',
+        'Existing resume extraction and candidate-scoring workflow that writes AI Score, Fit Level, recommendation, justification, skills, experience match, education match, and processing status to the Applicant record.',
+        'Human approval boundaries for publishing, rediscovery outreach, qualification, rejection, and final hiring decisions; audit and retry visibility for external integrations.'
+      ].map(x=>`<li>${x}</li>`).join('');
+    }
+
+    const relationship=document.getElementById('relationships');
+    if(relationship){
+      const intro=relationship.querySelector('.relationship-head > p');
+      if(intro)intro.textContent='The core data map still shows Zoho CRM record ownership and the existing resume-analysis relationship. The AI-agent and channel layer below extends that model without replacing the Applicant, Job Opening, Facility, activity, and reporting records as the source of truth.';
+    }
+
     const nav = document.querySelector('.navlinks');
     if (nav && !nav.querySelector('a[href="#ai-agents"]')) {
       const link=document.createElement('a'); link.href='#ai-agents'; link.textContent='AI agents';
@@ -48,8 +77,7 @@
     }
 
     document.getElementById('operating-model')?.remove();
-    const context = [...document.querySelectorAll('.case-section')].find(section => /Context/i.test(section.querySelector('.kicker')?.textContent || ''));
-    const anchor = context || document.getElementById('relationships');
+    const anchor = contextSection || document.getElementById('relationships');
     if (!anchor) return;
 
     const section=document.createElement('section');
@@ -75,6 +103,16 @@
     if(architecture){
       const label=architecture.querySelector('.architecture-label'); if(label)label.textContent='Zoho CRM + recruitment AI agents + channel integrations';
       const h2=architecture.querySelector('.case-content > h2'); if(h2)h2.textContent='How the recruitment system now moves.';
+      const arch=architecture.querySelector('.arch');
+      if(arch){
+        const steps=['Zoho CRM Job Opening','Job Posting Content Agent','Indeed / Facebook / Instagram','Zoho Webform / Zoho Forms','Applicant + Resume Record','Existing Resume Extraction + Candidate Scoring','Recruitment Operations Agent','Candidate Rediscovery Agent','Recruitment Manager Assistant','Recruiter / Manager Human Decision'];
+        arch.innerHTML=steps.map((x,i)=>`<span class="archstep" data-index="${String(i+1).padStart(2,'0')}">${x}</span>`).join('');
+      }
+      const grids=architecture.querySelectorAll('.casegrid > div');
+      const relList=grids[0]?.querySelector('ul');
+      if(relList)relList.innerHTML=['Structured forms for core applicant fields','Approved job content as publishing source','Channel/API result logging','Agent confidence + exception handling','Human approval for outreach and publishing','Recruiter-owned qualification / rejection / hiring','Retry and failure visibility','Existing AI output validation and verified CRM write-back'].map(x=>`<li>${x}</li>`).join('');
+      const outcome=grids[1]?.querySelector('p');
+      if(outcome)outcome.textContent='Project 01 now demonstrates a connected recruitment operating model: jobs can distribute automatically to configured channels, applicants enter through structured forms and receive AI-assisted help, previous applicants can be rediscovered for new roles, recruiters get daily operational support, and managers receive proactive recruitment intelligence. Zoho CRM remains the record of truth and people retain control of candidate-facing and hiring decisions.';
     }
 
     const demoIntro=document.querySelector('#demo .sectionhead > p');
