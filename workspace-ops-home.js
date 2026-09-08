@@ -48,8 +48,8 @@
     const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
     const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-agent-extension1';
     const actions=card.querySelector('.projectactions');
-    if(actions&&!actions.querySelector('[data-p01-agent-demo]')){
-      const crmButton=actions.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='Open CRM demo ↗';
+    const crmButton=actions?.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='Open CRM demo ↗';
+    if(actions&&!actions.querySelector('[data-p01-agent-demo],a[href*="recruitment-agent-platform.html"]')){
       const link=document.createElement('a');link.className='btn';link.dataset.p01AgentDemo='1';link.href='recruitment-agent-platform.html?v=20260908-agent-extension1';link.textContent='Open AI Agents demo ↗';
       if(crmButton)crmButton.insertAdjacentElement('afterend',link);else actions.appendChild(link);
     }
@@ -71,31 +71,16 @@
     const p=window.DCODE_PROJECTS.find(project=>project.id==='monday-project-ops');
     const card=root.querySelector('.project[data-id="monday-project-ops"]');
     if(!p||!card)return;
-    const label=card.querySelector('.projecttop .num');
-    if(label)label.textContent=`${p.order} / ${p.category}`;
-    const status=card.querySelector('.projecttop .status');
-    if(status)status.textContent=p.status;
-    const subtitle=card.querySelector('.projectcopy > p');
-    if(subtitle)subtitle.textContent=p.subtitle;
-    const chips=card.querySelector('.chips');
-    if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
-    const metrics=card.querySelector('.metricline');
-    if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
+    const label=card.querySelector('.projecttop .num');if(label)label.textContent=`${p.order} / ${p.category}`;
+    const status=card.querySelector('.projecttop .status');if(status)status.textContent=p.status;
+    const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
+    const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
+    const metrics=card.querySelector('.metricline');if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
     if(subtitle&&!card.querySelector('.p02-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p02-home-agent-note"><strong>AI Agent layer</strong>Project Manager Agent proactively publishes daily attention and weekly project-health reports, then handles risk/follow-up. Planner Agent handles Sprint/Agile planning and client proposal costing. Proposal and plan changes stay approval-controlled before becoming the Monday baseline.</div>');
-    const frame=card.querySelector('.live-demo-preview');
-    if(frame)frame.src='monday-project-ops-demo-native-v8.html?embed=1&v=20260907-agent-reports-board2';
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='monday-project-ops-demo-native-v8.html?embed=1&v=20260907-agent-reports-board2';
   }
   enhanceMondayCard();
 
-  window.DCODE_PROJECTS.forEach(project=>{
-    const card=root.querySelector(`.project[data-id="${project.id}"]`);
-    const label=card?.querySelector('.projecttop .num');
-    if(label) label.textContent=`${project.order} / ${project.category}`;
-  });
-
-  [...root.querySelectorAll('.project')].filter(card=>!hidden.has(card.dataset.id)).sort((a,b)=>{
-    const pa=window.DCODE_PROJECTS.find(project=>project.id===a.dataset.id);
-    const pb=window.DCODE_PROJECTS.find(project=>project.id===b.dataset.id);
-    return Number(pa?.order||99)-Number(pb?.order||99);
-  }).forEach(card=>root.appendChild(card));
+  window.DCODE_PROJECTS.forEach(project=>{const card=root.querySelector(`.project[data-id="${project.id}"]`);const label=card?.querySelector('.projecttop .num');if(label)label.textContent=`${project.order} / ${project.category}`;});
+  [...root.querySelectorAll('.project')].filter(card=>!hidden.has(card.dataset.id)).sort((a,b)=>{const pa=window.DCODE_PROJECTS.find(project=>project.id===a.dataset.id);const pb=window.DCODE_PROJECTS.find(project=>project.id===b.dataset.id);return Number(pa?.order||99)-Number(pb?.order||99);}).forEach(card=>root.appendChild(card));
 })();
