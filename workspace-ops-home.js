@@ -7,9 +7,9 @@
   const recruitmentProject=window.DCODE_PROJECTS.find(p=>p.id==='recruitment');
   if(recruitmentProject){
     recruitmentProject.category='Zoho CRM · Deluge · n8n · Custom Agent Extension';
-    recruitmentProject.subtitle='One recruitment architecture with two connected operating surfaces: the Zoho CRM recruitment system and a separate custom AI agent platform connected through APIs/webhooks. Resume extraction + candidate scoring remain part of the CRM workflow; the agent extension adds governed recruiting specialists without embedding them inside Zoho.';
-    recruitmentProject.status='Two connected demos · Zoho CRM + custom agent platform';
-    recruitmentProject.stack=['Zoho CRM','Deluge','n8n','Custom AI Agents','REST APIs','Twilio / Meta'];
+    recruitmentProject.subtitle='One recruitment architecture with two connected operating surfaces: the Zoho CRM recruitment system and a separate custom AI agent platform. The agent extension keeps four user-facing agents while n8n routes work to cost-controlled GPT-4.1 nano / mini specialists, governed tools, approvals, and controlled CRM write-back.';
+    recruitmentProject.status='Two connected demos · four agents + specialist backend';
+    recruitmentProject.stack=['Zoho CRM','Deluge','n8n','Custom AI Agents','GPT-4.1 nano / mini','REST APIs'];
   }
 
   const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
@@ -46,13 +46,13 @@
     const status=card.querySelector('.projecttop .status');if(status)status.textContent=p.status;
     const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
     const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
-    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-agent-chat2';
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-agent-files1';
     const actions=card.querySelector('.projectactions');
     const caseButton=actions?.querySelector('a[href*="case-study"]');if(caseButton)caseButton.textContent='Read case study';
     const crmButton=actions?.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='CRM demo ↗';
     let agentButton=actions?.querySelector('[data-p01-agent-demo],a[href*="recruitment-agent-platform.html"]');
     if(actions&&!agentButton){agentButton=document.createElement('a');agentButton.className='btn';agentButton.dataset.p01AgentDemo='1';if(crmButton)crmButton.insertAdjacentElement('afterend',agentButton);else actions.appendChild(agentButton);}
-    if(agentButton){agentButton.href='recruitment-agent-platform.html?v=20260908-agent-chat2';agentButton.textContent='AI Agents demo ↗';}
+    if(agentButton){agentButton.href='recruitment-agent-platform.html?v=20260908-agent-files1';agentButton.textContent='AI Agents demo ↗';}
     const workflowButton=actions?.querySelector('[data-workflow-contact]');if(workflowButton)workflowButton.textContent='View n8n workflow';
     if(subtitle&&!card.querySelector('.p01-dual-demo-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-dual-demo-note"><strong>Two connected demos</strong>CRM Demo = recruiter operating system. AI Agents Demo = separate custom agent control center using Zoho CRM as the system of record.</div>');
   }
