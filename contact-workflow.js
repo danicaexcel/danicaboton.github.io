@@ -253,7 +253,7 @@
   if (!/case-study\.html$/.test(location.pathname) || id !== 'recruitment') return;
   if (document.querySelector('script[data-project01-role-model]')) return;
   const script = document.createElement('script');
-  script.src = 'project01-role-model.js?v=20260905-role-model1';
+  script.src = 'project01-role-model.js?v=20260908-recruitment-agents1';
   script.dataset.project01RoleModel = '1';
   document.body.appendChild(script);
 })();
