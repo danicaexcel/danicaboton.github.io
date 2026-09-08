@@ -7,10 +7,10 @@
   const recruitmentProject=window.DCODE_PROJECTS.find(p=>p.id==='recruitment');
   if(recruitmentProject){
     recruitmentProject.category='Zoho CRM · Zia Agents · Recruitment Automation · APIs';
-    recruitmentProject.subtitle='A Zoho CRM recruitment platform with native Zia Agents for candidate rediscovery, job-posting content, recruiter operations and manager assistance, plus multi-channel posting, AI-assisted applicant communication, and the existing resume extraction + scoring workflow.';
-    recruitmentProject.status='Zoho CRM reconstruction · native Zia Agents operating model';
+    recruitmentProject.subtitle='A Zoho CRM recruitment platform with custom Zia Agents built in Agent Studio for candidate rediscovery, job-posting content, recruiter operations and manager assistance, plus multi-channel posting, AI-assisted applicant communication, and the existing resume extraction + scoring workflow.';
+    recruitmentProject.status='Zoho CRM reconstruction · custom Zia Agents deployed to CRM';
     recruitmentProject.stack=['Zoho CRM','Zia Agents','Deluge','n8n','Twilio / Messaging','Indeed / Meta APIs'];
-    recruitmentProject.metrics=[['4','Zia recruitment agents'],['AI Rediscovered','controlled talent-pool pipeline'],['3','automated posting channels'],['Existing AI','resume extraction + scoring']];
+    recruitmentProject.metrics=[['4','custom Zia recruitment agents'],['AI Rediscovered','controlled talent-pool pipeline'],['3','automated posting channels'],['Existing AI','resume extraction + scoring']];
   }
 
   const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
@@ -58,8 +58,8 @@
     const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
     const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
     const metrics=card.querySelector('.metricline');if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
-    if(subtitle&&!card.querySelector('.p01-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-home-agent-note"><strong>Native Zia Agent layer</strong>Candidate Rediscovery, Job Posting Content, Recruitment Operations and Recruitment Manager Assistant agents are configured through Zoho CRM Setup → General → Agents. Resume extraction and candidate scoring remain the existing AI workflow.</div>');
-    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-native-zia2';
+    if(subtitle&&!card.querySelector('.p01-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-home-agent-note"><strong>Custom Zia Agent layer</strong>Candidate Rediscovery, Job Posting Content, Recruitment Operations and Recruitment Manager Assistant are built in Zia Agent Studio and deployed into Zoho CRM. They are custom agents, not Agent Store marketplace hires. Resume extraction and candidate scoring remain the existing AI workflow.</div>');
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-zia-agent-cards1';
   }
   enhanceRecruitmentCard();
 
