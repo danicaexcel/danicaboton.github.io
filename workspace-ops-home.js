@@ -5,14 +5,6 @@
   const hidden=new Set(['sheets','ops-dashboard']);
   root.querySelectorAll('.project').forEach(card=>{if(hidden.has(card.dataset.id))card.remove();});
 
-  const recruitmentProject=window.DCODE_PROJECTS.find(p=>p.id==='recruitment');
-  if(recruitmentProject){
-    recruitmentProject.category='Zoho CRM · Deluge · n8n · Custom Agent Extension';
-    recruitmentProject.subtitle='One recruitment architecture with two connected operating surfaces: the Zoho CRM recruitment system and a separate custom AI agent platform. The agent extension keeps four user-facing agents while n8n routes work to cost-controlled GPT-4.1 nano / mini specialists, governed tools, approvals, and controlled CRM write-back.';
-    recruitmentProject.status='CRM demo · custom agent extension architecture';
-    recruitmentProject.stack=['Zoho CRM','Deluge','n8n','Custom AI Agents','GPT-4.1 nano / mini','REST APIs'];
-  }
-
   const mondayProject=window.DCODE_PROJECTS.find(p=>p.id==='monday-project-ops');
   if(mondayProject){
     mondayProject.category='Monday.com · AI Agents · Project Operations · n8n';
@@ -50,7 +42,7 @@
     const status=card.querySelector('.projecttop .status');if(status)status.textContent=p.status;
     const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
     const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
-    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-hide-p01-agent-demo2';
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-p01-core-only1';
     const actions=card.querySelector('.projectactions');
     const caseButton=actions?.querySelector('a[href*="case-study"]');if(caseButton)caseButton.textContent='Read case study';
     const crmButton=actions?.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='CRM demo ↗';
