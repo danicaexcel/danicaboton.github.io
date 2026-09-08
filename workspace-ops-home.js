@@ -59,7 +59,7 @@
     const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
     const metrics=card.querySelector('.metricline');if(metrics)metrics.innerHTML=p.metrics.slice(0,2).map(m=>`<div class="mini"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('');
     if(subtitle&&!card.querySelector('.p01-home-agent-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-home-agent-note"><strong>Custom Zia Agent layer</strong>Candidate Rediscovery, Job Posting Content, Recruitment Operations and Recruitment Manager Assistant are built in Zia Agent Studio and deployed into Zoho CRM. They are custom agents, not Agent Store marketplace hires. Resume extraction and candidate scoring remain the existing AI workflow.</div>');
-    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-crm-agent-tiles2';
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-crm-agent-tiles3';
   }
   enhanceRecruitmentCard();
 
