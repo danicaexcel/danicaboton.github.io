@@ -180,7 +180,7 @@
       const currentId = currentProjectId();
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260908-crm-agent-tiles3';
+        home.src = 'workspace-ops-home.js?v=20260908-crm-agent-tiles4';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
@@ -253,7 +253,7 @@
   if (!/case-study\.html$/.test(location.pathname) || id !== 'recruitment') return;
   if (document.querySelector('script[data-project01-role-model]')) return;
   const script = document.createElement('script');
-  script.src = 'project01-role-model.js?v=20260908-zia-agent-cards1';
+  script.src = 'project01-role-model.js?v=20260908-crm-agent-tiles4';
   script.dataset.project01RoleModel = '1';
   document.body.appendChild(script);
 })();
@@ -263,7 +263,7 @@
   if (!/case-study\.html$/.test(location.pathname) || id !== 'recruitment') return;
   if (document.querySelector('script[data-project01-zia-accuracy]')) return;
   const script = document.createElement('script');
-  script.src = 'project01-zia-case-accuracy.js?v=20260908-zia-agent-cards1';
+  script.src = 'project01-zia-case-accuracy.js?v=20260908-crm-agent-tiles4';
   script.dataset.project01ZiaAccuracy = '1';
   document.body.appendChild(script);
 })();
