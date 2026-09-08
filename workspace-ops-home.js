@@ -46,13 +46,14 @@
     const status=card.querySelector('.projecttop .status');if(status)status.textContent=p.status;
     const subtitle=card.querySelector('.projectcopy > p');if(subtitle)subtitle.textContent=p.subtitle;
     const chips=card.querySelector('.chips');if(chips)chips.innerHTML=p.stack.slice(0,5).map(x=>`<span class="chip">${x}</span>`).join('');
-    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-agent-extension1';
+    const frame=card.querySelector('.live-demo-preview');if(frame)frame.src='demo.html?id=recruitment&embed=1&v=20260908-agent-chat2';
     const actions=card.querySelector('.projectactions');
-    const crmButton=actions?.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='Open CRM demo ↗';
-    if(actions&&!actions.querySelector('[data-p01-agent-demo],a[href*="recruitment-agent-platform.html"]')){
-      const link=document.createElement('a');link.className='btn';link.dataset.p01AgentDemo='1';link.href='recruitment-agent-platform.html?v=20260908-agent-extension1';link.textContent='Open AI Agents demo ↗';
-      if(crmButton)crmButton.insertAdjacentElement('afterend',link);else actions.appendChild(link);
-    }
+    const caseButton=actions?.querySelector('a[href*="case-study"]');if(caseButton)caseButton.textContent='Read case study';
+    const crmButton=actions?.querySelector('.fullscreen-btn');if(crmButton)crmButton.textContent='CRM demo ↗';
+    let agentButton=actions?.querySelector('[data-p01-agent-demo],a[href*="recruitment-agent-platform.html"]');
+    if(actions&&!agentButton){agentButton=document.createElement('a');agentButton.className='btn';agentButton.dataset.p01AgentDemo='1';if(crmButton)crmButton.insertAdjacentElement('afterend',agentButton);else actions.appendChild(agentButton);}
+    if(agentButton){agentButton.href='recruitment-agent-platform.html?v=20260908-agent-chat2';agentButton.textContent='AI Agents demo ↗';}
+    const workflowButton=actions?.querySelector('[data-workflow-contact]');if(workflowButton)workflowButton.textContent='View n8n workflow';
     if(subtitle&&!card.querySelector('.p01-dual-demo-note'))subtitle.insertAdjacentHTML('afterend','<div class="p01-dual-demo-note"><strong>Two connected demos</strong>CRM Demo = recruiter operating system. AI Agents Demo = separate custom agent control center using Zoho CRM as the system of record.</div>');
   }
   enhanceRecruitmentCard();
@@ -63,6 +64,8 @@
     style.textContent=`
       .project[data-id="monday-project-ops"] .p02-home-agent-note,.project[data-id="recruitment"] .p01-dual-demo-note{margin:14px 0 0;padding:11px 12px;border-left:3px solid #f5b36d;background:rgba(245,179,109,.055);color:#cbd2d9;font-size:10px;line-height:1.55}
       .project[data-id="monday-project-ops"] .p02-home-agent-note strong,.project[data-id="recruitment"] .p01-dual-demo-note strong{display:block;margin-bottom:4px;color:#f5b36d;font:700 8px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+      .project[data-id="recruitment"] .projectactions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+      .project[data-id="recruitment"] .projectactions .btn{width:auto!important;min-width:max-content!important;white-space:nowrap!important;padding-left:14px!important;padding-right:14px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
     `;
     document.head.appendChild(style);
   }
