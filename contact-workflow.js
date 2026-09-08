@@ -180,7 +180,7 @@
       const currentId = currentProjectId();
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260908-zia-agent-cards1';
+        home.src = 'workspace-ops-home.js?v=20260908-crm-agent-tiles2';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
