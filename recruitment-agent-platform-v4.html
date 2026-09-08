@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recruitment AI Agent Platform — DCode</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f4f5f7}#appFrame{display:block;width:100%;height:100%;border:0;background:#f4f5f7}
+</style>
+</head>
+<body>
+<iframe id="appFrame" src="recruitment-agent-platform-v3.html?v=20260908-agent-timeframes1" title="Recruitment AI Agent Platform"></iframe>
+<script>
+(function(){
+  const frame=document.getElementById('appFrame');
+  const ranges={
+    '7d':{label:'7 days',cost:[1.04,.72,.66,.32],tokens:['1.8M','0.82M','0'],high:'0'},
+    '30d':{label:'30 days',cost:[4.48,3.11,2.86,1.39],tokens:['7.6M','3.3M','0.12M'],high:'2'},
+    '90d':{label:'90 days',cost:[13.42,9.31,8.54,4.16],tokens:['22.3M','9.6M','0.31M'],high:'4'},
+    'all':{label:'All time',cost:[22.90,15.88,14.51,7.12],tokens:['37.8M','16.1M','0.58M'],high:'7'}
+  };
+  function makeSelect(doc){
+    const select=doc.createElement('select');
+    select.className='timeframe-select';
+    select.setAttribute('aria-label','Select timeframe');
+    select.innerHTML='<option value="7d">7 days</option><option value="30d" selected>30 days</option><option value="90d">90 days</option><option value="all">All time</option>';
+    return select;
+  }
+  function patch(){
+    const doc=frame.contentDocument,win=frame.contentWindow;
+    if(!doc||!doc.body)return;
+    const back=doc.querySelector('.back');if(back)back.target='_top';
+    if(!doc.getElementById('v4TimeframeStyle')){
+      const style=doc.createElement('style');style.id='v4TimeframeStyle';style.textContent=`
+        .timeframe-select{height:30px;border:1px solid #d9dde3;border-radius:8px;background:#fff;color:#4b535e;padding:0 27px 0 9px;font-size:7.5px;font-weight:650;outline:0;cursor:pointer;appearance:auto}
+        .escalation-card{margin-top:10px;border:1px solid #e1e4e9;border-radius:10px;background:#fff;overflow:hidden;box-shadow:var(--shadow)}
+        .escalation-card .ec-head{padding:12px 14px;border-bottom:1px solid #edf0f3;display:flex;align-items:center;gap:10px}.escalation-card .ec-head div{flex:1}.escalation-card .ec-head h3{margin:0;font-size:10px}.escalation-card .ec-head p{margin:3px 0 0;color:#9097a0;font-size:7px}.escalation-card .ec-badge{border:1px solid #e1ddfb;background:#f5f3ff;color:#5d50c8;border-radius:999px;padding:4px 7px;font-size:6.5px;font-weight:700}
+        .escalation-card .ec-body{padding:13px 14px}.escalation-rule{display:grid;grid-template-columns:142px 1fr;gap:10px;padding:8px 0;border-top:1px solid #edf0f3}.escalation-rule:first-child{border-top:0;padding-top:0}.escalation-rule b{font-size:7.5px}.escalation-rule span{font-size:7px;line-height:1.5;color:#7d858f}.advanced-model-row .bar-track span{background:#f0bd79}.advanced-note{display:block;margin-top:3px;color:#9a6819;font-size:6.2px}
+      `;doc.head.appendChild(style);
+    }
+    const heads=[...doc.querySelectorAll('.panel-head h3')];
+    const costTitle=heads.find(h=>h.textContent.trim().startsWith('Cost by agent'));
+    const tokenTitle=heads.find(h=>h.textContent.trim().startsWith('Token usage by model'));
+    if(costTitle&&!doc.getElementById('costRange')){
+      const select=makeSelect(doc);select.id='costRange';
+      const head=costTitle.closest('.panel-head');const spacer=doc.createElement('span');spacer.className='spacer';head.appendChild(spacer);head.appendChild(select);
+      const costRows=[...costTitle.closest('.panel').querySelectorAll('.bar-row')];
+      const tokenRows=tokenTitle?[...tokenTitle.closest('.panel').querySelectorAll('.bar-row')]:[];
+      if(tokenTitle&&!tokenRows.some(r=>/Advanced model/.test(r.textContent))){
+        const body=tokenTitle.closest('.panel').querySelector('.bar-list');
+        const row=doc.createElement('div');row.className='bar-row advanced-model-row';row.innerHTML='<b>Advanced model<span class="advanced-note">special request only</span></b><div class="bar-track"><span style="width:2%"></span></div><small>0.12M</small>';body.appendChild(row);tokenRows.push(row);
+      }
+      function applyRange(key){
+        const d=ranges[key]||ranges['30d'];costTitle.textContent='Cost by agent · '+d.label;if(tokenTitle)tokenTitle.textContent='Token usage by model · '+d.label;
+        const max=Math.max(...d.cost);costRows.forEach((row,i)=>{const bar=row.querySelector('.bar-track span'),val=row.querySelector('small');if(bar)bar.style.width=Math.max(6,(d.cost[i]/max)*100)+'%';if(val)val.textContent='$'+d.cost[i].toFixed(2)});
+        const tRows=tokenTitle?[...tokenTitle.closest('.panel').querySelectorAll('.bar-row')]:[];
+        tRows.slice(0,3).forEach((row,i)=>{const val=row.querySelector('small');if(val)val.textContent=d.tokens[i]});
+      }
+      select.addEventListener('change',()=>applyRange(select.value));applyRange('30d');
+    }
+    const usage=doc.querySelector('[data-page="usage"] .page-wrap');
+    if(usage&&!doc.getElementById('advancedEscalationCard')){
+      const card=doc.createElement('div');card.id='advancedEscalationCard';card.className='escalation-card';card.innerHTML=`<div class="ec-head"><div><h3>Advanced-model escalation</h3><p>The default path remains GPT-4.1 nano + GPT-4.1 mini. A stronger model is never part of normal scheduled runs.</p></div><span class="ec-badge">Explicit / exception only</span></div><div class="ec-body"><div class="escalation-rule"><b>When it can be proposed</b><span>Mini cannot satisfy the validator after the allowed retry; evidence is materially conflicting; or the request requires unusually deep multi-document / multi-system synthesis.</span></div><div class="escalation-rule"><b>How it starts</b><span>n8n returns an escalation recommendation with the reason and estimated extra cost. The user must explicitly approve the advanced run.</span></div><div class="escalation-rule"><b>Runtime limit</b><span>One advanced-model call, compact context only, no autonomous loop. The result returns to the same main agent for validation and presentation.</span></div><div class="escalation-rule"><b>Never used for</b><span>Routine summaries, job-post drafts, candidate search, normal scoring support, scheduled reports, reminders, or final hiring / rejection decisions.</span></div></div>`;usage.appendChild(card);
+    }
+    const controls=[...doc.querySelectorAll('[data-page="usage"] .metric-row')];
+    const escalation=controls.find(r=>r.textContent.includes('Escalation'));
+    if(escalation){const strong=escalation.querySelector('strong');if(strong)strong.textContent='Approval required'}
+  }
+  frame.addEventListener('load',()=>{patch();setTimeout(patch,250);setTimeout(patch,900)});
+})();
+</script>
+</body>
+</html>
