@@ -8,7 +8,7 @@
     {key:'rediscovery',name:'Candidate Rediscovery Agent',desc:'Finds strong previous applicants for a newly active Job Opening.',deployment:'Digital Employee',context:'Job Openings + Applicants',trigger:'Conditional Job Opening trigger',initials:'CR'},
     {key:'posting',name:'Job Posting Content Agent',desc:'Creates approved channel-specific content for Indeed, Facebook, and Instagram.',deployment:'Connection',context:'Job Openings',trigger:'Manual custom button',initials:'JP'},
     {key:'operations',name:'Recruitment Operations Agent',desc:'Completeness, recruiter copilot, pipeline risk, interview prep, and approved follow-up.',deployment:'Digital Employee',context:'Applicants + activities',trigger:'Applicant condition + button',initials:'RO'},
-    {key:'manager',name:'Recruitment Manager Assistant Agent',desc:'Proactive manager insights for workload, aging, source performance, and bottlenecks.',deployment:'Digital Employee',context:'Recruitment reporting',trigger:'Autonomous + Home insights',initials:'MA'}
+    {key:'manager',name:'Recruitment Manager Assistant Agent',desc:'Proactive manager insights for workload, aging, source performance, and bottlenecks.',deployment:'Digital Employee',context:'Recruitment reporting',trigger:'Scheduled / autonomous reporting',initials:'MA'}
   ];
 
   const style=document.createElement('style');
@@ -26,12 +26,23 @@
     if(typeof window.recruitmentV5==='function')window.recruitmentV5();
   }
 
+  function openCrmAgents(){
+    restore();
+    setTimeout(()=>root.querySelector('[data-z5-top="Agents"]')?.click(),40);
+  }
+
+  function toast(message){
+    const el=document.getElementById('toast');
+    if(!el)return;
+    el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);
+  }
+
   function render(){
-    root.innerHTML=`<div class="z5-setup-shell"><header class="z5-setup-top"><b>Setup</b><button>Admin Panel</button><button class="active">CRM</button><span></span><button id="p01CrmAgentClose">×</button></header><div class="z5-setup-body"><aside class="z5-setup-side">${sidebar()}</aside><main class="z5-setup-main"><div class="z5-setup-content"><div class="p01-crm-agent-head"><div><h1>Agents</h1><p>Configure, manage, and optimize Zia Agents deployed into this Zoho CRM organization.</p></div><div class="p01-crm-agent-actions"><button id="p01ViewAgentPortal">View Agent Portal ↗</button><button class="primary" id="p01NewAgent">New Agent</button></div></div><div class="p01-crm-tabs"><button class="active">Configured (4)</button><button>Draft (0)</button></div><div class="p01-crm-search"><label>⌕ <input placeholder="Search agents"></label></div><div class="p01-crm-agent-grid">${agents.map(a=>`<article class="p01-crm-agent-card" data-p01-crm-agent="${a.key}"><div class="p01-crm-agent-avatar"></div><h3>${a.name}</h3><p>${a.desc}</p><div class="p01-crm-agent-meta"><span>${a.deployment}</span><span class="active">Active</span></div></article>`).join('')}</div><div class="p01-crm-agent-note"><strong>Configured custom agents:</strong> these are custom builds created in Zia Agent Studio and deployed into CRM. They are not Agent Store marketplace agents.</div></div></main></div></div>`;
+    root.innerHTML=`<div class="z5-setup-shell"><header class="z5-setup-top"><b>Setup</b><button>Admin Panel</button><button class="active">CRM</button><span></span><button id="p01CrmAgentClose">×</button></header><div class="z5-setup-body"><aside class="z5-setup-side">${sidebar()}</aside><main class="z5-setup-main"><div class="z5-setup-content"><div class="p01-crm-agent-head"><div><h1>Agents</h1><p>Configure, manage, and optimize Zia Agents deployed into this Zoho CRM organization.</p></div><div class="p01-crm-agent-actions"><button id="p01ViewAgentPortal">View Agents</button><button class="primary" id="p01NewAgent">New Agent</button></div></div><div class="p01-crm-tabs"><button class="active">Configured (4)</button><button>Draft (0)</button></div><div class="p01-crm-search"><label>⌕ <input placeholder="Search agents"></label></div><div class="p01-crm-agent-grid">${agents.map(a=>`<article class="p01-crm-agent-card" data-p01-crm-agent="${a.key}"><div class="p01-crm-agent-avatar"></div><h3>${a.name}</h3><p>${a.desc}</p><div class="p01-crm-agent-meta"><span>${a.deployment}</span><span class="active">Active</span></div></article>`).join('')}</div><div class="p01-crm-agent-note"><strong>Configured custom agents:</strong> these are custom builds created in Zia Agent Studio and deployed into CRM. They are not Agent Store marketplace agents.</div></div></main></div></div>`;
     document.getElementById('p01CrmAgentClose').onclick=restore;
     root.querySelector('.z5-setup-top button:nth-of-type(2)').onclick=restore;
-    document.getElementById('p01ViewAgentPortal').onclick=()=>{restore();setTimeout(()=>root.querySelector('[data-p01-zia-launch]')?.click(),40)};
-    document.getElementById('p01NewAgent').onclick=()=>{restore();setTimeout(()=>root.querySelector('[data-p01-zia-launch]')?.click(),40)};
+    document.getElementById('p01ViewAgentPortal').onclick=openCrmAgents;
+    document.getElementById('p01NewAgent').onclick=()=>toast('New Agent opens Zia Agent Studio in production.');
     root.querySelectorAll('[data-p01-crm-agent]').forEach(card=>card.onclick=()=>manage(card.dataset.p01CrmAgent));
   }
 
@@ -44,7 +55,6 @@
   }
 
   document.addEventListener('click',event=>{
-    if(root.querySelector('.p01-zia-portal'))return;
     const settings=event.target.closest?.('.z5-toptools [title="Settings"]');
     if(!settings)return;
     event.preventDefault();event.stopImmediatePropagation();render();
