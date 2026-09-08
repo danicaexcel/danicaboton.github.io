@@ -153,11 +153,11 @@
   }
 
   function useDedicatedMigrationDemo() {
-    document.querySelectorAll('a[href*="demo.html?id=zoho-migration"],iframe[src*="demo.html?id=zoho-migration"]').forEach(element => {
+    document.querySelectorAll('a[href*="demo.html?id=zoho-migration"],iframe[src*="demo.html?id=zoho-migration"],iframe[src*="migration-demo-enterprise.html"],a[href*="migration-demo-enterprise.html"],iframe[src*="migration-demo-control.html"],a[href*="migration-demo-control.html"]').forEach(element => {
       const attribute = element.tagName === 'IFRAME' ? 'src' : 'href';
       const original = element.getAttribute(attribute) || '';
       const isEmbed = element.tagName === 'IFRAME' || /[?&]embed=1(?:&|$)/.test(original);
-      element.setAttribute(attribute, `migration-demo.html?${isEmbed ? 'embed=1&' : ''}v=20260905-drive-parallel1`);
+      element.setAttribute(attribute, `migration-demo-control.html?${isEmbed ? 'embed=1&' : ''}v=20260905-crashfix2`);
     });
   }
 
@@ -180,7 +180,7 @@
       const currentId = currentProjectId();
       if (document.getElementById('projectCards') && !document.querySelector('script[data-workspace-home]')) {
         const home = document.createElement('script');
-        home.src = 'workspace-ops-home.js?v=20260908-crm-agent-tiles2';
+        home.src = 'workspace-ops-home.js?v=20260908-crm-agent-tiles3';
         home.dataset.workspaceHome = '1';
         document.body.appendChild(home);
       }
